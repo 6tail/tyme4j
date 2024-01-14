@@ -1,5 +1,6 @@
 package com.tyme.test;
 
+import com.tyme.lunar.LunarWeek;
 import com.tyme.solar.SolarDay;
 import com.tyme.solar.SolarWeek;
 import org.junit.Assert;
@@ -135,6 +136,20 @@ public class WeekTest {
   public void test20(){
     SolarDay solar = SolarDay.fromYmd(9865, 7, 26);
     Assert.assertEquals(3, solar.getWeek().getIndex());
+  }
+
+  @Test
+  public void test21(){
+    LunarWeek week = LunarWeek.fromYm(2023, 1, 0, 2);
+    Assert.assertEquals("农历癸卯年正月第一周", week.toString());
+    Assert.assertEquals("农历壬寅年十二月廿六", week.getFirstDay().toString());
+  }
+
+  @Test
+  public void test22(){
+    SolarWeek week = SolarWeek.fromYm(2023, 1, 0, 2);
+    Assert.assertEquals("2023年1月第一周", week.toString());
+    Assert.assertEquals("2022年12月27日", week.getFirstDay().toString());
   }
 
 }

@@ -100,7 +100,7 @@ public class SolarFestival extends AbstractTyme {
   /**
    * 类型
    *
-   * @return 农历传统节日类型
+   * @return 节日类型
    */
   public FestivalType getType() {
     return type;

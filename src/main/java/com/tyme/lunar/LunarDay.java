@@ -174,17 +174,22 @@ public class LunarDay extends AbstractTyme {
    * @return 干支
    */
   public SixtyCycle getYearSixtyCycle() {
-    int solarYear = getSolarDay().getMonth().getYear().getYear();
-    SolarTerm spring = SolarTerm.fromIndex(solarYear, 3);
+    SolarDay solarDay = getSolarDay();
+    int solarYear = solarDay.getMonth().getYear().getYear();
+    SolarDay springSolarDay = SolarTerm.fromIndex(solarYear, 3).getJulianDay().getSolarDay();
     LunarYear lunarYear = month.getYear();
-    SixtyCycle year = lunarYear.getSixtyCycle();
-    if (lunarYear.getYear() < solarYear) {
-      year = year.next(1);
+    int year = lunarYear.getYear();
+    SixtyCycle sixtyCycle = lunarYear.getSixtyCycle();
+    if (year == solarYear) {
+      if (solarDay.isBefore(springSolarDay)) {
+        sixtyCycle = sixtyCycle.next(-1);
+      }
+    } else if (year < solarYear) {
+      if (!solarDay.isBefore(springSolarDay)) {
+        sixtyCycle = sixtyCycle.next(1);
+      }
     }
-    if (getSolarDay().isBefore(spring.getJulianDay().getSolarDay())) {
-      year = year.next(-1);
-    }
-    return year;
+    return sixtyCycle;
   }
 
   /**
@@ -193,11 +198,16 @@ public class LunarDay extends AbstractTyme {
    * @return 干支
    */
   public SixtyCycle getMonthSixtyCycle() {
-    SolarTerm term = getSolarDay().getTerm();
-    if (term.isQi()) {
-      term = term.next(-1);
+    SolarDay solarDay = getSolarDay();
+    int year = solarDay.getMonth().getYear().getYear();
+    SolarTerm term = solarDay.getTerm();
+    int index = term.getIndex() - 3;
+    if (index < 0) {
+      if (term.getJulianDay().getSolarDay().isAfter(SolarTerm.fromIndex(year, 3).getJulianDay().getSolarDay())) {
+        index += 24;
+      }
     }
-    return term.getJulianDay().getSolarDay().getLunarDay().getMonth().getSixtyCycle();
+    return LunarMonth.fromYm(year, 1).getSixtyCycle().next((int)Math.floor(index *1D / 2));
   }
 
   /**

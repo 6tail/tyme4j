@@ -8,15 +8,9 @@ Tyme是一个非常强大的日历工具库，可以看作 [Lunar](https://6tail
 <dependency>
   <groupId>cn.6tail</groupId>
   <artifactId>tyme4j</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
 </dependency>
 ```
-
-### 下载jar
-
-如果使用jar，建议下载最新的版本，bug将得到及时的修复。
-
-[Download](https://github.com/6tail/lunar-java/releases)
 
 ## 示例
 
@@ -36,7 +30,7 @@ Tyme是一个非常强大的日历工具库，可以看作 [Lunar](https://6tail
 
 ## 文档
 
-请移步至 [https://6tail.cn/tyme.html](https://6tail.cn/tyme.html "https://6tail.cn/calendar/api.html")
+请移步至 [https://6tail.cn/tyme.html](https://6tail.cn/tyme.html "https://6tail.cn/tyme.html")
 
 ## Star History
 

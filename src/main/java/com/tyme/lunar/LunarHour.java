@@ -6,10 +6,7 @@ import com.tyme.culture.star.nine.NineStar;
 import com.tyme.sixtycycle.EarthBranch;
 import com.tyme.sixtycycle.HeavenStem;
 import com.tyme.sixtycycle.SixtyCycle;
-import com.tyme.solar.SolarDay;
-import com.tyme.solar.SolarMonth;
-import com.tyme.solar.SolarTerm;
-import com.tyme.solar.SolarTime;
+import com.tyme.solar.*;
 
 /**
  * 时辰
@@ -184,17 +181,22 @@ public class LunarHour extends AbstractTyme {
    * @return 干支
    */
   public SixtyCycle getYearSixtyCycle() {
+    SolarTime solarTime = getSolarTime();
     int solarYear = day.getSolarDay().getMonth().getYear().getYear();
-    SolarTerm spring = SolarTerm.fromIndex(solarYear, 3);
+    SolarTime springSolarTime = SolarTerm.fromIndex(solarYear, 3).getJulianDay().getSolarTime();
     LunarYear lunarYear = day.getMonth().getYear();
-    SixtyCycle year = lunarYear.getSixtyCycle();
-    if (lunarYear.getYear() < solarYear) {
-      year = year.next(1);
+    int year = lunarYear.getYear();
+    SixtyCycle sixtyCycle = lunarYear.getSixtyCycle();
+    if (year == solarYear) {
+      if (solarTime.isBefore(springSolarTime)) {
+        sixtyCycle = sixtyCycle.next(-1);
+      }
+    } else if (year < solarYear) {
+      if (!solarTime.isBefore(springSolarTime)) {
+        sixtyCycle = sixtyCycle.next(1);
+      }
     }
-    if (getSolarTime().isBefore(spring.getJulianDay().getSolarTime())) {
-      year = year.next(-1);
-    }
-    return year;
+    return sixtyCycle;
   }
 
   /**
@@ -203,11 +205,16 @@ public class LunarHour extends AbstractTyme {
    * @return 干支
    */
   public SixtyCycle getMonthSixtyCycle() {
-    SolarTerm term = getSolarTime().getTerm();
-    if (term.isQi()) {
-      term = term.next(-1);
+    SolarTime solarTime = getSolarTime();
+    int year = solarTime.getDay().getMonth().getYear().getYear();
+    SolarTerm term = solarTime.getTerm();
+    int index = term.getIndex() - 3;
+    if (index < 0) {
+      if (term.getJulianDay().getSolarTime().isAfter(SolarTerm.fromIndex(year, 3).getJulianDay().getSolarTime())) {
+        index += 24;
+      }
     }
-    return term.getJulianDay().getSolarTime().getLunarHour().getDay().getMonth().getSixtyCycle();
+    return LunarMonth.fromYm(year, 1).getSixtyCycle().next((int)Math.floor(index *1D / 2));
   }
 
   /**

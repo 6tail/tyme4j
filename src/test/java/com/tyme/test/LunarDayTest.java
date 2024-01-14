@@ -2,6 +2,7 @@ package com.tyme.test;
 
 import com.tyme.culture.star.twentyeight.TwentyEightStar;
 import com.tyme.lunar.LunarDay;
+import com.tyme.solar.SolarTerm;
 import org.junit.Assert;
 import org.junit.Test;
 

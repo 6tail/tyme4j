@@ -43,4 +43,12 @@ public class ElementTest {
     Assert.assertEquals(Element.fromName("火"), EarthBranch.fromName("寅").getElement().getReinforce());
   }
 
+  /**
+   * 生我的：火生土
+   */
+  @Test
+  public void test4() {
+    Assert.assertEquals(Element.fromName("火"), Element.fromName("土").getReinforced());
+  }
+
 }
