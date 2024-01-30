@@ -144,7 +144,7 @@ public class SolarWeek extends AbstractTyme {
    * @return 公历日列表
    */
   public List<SolarDay> getDays() {
-    List<SolarDay> l = new ArrayList<SolarDay>(7);
+    List<SolarDay> l = new ArrayList<>(7);
     SolarDay d = getFirstDay();
     l.add(d);
     for (int i = 1; i < 7; i++) {

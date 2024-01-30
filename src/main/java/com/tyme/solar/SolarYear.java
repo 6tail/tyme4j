@@ -81,7 +81,7 @@ public class SolarYear extends AbstractTyme {
    * @return 月份列表，1年有12个月。
    */
   public List<SolarMonth> getMonths() {
-    List<SolarMonth> l = new ArrayList<SolarMonth>(12);
+    List<SolarMonth> l = new ArrayList<>(12);
     for (int i = 0; i < 12; i++) {
       l.add(SolarMonth.fromYm(year, i + 1));
     }
@@ -94,7 +94,7 @@ public class SolarYear extends AbstractTyme {
    * @return 季度列表，1年有4个季度。
    */
   public List<SolarSeason> getSeasons() {
-    List<SolarSeason> l = new ArrayList<SolarSeason>(4);
+    List<SolarSeason> l = new ArrayList<>(4);
     for (int i = 0; i < 4; i++) {
       l.add(SolarSeason.fromIndex(year, i));
     }
@@ -107,7 +107,7 @@ public class SolarYear extends AbstractTyme {
    * @return 半年列表，1年有2个半年。
    */
   public List<SolarHalfYear> getHalfYears() {
-    List<SolarHalfYear> l = new ArrayList<SolarHalfYear>(2);
+    List<SolarHalfYear> l = new ArrayList<>(2);
     for (int i = 0; i < 2; i++) {
       l.add(SolarHalfYear.fromIndex(year, i));
     }

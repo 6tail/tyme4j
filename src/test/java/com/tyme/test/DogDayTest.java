@@ -62,14 +62,12 @@ public class DogDayTest {
 
   @Test
   public void test6() {
-    DogDay d = SolarDay.fromYmd(2011, 7, 13).getDogDay();
-    Assert.assertNull(d);
+    Assert.assertNull(SolarDay.fromYmd(2011, 7, 13).getDogDay());
   }
 
   @Test
   public void test7() {
-    DogDay d = SolarDay.fromYmd(2011, 8, 23).getDogDay();
-    Assert.assertNull(d);
+    Assert.assertNull(SolarDay.fromYmd(2011, 8, 23).getDogDay());
   }
 
   @Test

@@ -8,7 +8,7 @@ Tyme是一个非常强大的日历工具库，可以看作 [Lunar](https://6tail
 <dependency>
   <groupId>cn.6tail</groupId>
   <artifactId>tyme4j</artifactId>
-  <version>1.0.1</version>
+  <version>1.0.2</version>
 </dependency>
 ```
 
@@ -18,13 +18,13 @@ Tyme是一个非常强大的日历工具库，可以看作 [Lunar](https://6tail
      
     public class Sample {
       public static void main(String[] args) {
-        SolarDay solar = SolarDay.fromYmd(1986, 5, 29);
+        SolarDay solarDay = SolarDay.fromYmd(1986, 5, 29);
          
         // 1986年5月29日
-        System.out.println(solar);
+        System.out.println(solarDay);
          
         // 农历丙寅年四月廿一
-        System.out.println(solar.getLunarDay());
+        System.out.println(solarDay.getLunarDay());
       }
     }
 

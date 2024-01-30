@@ -254,7 +254,7 @@ public class LunarMonth extends AbstractTyme {
     int size = getDayCount();
     int y = year.getYear();
     int m = getMonthWithLeap();
-    List<LunarDay> l = new ArrayList<LunarDay>(size);
+    List<LunarDay> l = new ArrayList<>(size);
     for (int i = 0; i < size; i++) {
       l.add(LunarDay.fromYmd(y, m, i + 1));
     }
@@ -271,7 +271,7 @@ public class LunarMonth extends AbstractTyme {
     int size = getWeekCount(start);
     int y = year.getYear();
     int m = getMonthWithLeap();
-    List<LunarWeek> l = new ArrayList<LunarWeek>(size);
+    List<LunarWeek> l = new ArrayList<>(size);
     for (int i = 0; i < size; i++) {
       l.add(LunarWeek.fromYm(y, m, i, start));
     }

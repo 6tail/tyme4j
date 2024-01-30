@@ -1,6 +1,5 @@
 package com.tyme.test;
 
-import com.tyme.culture.fetus.FetusDay;
 import com.tyme.solar.SolarDay;
 import org.junit.Assert;
 import org.junit.Test;

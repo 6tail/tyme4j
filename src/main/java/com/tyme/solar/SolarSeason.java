@@ -80,7 +80,7 @@ public class SolarSeason extends AbstractTyme {
    * @return 月份列表，1季度有3个月。
    */
   public List<SolarMonth> getMonths() {
-    List<SolarMonth> l = new ArrayList<SolarMonth>(3);
+    List<SolarMonth> l = new ArrayList<>(3);
     int y = year.getYear();
     for (int i = 0; i < 3; i++) {
       l.add(SolarMonth.fromYm(y, index * 3 + i + 1));

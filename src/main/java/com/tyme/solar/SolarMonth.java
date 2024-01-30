@@ -141,9 +141,10 @@ public class SolarMonth extends AbstractTyme {
    */
   public List<SolarWeek> getWeeks(int start) {
     int size = getWeekCount(start);
-    List<SolarWeek> l = new ArrayList<SolarWeek>(size);
+    int y = year.getYear();
+    List<SolarWeek> l = new ArrayList<>(size);
     for (int i = 0; i < size; i++) {
-      l.add(SolarWeek.fromYm(year.getYear(), month, i, start));
+      l.add(SolarWeek.fromYm(y, month, i, start));
     }
     return l;
   }
@@ -155,9 +156,10 @@ public class SolarMonth extends AbstractTyme {
    */
   public List<SolarDay> getDays() {
     int size = getDayCount();
-    List<SolarDay> l = new ArrayList<SolarDay>(size);
+    int y = year.getYear();
+    List<SolarDay> l = new ArrayList<>(size);
     for (int i = 0; i < size; i++) {
-      l.add(SolarDay.fromYmd(year.getYear(), month, i + 1));
+      l.add(SolarDay.fromYmd(y, month, i + 1));
     }
     return l;
   }

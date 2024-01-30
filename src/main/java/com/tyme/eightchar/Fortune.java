@@ -61,8 +61,8 @@ public class Fortune extends AbstractTyme {
    * @return 干支
    */
   public SixtyCycle getSixtyCycle() {
-    int index = getAge();
-    return childLimit.getEightChar().getHour().next(childLimit.forward ? index: -index);
+    int n = getAge();
+    return childLimit.getEightChar().getHour().next(childLimit.isForward() ? n: -n);
   }
 
   public String getName() {

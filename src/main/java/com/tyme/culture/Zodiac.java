@@ -6,7 +6,7 @@ import com.tyme.sixtycycle.EarthBranch;
 /**
  * 生肖
  *
- * @author liuweij
+ * @author 6tail
  */
 public class Zodiac extends LoopTyme {
 

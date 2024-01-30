@@ -202,12 +202,10 @@ public class LunarDay extends AbstractTyme {
     int year = solarDay.getMonth().getYear().getYear();
     SolarTerm term = solarDay.getTerm();
     int index = term.getIndex() - 3;
-    if (index < 0) {
-      if (term.getJulianDay().getSolarDay().isAfter(SolarTerm.fromIndex(year, 3).getJulianDay().getSolarDay())) {
-        index += 24;
-      }
+    if (index < 0 && term.getJulianDay().getSolarDay().isAfter(SolarTerm.fromIndex(year, 3).getJulianDay().getSolarDay())) {
+      index += 24;
     }
-    return LunarMonth.fromYm(year, 1).getSixtyCycle().next((int)Math.floor(index *1D / 2));
+    return LunarMonth.fromYm(year, 1).getSixtyCycle().next((int) Math.floor(index * 1D / 2));
   }
 
   /**

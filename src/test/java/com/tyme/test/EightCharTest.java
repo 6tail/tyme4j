@@ -5,6 +5,7 @@ import com.tyme.eightchar.DecadeFortune;
 import com.tyme.eightchar.EightChar;
 import com.tyme.eightchar.Fortune;
 import com.tyme.enums.Gender;
+import com.tyme.lunar.LunarHour;
 import com.tyme.sixtycycle.HeavenStem;
 import com.tyme.sixtycycle.SixtyCycle;
 import com.tyme.solar.SolarTime;
@@ -224,15 +225,6 @@ public class EightCharTest {
 
   @Test
   public void test9() {
-    EightChar eightChar = SolarTime.fromYmdHms(1988, 2, 15, 23, 30, 0).getLunarHour().getEightChar();
-    Assert.assertEquals("戊辰", eightChar.getYear().getName());
-    Assert.assertEquals("甲寅", eightChar.getMonth().getName());
-    Assert.assertEquals("辛丑", eightChar.getDay().getName());
-    Assert.assertEquals("戊子", eightChar.getHour().getName());
-  }
-
-  @Test
-  public void test10() {
     EightChar eightChar = SolarTime.fromYmdHms(1988, 2, 15, 23, 30, 0).getLunarHour().getEightChar();
     Assert.assertEquals("戊辰", eightChar.getYear().getName());
     Assert.assertEquals("甲寅", eightChar.getMonth().getName());
@@ -470,6 +462,141 @@ public class EightCharTest {
     System.out.printf("胎息：%s(%s)%n", eightChar.getFetalBreath(), eightChar.getFetalBreath().getSound());
     System.out.printf("命宫：%s(%s)%n", eightChar.getOwnSign(), eightChar.getOwnSign().getSound());
     System.out.printf("身宫：%s(%s)%n", eightChar.getBodySign(), eightChar.getBodySign().getSound());
+  }
+
+  @Test
+  public void test16() {
+    // 童限
+    ChildLimit childLimit = ChildLimit.fromSolarTime(SolarTime.fromYmdHms(1990, 3, 15, 10, 30, 0), Gender.MAN);
+    // 八字
+    Assert.assertEquals("庚午 己卯 己卯 己巳", childLimit.getEightChar().toString());
+    // 童限年数
+    Assert.assertEquals(6, childLimit.getYearCount());
+    // 童限月数
+    Assert.assertEquals(11, childLimit.getMonthCount());
+    // 童限日数
+    Assert.assertEquals(23, childLimit.getDayCount());
+    // 童限结束(即开始起运)的公历时刻
+    Assert.assertEquals("1997年3月11日 00:22:00", childLimit.getEndTime().toString());
+
+    // 小运
+    Fortune fortune = childLimit.getStartFortune();
+    // 年龄
+    Assert.assertEquals(7, fortune.getAge());
+  }
+
+  @Test
+  public void test17() {
+    EightChar eightChar = new EightChar(
+            SixtyCycle.fromName("己丑"),
+            SixtyCycle.fromName("戊辰"),
+            SixtyCycle.fromName("戊辰"),
+            SixtyCycle.fromName("甲子")
+    );
+    Assert.assertEquals("丁丑", eightChar.getOwnSign().getName());  }
+
+  @Test
+  public void test18() {
+    EightChar eightChar = new EightChar(
+            SixtyCycle.fromName("戊戌"),
+            SixtyCycle.fromName("庚申"),
+            SixtyCycle.fromName("丁亥"),
+            SixtyCycle.fromName("丙午")
+    );
+    Assert.assertEquals("乙卯", eightChar.getOwnSign().getName());
+  }
+
+  @Test
+  public void test19() {
+    EightChar eightChar = new EightChar(
+            SixtyCycle.fromName("甲子"),
+            SixtyCycle.fromName("壬申"),
+            null,
+            SixtyCycle.fromName("乙亥")
+    );
+    Assert.assertEquals("甲戌", eightChar.getOwnSign().getName());
+  }
+
+  @Test
+  public void test20() {
+    EightChar eightChar = ChildLimit.fromSolarTime(SolarTime.fromYmdHms(2024, 1, 29, 9, 33, 0), Gender.MAN).getEightChar();
+    Assert.assertEquals("癸亥", eightChar.getOwnSign().getName());
+    Assert.assertEquals("己未", eightChar.getBodySign().getName());
+  }
+
+  @Test
+  public void test21() {
+    EightChar eightChar = new EightChar(
+            SixtyCycle.fromName("辛亥"),
+            SixtyCycle.fromName("乙未"),
+            null,
+            SixtyCycle.fromName("甲辰")
+    );
+    Assert.assertEquals("庚子", eightChar.getBodySign().getName());
+  }
+
+  @Test
+  public void test22() {
+    Assert.assertEquals("丙寅", ChildLimit.fromSolarTime(SolarTime.fromYmdHms(1990, 1, 27, 0, 0, 0), Gender.MAN).getEightChar().getBodySign().getName());
+  }
+
+  @Test
+  public void test23() {
+    Assert.assertEquals("甲戌", ChildLimit.fromSolarTime(SolarTime.fromYmdHms(2019, 3, 7, 8, 0, 0), Gender.MAN).getEightChar().getOwnSign().getName());
+  }
+
+  @Test
+  public void test24() {
+    Assert.assertEquals("丁丑", ChildLimit.fromSolarTime(SolarTime.fromYmdHms(2019, 3, 27, 2, 0, 0), Gender.MAN).getEightChar().getOwnSign().getName());
+  }
+
+  @Test
+  public void test25() {
+    Assert.assertEquals("丙寅", LunarHour.fromYmdHms(1994, 5, 20, 18, 0 ,0).getEightChar().getOwnSign().getName());
+  }
+
+  @Test
+  public void test26() {
+    Assert.assertEquals("己丑", SolarTime.fromYmdHms(1986, 5, 29, 13, 37, 0).getLunarHour().getEightChar().getBodySign().getName());
+  }
+
+  @Test
+  public void test27() {
+    Assert.assertEquals("乙丑", SolarTime.fromYmdHms(1994, 12, 6, 2, 0 ,0).getLunarHour().getEightChar().getBodySign().getName());
+  }
+
+  @Test
+  public void test28() {
+    EightChar eightChar = new EightChar(
+            SixtyCycle.fromName("辛亥"),
+            SixtyCycle.fromName("丁酉"),
+            SixtyCycle.fromName("丙午"),
+            SixtyCycle.fromName("癸巳")
+    );
+    Assert.assertEquals("辛卯", eightChar.getOwnSign().getName());
+  }
+
+  @Test
+  public void test29() {
+    EightChar eightChar = new EightChar(
+            SixtyCycle.fromName("丙寅"),
+            SixtyCycle.fromName("庚寅"),
+            SixtyCycle.fromName("辛卯"),
+            SixtyCycle.fromName("壬辰")
+    );
+    Assert.assertEquals("己亥", eightChar.getOwnSign().getName());
+    Assert.assertEquals("乙未", eightChar.getBodySign().getName());
+  }
+
+  @Test
+  public void test30() {
+    EightChar eightChar = new EightChar(
+            SixtyCycle.fromName("壬子"),
+            SixtyCycle.fromName("辛亥"),
+            SixtyCycle.fromName("壬戌"),
+            SixtyCycle.fromName("乙巳")
+    );
+    Assert.assertEquals("乙巳", eightChar.getBodySign().getName());
   }
 
 }

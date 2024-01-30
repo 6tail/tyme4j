@@ -21,7 +21,7 @@ public class LunarYear extends AbstractTyme {
   /**
    * 缓存{闰月:年}
    */
-  protected static final Map<Integer, List<Integer>> LEAP = new HashMap<Integer, List<Integer>>(12);
+  protected static final Map<Integer, List<Integer>> LEAP = new HashMap<>(12);
 
   /**
    * 年
@@ -35,7 +35,7 @@ public class LunarYear extends AbstractTyme {
       int n = 0;
       String m = months[i];
       int size = m.length() / 2;
-      List<Integer> l = new ArrayList<Integer>(size);
+      List<Integer> l = new ArrayList<>(size);
       for (int y = 0; y < size; y++) {
         int z = y * 2;
         String s = m.substring(z, z + 2);
@@ -163,7 +163,7 @@ public class LunarYear extends AbstractTyme {
    * @return 月份列表，一般有12个月，当年有闰月时，有13个月。
    */
   public List<LunarMonth> getMonths() {
-    List<LunarMonth> l = new ArrayList<LunarMonth>(13);
+    List<LunarMonth> l = new ArrayList<>(13);
     LunarMonth m = LunarMonth.fromYm(year, 1);
     while (m.getYear().getYear() == year) {
       l.add(m);

@@ -108,8 +108,8 @@ public class LunarFestival extends AbstractTyme {
       return fromYmd(year, m.getMonthWithLeap(), day.getDay());
     }
     int size = NAMES.length;
-    int offset = indexOf(index + n, size);
     int t = index + n;
+    int offset = indexOf(t, size);
     if (t < 0) {
       t -= size;
     }

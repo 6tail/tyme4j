@@ -5,7 +5,7 @@ import com.tyme.LoopTyme;
 /**
  * 星座
  *
- * @author liuweij
+ * @author 6tail
  */
 public class Constellation extends LoopTyme {
 

@@ -144,7 +144,7 @@ public class LunarWeek extends AbstractTyme {
    * @return 农历日列表
    */
   public List<LunarDay> getDays() {
-    List<LunarDay> l = new ArrayList<LunarDay>(7);
+    List<LunarDay> l = new ArrayList<>(7);
     LunarDay d = getFirstDay();
     l.add(d);
     for (int i = 1; i < 7; i++) {

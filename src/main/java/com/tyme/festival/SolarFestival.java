@@ -89,8 +89,8 @@ public class SolarFestival extends AbstractTyme {
       return fromYmd(year, m.getMonth(), day.getDay());
     }
     int size = NAMES.length;
-    int offset = indexOf(index + n, size);
-    int t = index + n;
+    int t = this.index + n;
+    int offset = indexOf(t, size);
     if (t < 0) {
       t -= size;
     }

@@ -204,7 +204,7 @@ public class SolarTime extends AbstractTyme {
   /**
    * 时辰
    *
-   * @return 农历日
+   * @return 农历时辰
    */
   public LunarHour getLunarHour() {
     LunarDay d = day.getLunarDay();

@@ -56,7 +56,7 @@ public class LegalHoliday extends AbstractTyme {
     if (n == 0) {
       return fromYmd(year, month, day.getDay());
     }
-    List<String> data = new ArrayList<String>();
+    List<String> data = new ArrayList<>();
     String reg = "%04d\\d{4}[0-1][0-8][\\+|-]\\d{2}";
     String today = String.format("%04d%02d%02d", year, month, day.getDay());
     Matcher matcher = Pattern.compile(String.format(reg, year)).matcher(DATA);

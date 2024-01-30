@@ -3,6 +3,7 @@ package com.tyme.eightchar;
 import com.tyme.AbstractCulture;
 import com.tyme.culture.Duty;
 import com.tyme.sixtycycle.EarthBranch;
+import com.tyme.sixtycycle.HeavenStem;
 import com.tyme.sixtycycle.SixtyCycle;
 
 /**
@@ -107,8 +108,10 @@ public class EightChar extends AbstractCulture {
    * @return 命宫
    */
   public SixtyCycle getOwnSign() {
-    int monthEarthBranchIndex = month.getEarthBranch().next(-1).getIndex();
-    return SixtyCycle.fromIndex(month.getIndex() + (26 - monthEarthBranchIndex - hour.getEarthBranch().next(-1).getIndex()) % 12 - monthEarthBranchIndex);
+    int offset = month.getEarthBranch().next(-1).getIndex() + hour.getEarthBranch().next(-1).getIndex();
+    offset = (offset >= 14 ? 26 : 14) - offset;
+    offset -= 1;
+    return SixtyCycle.fromName(HeavenStem.fromIndex((year.getHeavenStem().getIndex() + 1) * 2 + offset).getName() + EarthBranch.fromIndex(2 + offset).getName());
   }
 
   /**
@@ -117,12 +120,10 @@ public class EightChar extends AbstractCulture {
    * @return 身宫
    */
   public SixtyCycle getBodySign() {
-    int monthEarthBranchIndex = month.getEarthBranch().next(-1).getIndex();
-    int index = 2 + monthEarthBranchIndex + hour.getEarthBranch().next(-1).getIndex();
-    if (index > 12) {
-      index -= 12;
-    }
-    return SixtyCycle.fromIndex(month.getIndex() + index - monthEarthBranchIndex);
+    int offset = month.getEarthBranch().getIndex() + hour.getEarthBranch().getIndex();
+    offset %= 12;
+    offset -= 1;
+    return SixtyCycle.fromName(HeavenStem.fromIndex((year.getHeavenStem().getIndex() + 1) * 2 + offset).getName() + EarthBranch.fromIndex(2 + offset).getName());
   }
 
   /**

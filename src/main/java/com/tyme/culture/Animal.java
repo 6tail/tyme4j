@@ -6,7 +6,7 @@ import com.tyme.culture.star.twentyeight.TwentyEightStar;
 /**
  * 动物
  *
- * @author liuweij
+ * @author 6tail
  */
 public class Animal extends LoopTyme {
 
