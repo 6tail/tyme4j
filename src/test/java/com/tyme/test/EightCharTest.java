@@ -4,6 +4,8 @@ import com.tyme.eightchar.ChildLimit;
 import com.tyme.eightchar.DecadeFortune;
 import com.tyme.eightchar.EightChar;
 import com.tyme.eightchar.Fortune;
+import com.tyme.eightchar.provider.impl.China95ChildLimitProvider;
+import com.tyme.eightchar.provider.impl.DefaultChildLimitProvider;
 import com.tyme.enums.Gender;
 import com.tyme.lunar.LunarHour;
 import com.tyme.sixtycycle.HeavenStem;
@@ -12,7 +14,9 @@ import com.tyme.solar.SolarTime;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * 八字测试
@@ -27,12 +31,7 @@ public class EightCharTest {
   @Test
   public void test1() {
     // 八字
-    EightChar eightChar = new EightChar(
-        SixtyCycle.fromName("丙寅"),
-        SixtyCycle.fromName("癸巳"),
-        SixtyCycle.fromName("癸酉"),
-        SixtyCycle.fromName("己未")
-    );
+    EightChar eightChar = new EightChar("丙寅", "癸巳", "癸酉", "己未");
 
     // 年柱
     SixtyCycle year = eightChar.getYear();
@@ -77,12 +76,7 @@ public class EightCharTest {
   @Test
   public void test2() {
     // 八字
-    EightChar eightChar = new EightChar(
-        SixtyCycle.fromName("丙寅"),
-        SixtyCycle.fromName("癸巳"),
-        SixtyCycle.fromName("癸酉"),
-        SixtyCycle.fromName("己未")
-    );
+    EightChar eightChar = new EightChar("丙寅", "癸巳", "癸酉", "己未");
 
     // 年柱
     SixtyCycle year = eightChar.getYear();
@@ -112,12 +106,7 @@ public class EightCharTest {
   @Test
   public void test3() {
     // 八字
-    EightChar eightChar = new EightChar(
-        SixtyCycle.fromName("癸卯"),
-        SixtyCycle.fromName("辛酉"),
-        SixtyCycle.fromName("己亥"),
-        SixtyCycle.fromName("癸酉")
-    );
+    EightChar eightChar = new EightChar("癸卯", "辛酉", "己亥", "癸酉");
 
     // 胎元
     SixtyCycle taiYuan = eightChar.getFetalOrigin();
@@ -132,12 +121,7 @@ public class EightCharTest {
   @Test
   public void test4() {
     // 八字
-    EightChar eightChar = new EightChar(
-        SixtyCycle.fromName("癸卯"),
-        SixtyCycle.fromName("辛酉"),
-        SixtyCycle.fromName("己亥"),
-        SixtyCycle.fromName("癸酉")
-    );
+    EightChar eightChar = new EightChar("癸卯", "辛酉", "己亥", "癸酉");
 
     // 胎息
     SixtyCycle taiXi = eightChar.getFetalBreath();
@@ -152,12 +136,7 @@ public class EightCharTest {
   @Test
   public void test5() {
     // 八字
-    EightChar eightChar = new EightChar(
-        SixtyCycle.fromName("癸卯"),
-        SixtyCycle.fromName("辛酉"),
-        SixtyCycle.fromName("己亥"),
-        SixtyCycle.fromName("癸酉")
-    );
+    EightChar eightChar = new EightChar("癸卯", "辛酉", "己亥", "癸酉");
 
     // 命宫
     SixtyCycle mingGong = eightChar.getOwnSign();
@@ -172,12 +151,7 @@ public class EightCharTest {
   @Test
   public void test6() {
     // 八字
-    EightChar eightChar = new EightChar(
-        SixtyCycle.fromName("癸卯"),
-        SixtyCycle.fromName("辛酉"),
-        SixtyCycle.fromName("己亥"),
-        SixtyCycle.fromName("癸酉")
-    );
+    EightChar eightChar = new EightChar("癸卯", "辛酉", "己亥", "癸酉");
 
     // 身宫
     SixtyCycle shenGong = eightChar.getBodySign();
@@ -192,12 +166,7 @@ public class EightCharTest {
   @Test
   public void test7() {
     // 八字
-    EightChar eightChar = new EightChar(
-        SixtyCycle.fromName("乙酉"),
-        SixtyCycle.fromName("戊子"),
-        SixtyCycle.fromName("辛巳"),
-        SixtyCycle.fromName("壬辰")
-    );
+    EightChar eightChar = new EightChar("乙酉", "戊子", "辛巳", "壬辰");
 
     // 日干
     HeavenStem me = eightChar.getDay().getHeavenStem();
@@ -369,12 +338,7 @@ public class EightCharTest {
    */
   @Test
   public void test15() {
-    EightChar eightChar = new EightChar(
-        SixtyCycle.fromName("丙寅"),
-        SixtyCycle.fromName("癸巳"),
-        SixtyCycle.fromName("癸酉"),
-        SixtyCycle.fromName("己未")
-    );
+    EightChar eightChar = new EightChar("丙寅", "癸巳", "癸酉", "己未");
     SixtyCycle year = eightChar.getYear();
     SixtyCycle month = eightChar.getMonth();
     SixtyCycle day = eightChar.getDay();
@@ -487,34 +451,17 @@ public class EightCharTest {
 
   @Test
   public void test17() {
-    EightChar eightChar = new EightChar(
-            SixtyCycle.fromName("己丑"),
-            SixtyCycle.fromName("戊辰"),
-            SixtyCycle.fromName("戊辰"),
-            SixtyCycle.fromName("甲子")
-    );
-    Assert.assertEquals("丁丑", eightChar.getOwnSign().getName());  }
+    Assert.assertEquals("丁丑", new EightChar("己丑", "戊辰", "戊辰", "甲子").getOwnSign().getName());
+  }
 
   @Test
   public void test18() {
-    EightChar eightChar = new EightChar(
-            SixtyCycle.fromName("戊戌"),
-            SixtyCycle.fromName("庚申"),
-            SixtyCycle.fromName("丁亥"),
-            SixtyCycle.fromName("丙午")
-    );
-    Assert.assertEquals("乙卯", eightChar.getOwnSign().getName());
+    Assert.assertEquals("乙卯", new EightChar("戊戌", "庚申", "丁亥", "丙午").getOwnSign().getName());
   }
 
   @Test
   public void test19() {
-    EightChar eightChar = new EightChar(
-            SixtyCycle.fromName("甲子"),
-            SixtyCycle.fromName("壬申"),
-            null,
-            SixtyCycle.fromName("乙亥")
-    );
-    Assert.assertEquals("甲戌", eightChar.getOwnSign().getName());
+    Assert.assertEquals("甲戌", new EightChar(SixtyCycle.fromName("甲子"), SixtyCycle.fromName("壬申"), null, SixtyCycle.fromName("乙亥")).getOwnSign().getName());
   }
 
   @Test
@@ -526,13 +473,7 @@ public class EightCharTest {
 
   @Test
   public void test21() {
-    EightChar eightChar = new EightChar(
-            SixtyCycle.fromName("辛亥"),
-            SixtyCycle.fromName("乙未"),
-            null,
-            SixtyCycle.fromName("甲辰")
-    );
-    Assert.assertEquals("庚子", eightChar.getBodySign().getName());
+    Assert.assertEquals("庚子", new EightChar(SixtyCycle.fromName("辛亥"), SixtyCycle.fromName("乙未"), null, SixtyCycle.fromName("甲辰")).getBodySign().getName());
   }
 
   @Test
@@ -552,7 +493,7 @@ public class EightCharTest {
 
   @Test
   public void test25() {
-    Assert.assertEquals("丙寅", LunarHour.fromYmdHms(1994, 5, 20, 18, 0 ,0).getEightChar().getOwnSign().getName());
+    Assert.assertEquals("丙寅", LunarHour.fromYmdHms(1994, 5, 20, 18, 0, 0).getEightChar().getOwnSign().getName());
   }
 
   @Test
@@ -562,41 +503,202 @@ public class EightCharTest {
 
   @Test
   public void test27() {
-    Assert.assertEquals("乙丑", SolarTime.fromYmdHms(1994, 12, 6, 2, 0 ,0).getLunarHour().getEightChar().getBodySign().getName());
+    Assert.assertEquals("乙丑", SolarTime.fromYmdHms(1994, 12, 6, 2, 0, 0).getLunarHour().getEightChar().getBodySign().getName());
   }
 
   @Test
   public void test28() {
-    EightChar eightChar = new EightChar(
-            SixtyCycle.fromName("辛亥"),
-            SixtyCycle.fromName("丁酉"),
-            SixtyCycle.fromName("丙午"),
-            SixtyCycle.fromName("癸巳")
-    );
-    Assert.assertEquals("辛卯", eightChar.getOwnSign().getName());
+    Assert.assertEquals("辛卯", new EightChar("辛亥", "丁酉", "丙午", "癸巳").getOwnSign().getName());
   }
 
   @Test
   public void test29() {
-    EightChar eightChar = new EightChar(
-            SixtyCycle.fromName("丙寅"),
-            SixtyCycle.fromName("庚寅"),
-            SixtyCycle.fromName("辛卯"),
-            SixtyCycle.fromName("壬辰")
-    );
+    EightChar eightChar = new EightChar("丙寅", "庚寅", "辛卯", "壬辰");
     Assert.assertEquals("己亥", eightChar.getOwnSign().getName());
     Assert.assertEquals("乙未", eightChar.getBodySign().getName());
   }
 
   @Test
   public void test30() {
-    EightChar eightChar = new EightChar(
-            SixtyCycle.fromName("壬子"),
-            SixtyCycle.fromName("辛亥"),
-            SixtyCycle.fromName("壬戌"),
-            SixtyCycle.fromName("乙巳")
-    );
-    Assert.assertEquals("乙巳", eightChar.getBodySign().getName());
+    Assert.assertEquals("乙巳", new EightChar("壬子", "辛亥", "壬戌", "乙巳").getBodySign().getName());
   }
 
+  @Test
+  public void test31() {
+    List<SolarTime> solarTimes = new EightChar("丙辰", "丁酉", "丙子", "甲午").getSolarTimes(1900, 2024);
+    List<String> actual = new ArrayList<>();
+    for (SolarTime solarTime : solarTimes) {
+      actual.add(solarTime.toString());
+    }
+
+    List<String> expected = new ArrayList<>();
+    expected.add("1916年10月6日 12:00:00");
+    expected.add("1976年9月21日 12:00:00");
+    Assert.assertEquals(expected, actual);
+  }
+
+  @Test
+  public void test32() {
+    List<SolarTime> solarTimes = new EightChar("壬寅", "庚戌", "己未", "乙亥").getSolarTimes(1900, 2024);
+    List<String> actual = new ArrayList<>();
+    for (SolarTime solarTime : solarTimes) {
+      actual.add(solarTime.toString());
+    }
+
+    List<String> expected = new ArrayList<>();
+    expected.add("2022年11月2日 22:00:00");
+    Assert.assertEquals(expected, actual);
+  }
+
+  @Test
+  public void test33() {
+    List<SolarTime> solarTimes = new EightChar("己卯", "辛未", "甲戌", "壬申").getSolarTimes(1900, 2024);
+    List<String> actual = new ArrayList<>();
+    for (SolarTime solarTime : solarTimes) {
+      actual.add(solarTime.toString());
+    }
+
+    List<String> expected = new ArrayList<>();
+    expected.add("1939年8月5日 16:00:00");
+    expected.add("1999年7月21日 16:00:00");
+    Assert.assertEquals(expected, actual);
+  }
+
+  @Test
+  public void test34() {
+    List<SolarTime> solarTimes = new EightChar("庚子", "戊子", "己卯", "庚午").getSolarTimes(1900, 2024);
+    List<String> actual = new ArrayList<>();
+    for (SolarTime solarTime : solarTimes) {
+      actual.add(solarTime.toString());
+    }
+
+    List<String> expected = new ArrayList<>();
+    expected.add("1901年1月1日 12:00:00");
+    expected.add("1960年12月17日 12:00:00");
+    Assert.assertEquals(expected, actual);
+  }
+
+  @Test
+  public void test35() {
+    List<SolarTime> solarTimes = new EightChar("庚子", "癸未", "乙丑", "丁亥").getSolarTimes(1900, 2024);
+    List<String> actual = new ArrayList<>();
+    for (SolarTime solarTime : solarTimes) {
+      actual.add(solarTime.toString());
+    }
+
+    List<String> expected = new ArrayList<>();
+    expected.add("1960年8月5日 22:00:00");
+    expected.add("2020年7月21日 22:00:00");
+    Assert.assertEquals(expected, actual);
+  }
+
+  @Test
+  public void test36() {
+    List<SolarTime> solarTimes = new EightChar("癸卯", "甲寅", "甲寅", "甲子").getSolarTimes(1800, 2024);
+    List<String> actual = new ArrayList<>();
+    for (SolarTime solarTime : solarTimes) {
+      actual.add(solarTime.toString());
+    }
+
+    List<String> expected = new ArrayList<>();
+    expected.add("1843年2月9日 00:00:00");
+    expected.add("2023年2月25日 00:00:00");
+    Assert.assertEquals(expected, actual);
+  }
+
+  @Test
+  public void test37() {
+    List<SolarTime> solarTimes = new EightChar("甲辰", "丙寅", "己亥", "戊辰").getSolarTimes(1800, 2024);
+    List<String> actual = new ArrayList<>();
+    for (SolarTime solarTime : solarTimes) {
+      actual.add(solarTime.toString());
+    }
+
+    List<String> expected = new ArrayList<>();
+    expected.add("1964年2月20日 08:00:00");
+    expected.add("2024年2月5日 08:00:00");
+    Assert.assertEquals(expected, actual);
+  }
+
+  @Test
+  public void test38() {
+    List<SolarTime> solarTimes = new EightChar("己亥", "丁丑", "壬寅", "戊申").getSolarTimes(1900, 2024);
+    List<String> actual = new ArrayList<>();
+    for (SolarTime solarTime : solarTimes) {
+      actual.add(solarTime.toString());
+    }
+
+    List<String> expected = new ArrayList<>();
+    expected.add("1900年1月29日 16:00:00");
+    expected.add("1960年1月15日 16:00:00");
+    Assert.assertEquals(expected, actual);
+  }
+
+  @Test
+  public void test39() {
+    List<SolarTime> solarTimes = new EightChar("己亥", "丙子", "癸酉", "庚申").getSolarTimes(1900, 2024);
+    List<String> actual = new ArrayList<>();
+    for (SolarTime solarTime : solarTimes) {
+      actual.add(solarTime.toString());
+    }
+
+    List<String> expected = new ArrayList<>();
+    expected.add("1959年12月17日 16:00:00");
+    Assert.assertEquals(expected, actual);
+  }
+
+  @Test
+  public void test40() {
+    List<SolarTime> solarTimes = new EightChar("丁丑", "癸卯", "癸丑", "辛酉").getSolarTimes(1900, 2024);
+    List<String> actual = new ArrayList<>();
+    for (SolarTime solarTime : solarTimes) {
+      actual.add(solarTime.toString());
+    }
+
+    List<String> expected = new ArrayList<>();
+    expected.add("1937年3月27日 18:00:00");
+    expected.add("1997年3月12日 18:00:00");
+    Assert.assertEquals(expected, actual);
+  }
+
+  @Test
+  public void test41() {
+    List<SolarTime> solarTimes = new EightChar("乙未", "己卯", "丁丑", "甲辰").getSolarTimes(1900, 2024);
+    List<String> actual = new ArrayList<>();
+    for (SolarTime solarTime : solarTimes) {
+      actual.add(solarTime.toString());
+    }
+
+    List<String> expected = new ArrayList<>();
+    expected.add("1955年3月17日 08:00:00");
+    Assert.assertEquals(expected, actual);
+  }
+
+  @Test
+  public void test42() {
+    Assert.assertEquals("壬申", new EightChar("甲辰", "丙寅", "己亥", "辛未").getOwnSign().getName());
+  }
+
+  @Test
+  public void test43() {
+    // 采用元亨利贞的起运算法
+    ChildLimit.provider = new China95ChildLimitProvider();
+    // 童限
+    ChildLimit childLimit = ChildLimit.fromSolarTime(SolarTime.fromYmdHms(1986, 5, 29, 13, 37, 0), Gender.MAN);
+    // 童限年数
+    Assert.assertEquals(2, childLimit.getYearCount());
+    // 童限月数
+    Assert.assertEquals(7, childLimit.getMonthCount());
+    // 童限日数
+    Assert.assertEquals(0, childLimit.getDayCount());
+    // 童限时数
+    Assert.assertEquals(0, childLimit.getHourCount());
+    // 童限分数
+    Assert.assertEquals(0, childLimit.getMinuteCount());
+    // 童限结束(即开始起运)的公历时刻
+    Assert.assertEquals("1988年12月29日 13:37:00", childLimit.getEndTime().toString());
+
+    // 为了不影响其他测试用例，恢复默认起运算法
+    ChildLimit.provider = new DefaultChildLimitProvider();
+  }
 }
