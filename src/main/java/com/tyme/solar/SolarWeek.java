@@ -77,6 +77,22 @@ public class SolarWeek extends AbstractTyme {
   }
 
   /**
+   * 位于当年的索引
+   *
+   * @return 索引
+   */
+  public int getIndexInYear() {
+    int i = 0;
+    // 今年第1周
+    SolarWeek w = SolarWeek.fromYm(month.getYear().getYear(), 1, 0, start.getIndex());
+    while (!w.equals(this)) {
+      w = w.next(1);
+      i++;
+    }
+    return i;
+  }
+
+  /**
    * 起始星期
    *
    * @return 星期

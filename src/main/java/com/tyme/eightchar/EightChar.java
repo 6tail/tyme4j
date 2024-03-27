@@ -155,11 +155,11 @@ public class EightChar extends AbstractCulture {
   }
 
   /**
-   * 阳历时刻列表
+   * 公历时刻列表
    *
    * @param startYear 开始年(含)，支持1-9999年
    * @param endYear   结束年(含)，支持1-9999年
-   * @return 阳历时刻列表
+   * @return 公历时刻列表
    */
   public List<SolarTime> getSolarTimes(int startYear, int endYear) {
     List<SolarTime> l = new ArrayList<>();

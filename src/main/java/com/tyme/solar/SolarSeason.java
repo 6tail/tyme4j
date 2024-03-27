@@ -70,8 +70,17 @@ public class SolarSeason extends AbstractTyme {
   }
 
   public SolarSeason next(int n) {
-    int m = index + n;
-    return fromIndex(year.getYear() + m / 4, Math.abs(m % 4));
+    if (n == 0) {
+      return fromIndex(year.getYear(), index);
+    }
+    int i = index + n;
+    int y = year.getYear() + i / 4;
+    i %= 4;
+    if (i < 0) {
+      i += 4;
+      y -= 1;
+    }
+    return fromIndex(y, i);
   }
 
   /**

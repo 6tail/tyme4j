@@ -40,4 +40,10 @@ public class SolarHalfYearTest {
     Assert.assertEquals("上半年", SolarHalfYear.fromIndex(2023, 0).next(-2).getName());
     Assert.assertEquals("2022年上半年", SolarHalfYear.fromIndex(2023, 0).next(-2).toString());
   }
+
+  @Test
+  public void test5() {
+    Assert.assertEquals("2021年上半年", SolarHalfYear.fromIndex(2023, 0).next(-4).toString());
+    Assert.assertEquals("2021年下半年", SolarHalfYear.fromIndex(2023, 0).next(-3).toString());
+  }
 }

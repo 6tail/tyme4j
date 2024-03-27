@@ -152,4 +152,24 @@ public class WeekTest {
     Assert.assertEquals("2022年12月27日", week.getFirstDay().toString());
   }
 
+  @Test
+  public void test24(){
+    int start = 0;
+    SolarWeek week = SolarWeek.fromYm(2024, 2, 2, start);
+    Assert.assertEquals("2024年2月第三周", week.toString());
+    Assert.assertEquals(6, week.getIndexInYear());
+
+    week = SolarDay.fromYmd(2024, 2, 11).getSolarWeek(start);
+    Assert.assertEquals("2024年2月第三周", week.toString());
+
+    week = SolarDay.fromYmd(2024, 2, 17).getSolarWeek(start);
+    Assert.assertEquals("2024年2月第三周", week.toString());
+
+    week = SolarDay.fromYmd(2024, 2, 10).getSolarWeek(start);
+    Assert.assertEquals("2024年2月第二周", week.toString());
+
+    week = SolarDay.fromYmd(2024, 2, 18).getSolarWeek(start);
+    Assert.assertEquals("2024年2月第四周", week.toString());
+  }
+
 }

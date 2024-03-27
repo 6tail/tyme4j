@@ -12,7 +12,7 @@ import com.tyme.solar.SolarTime;
 public interface ChildLimitProvider {
 
   /**
-   * 童限结束（即起运）公历时刻
+   * 童限信息
    *
    * @param birthTime 出生公历时刻
    * @param term      节令

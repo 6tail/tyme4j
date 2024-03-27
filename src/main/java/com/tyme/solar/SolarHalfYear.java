@@ -70,8 +70,17 @@ public class SolarHalfYear extends AbstractTyme {
   }
 
   public SolarHalfYear next(int n) {
-    int m = index + n;
-    return fromIndex(year.getYear() + m / 2, Math.abs(m % 2));
+    if (n == 0) {
+      return fromIndex(year.getYear(), index);
+    }
+    int i = index + n;
+    int y = year.getYear() + i / 2;
+    i %= 2;
+    if (i < 0) {
+      i += 2;
+      y -= 1;
+    }
+    return fromIndex(y, i);
   }
 
   /**

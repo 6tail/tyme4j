@@ -47,12 +47,10 @@ public class SolarDay extends AbstractTyme {
       throw new IllegalArgumentException(String.format("illegal solar day: %d-%d-%d", year, month, day));
     }
     if (1582 == year && 10 == month) {
-      if (day > 4 && day < 15) {
-        throw new IllegalArgumentException(String.format("illegal solar day: %d-%d-%d", year, month, day));
-      } else if (day > 31) {
+      if ((day > 4 && day < 15) || day > 31) {
         throw new IllegalArgumentException(String.format("illegal solar day: %d-%d-%d", year, month, day));
       }
-    } else if (day > SolarMonth.fromYm(year, month).getDayCount()) {
+    } else if (day > this.month.getDayCount()) {
       throw new IllegalArgumentException(String.format("illegal solar day: %d-%d-%d", year, month, day));
     }
     this.day = day;
@@ -183,6 +181,18 @@ public class SolarDay extends AbstractTyme {
       term = term.next(-1);
     }
     return term;
+  }
+
+  /**
+   * 公历周
+   *
+   * @param start 起始星期，1234560分别代表星期一至星期天
+   * @return 公历周
+   */
+  public SolarWeek getSolarWeek(int start) {
+    int y = month.getYear().getYear();
+    int m = month.getMonth();
+    return SolarWeek.fromYm(y, m, (int) Math.ceil((day + SolarDay.fromYmd(y, m, 1).getWeek().next(-start).getIndex()) / 7D) - 1, start);
   }
 
   /**

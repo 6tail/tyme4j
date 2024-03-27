@@ -70,10 +70,9 @@ public class JulianDay extends AbstractTyme {
   public SolarDay getSolarDay() {
     int d = (int) (this.day + 0.5);
     double f = this.day + 0.5 - d;
-    int c;
 
     if (d >= 2299161) {
-      c = (int) ((d - 1867216.25) / 36524.25);
+      int c = (int) ((d - 1867216.25) / 36524.25);
       d += 1 + c - (int) (c * 1D / 4);
     }
     d += 1524;
@@ -119,10 +118,9 @@ public class JulianDay extends AbstractTyme {
   public SolarTime getSolarTime() {
     int d = (int) (this.day + 0.5);
     double f = this.day + 0.5 - d;
-    int c;
 
     if (d >= 2299161) {
-      c = (int) ((d - 1867216.25) / 36524.25);
+      int c = (int) ((d - 1867216.25) / 36524.25);
       d += 1 + c - (int) (c * 1D / 4);
     }
     d += 1524;

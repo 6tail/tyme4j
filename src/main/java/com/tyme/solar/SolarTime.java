@@ -193,12 +193,33 @@ public class SolarTime extends AbstractTyme {
    * @return 公历时刻
    */
   public SolarTime next(int n) {
+    if (n == 0) {
+      SolarMonth month = day.getMonth();
+      return SolarTime.fromYmdHms(month.getYear().getYear(), month.getMonth(), day.getDay(), hour, minute, second);
+    }
     int ts = second + n;
     int tm = minute + ts / 60;
+    ts %= 60;
+    if (ts < 0) {
+      ts += 60;
+      tm -= 1;
+    }
     int th = hour + tm / 60;
-    SolarDay d = day.next(th / 24);
-    SolarMonth month = d.getMonth();
-    return SolarTime.fromYmdHms(month.getYear().getYear(), month.getMonth(), d.getDay(), th % 24, tm % 60, ts % 60);
+    tm %= 60;
+    if (tm < 0) {
+      tm += 60;
+      th -= 1;
+    }
+    int td = th / 24;
+    th %= 24;
+    if (th < 0) {
+      th += 24;
+      td -= 1;
+    }
+
+    SolarDay d = day.next(td);
+    SolarMonth m = d.getMonth();
+    return SolarTime.fromYmdHms(m.getYear().getYear(), m.getMonth(), d.getDay(), th, tm, ts);
   }
 
   /**
