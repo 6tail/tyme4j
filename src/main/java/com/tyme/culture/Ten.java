@@ -11,11 +11,11 @@ public class Ten extends LoopTyme {
 
   public static final String[] NAMES = {"甲子", "甲戌", "甲申", "甲午", "甲辰", "甲寅"};
 
-  protected Ten(int index) {
+  public Ten(int index) {
     super(NAMES, index);
   }
 
-  protected Ten(String name) {
+  public Ten(String name) {
     super(NAMES, name);
   }
 

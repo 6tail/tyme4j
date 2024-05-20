@@ -12,7 +12,7 @@ public class FetusMonth extends LoopTyme {
 
   public static final String[] NAMES = {"占房床", "占户窗", "占门堂", "占厨灶", "占房床", "占床仓", "占碓磨", "占厕户", "占门房", "占房床", "占灶炉", "占房床"};
 
-  protected FetusMonth(int index) {
+  public FetusMonth(int index) {
     super(NAMES, index);
   }
 

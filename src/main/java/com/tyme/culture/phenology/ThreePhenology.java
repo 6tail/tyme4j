@@ -11,11 +11,11 @@ public class ThreePhenology extends LoopTyme {
 
   public static final String[] NAMES = {"初候", "二候", "三候"};
 
-  protected ThreePhenology(String name) {
+  public ThreePhenology(String name) {
     super(NAMES, name);
   }
 
-  protected ThreePhenology(int index) {
+  public ThreePhenology(int index) {
     super(NAMES, index);
   }
 

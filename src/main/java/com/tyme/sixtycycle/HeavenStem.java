@@ -15,11 +15,11 @@ public class HeavenStem extends LoopTyme {
 
   public static final String[] NAMES = {"甲", "乙", "丙", "丁", "戊", "己", "庚", "辛", "壬", "癸"};
 
-  protected HeavenStem(int index) {
+  public HeavenStem(int index) {
     super(NAMES, index);
   }
 
-  protected HeavenStem(String name) {
+  public HeavenStem(String name) {
     super(NAMES, name);
   }
 

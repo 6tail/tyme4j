@@ -20,7 +20,7 @@ public class PengZu extends AbstractCulture {
    */
   protected PengZuEarthBranch pengZuEarthBranch;
 
-  protected PengZu(SixtyCycle sixtyCycle) {
+  public PengZu(SixtyCycle sixtyCycle) {
     pengZuHeavenStem = PengZuHeavenStem.fromIndex(sixtyCycle.getHeavenStem().getIndex());
     pengZuEarthBranch = PengZuEarthBranch.fromIndex(sixtyCycle.getEarthBranch().getIndex());
   }

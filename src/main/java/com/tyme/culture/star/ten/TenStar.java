@@ -11,11 +11,11 @@ public class TenStar extends LoopTyme {
 
   public static final String[] NAMES = {"比肩", "劫财", "食神", "伤官", "偏财", "正财", "七杀", "正官", "偏印", "正印"};
 
-  protected TenStar(int index) {
+  public TenStar(int index) {
     super(NAMES, index);
   }
 
-  protected TenStar(String name) {
+  public TenStar(String name) {
     super(NAMES, name);
   }
 

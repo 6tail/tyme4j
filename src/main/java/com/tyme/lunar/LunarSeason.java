@@ -11,11 +11,11 @@ public class LunarSeason extends LoopTyme {
 
   public static final String[] NAMES = {"孟春", "仲春", "季春", "孟夏", "仲夏", "季夏", "孟秋", "仲秋", "季秋", "孟冬", "仲冬", "季冬"};
 
-  protected LunarSeason(int index) {
+  public LunarSeason(int index) {
     super(NAMES, index);
   }
 
-  protected LunarSeason(String name) {
+  public LunarSeason(String name) {
     super(NAMES, name);
   }
 

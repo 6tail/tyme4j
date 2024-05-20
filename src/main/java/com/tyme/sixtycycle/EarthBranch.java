@@ -16,11 +16,11 @@ public class EarthBranch extends LoopTyme {
 
   public static final String[] NAMES = {"子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥"};
 
-  protected EarthBranch(int index) {
+  public EarthBranch(int index) {
     super(NAMES, index);
   }
 
-  protected EarthBranch(String name) {
+  public EarthBranch(String name) {
     super(NAMES, name);
   }
 

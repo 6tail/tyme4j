@@ -30,7 +30,7 @@ public class SolarHalfYear extends AbstractTyme {
    * @param year  年
    * @param index 索引，0-1
    */
-  protected SolarHalfYear(int year, int index) {
+  public SolarHalfYear(int year, int index) {
     this.year = SolarYear.fromYear(year);
     if (index < 0 || index > 1) {
       throw new IllegalArgumentException(String.format("illegal solar half year index: %d", index));

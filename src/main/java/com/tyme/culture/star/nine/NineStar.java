@@ -13,11 +13,11 @@ public class NineStar extends LoopTyme {
 
   public static final String[] NAMES = {"一", "二", "三", "四", "五", "六", "七", "八", "九"};
 
-  protected NineStar(int index) {
+  public NineStar(int index) {
     super(NAMES, index);
   }
 
-  protected NineStar(String name) {
+  public NineStar(String name) {
     super(NAMES, name);
   }
 

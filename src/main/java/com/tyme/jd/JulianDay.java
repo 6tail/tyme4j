@@ -22,7 +22,7 @@ public class JulianDay extends AbstractTyme {
    */
   protected double day;
 
-  protected JulianDay(double day) {
+  public JulianDay(double day) {
     this.day = day;
   }
 

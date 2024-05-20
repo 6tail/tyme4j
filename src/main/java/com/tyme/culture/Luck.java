@@ -11,11 +11,11 @@ public class Luck extends LoopTyme {
 
   public static final String[] NAMES = {"吉", "凶"};
 
-  protected Luck(int index) {
+  public Luck(int index) {
     super(NAMES, index);
   }
 
-  protected Luck(String name) {
+  public Luck(String name) {
     super(NAMES, name);
   }
 

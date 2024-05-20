@@ -11,11 +11,11 @@ public class Duty extends LoopTyme {
 
   public static final String[] NAMES = {"建", "除", "满", "平", "定", "执", "破", "危", "成", "收", "开", "闭"};
 
-  protected Duty(int index) {
+  public Duty(int index) {
     super(NAMES, index);
   }
 
-  protected Duty(String name) {
+  public Duty(String name) {
     super(NAMES, name);
   }
 

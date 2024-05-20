@@ -11,11 +11,11 @@ public class Dog extends LoopTyme {
 
   public static final String[] NAMES = {"初伏", "中伏", "末伏"};
 
-  protected Dog(String name) {
+  public Dog(String name) {
     super(NAMES, name);
   }
 
-  protected Dog(int index) {
+  public Dog(int index) {
     super(NAMES, index);
   }
 

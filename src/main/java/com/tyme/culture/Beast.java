@@ -11,11 +11,11 @@ public class Beast extends LoopTyme {
 
   public static final String[] NAMES = {"青龙", "玄武", "白虎", "朱雀"};
 
-  protected Beast(int index) {
+  public Beast(int index) {
     super(NAMES, index);
   }
 
-  protected Beast(String name) {
+  public Beast(String name) {
     super(NAMES, name);
   }
 

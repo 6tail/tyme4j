@@ -11,11 +11,11 @@ public class Dipper extends LoopTyme {
 
   public static final String[] NAMES = {"天枢", "天璇", "天玑", "天权", "玉衡", "开阳", "摇光", "洞明", "隐元"};
 
-  protected Dipper(int index) {
+  public Dipper(int index) {
     super(NAMES, index);
   }
 
-  protected Dipper(String name) {
+  public Dipper(String name) {
     super(NAMES, name);
   }
 

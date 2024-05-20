@@ -42,7 +42,7 @@ public class LunarDay extends AbstractTyme {
    * @param month 农历月，闰月为负
    * @param day   农历日
    */
-  protected LunarDay(int year, int month, int day) {
+  public LunarDay(int year, int month, int day) {
     LunarMonth m = LunarMonth.fromYm(year, month);
     if (day < 1 || day > m.getDayCount()) {
       throw new IllegalArgumentException(String.format("illegal day %d in %s", day, m));

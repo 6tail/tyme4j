@@ -11,7 +11,7 @@ public class FetusHeavenStem extends LoopTyme {
 
   public static final String[] NAMES = {"门", "碓磨", "厨灶", "仓库", "房床"};
 
-  protected FetusHeavenStem(int index) {
+  public FetusHeavenStem(int index) {
     super(NAMES, index);
   }
 

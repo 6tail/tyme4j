@@ -11,11 +11,11 @@ public class Zone extends LoopTyme {
 
   public static final String[] NAMES = {"东", "北", "西", "南"};
 
-  protected Zone(int index) {
+  public Zone(int index) {
     super(NAMES, index);
   }
 
-  protected Zone(String name) {
+  public Zone(String name) {
     super(NAMES, name);
   }
 

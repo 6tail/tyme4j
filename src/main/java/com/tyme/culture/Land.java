@@ -11,11 +11,11 @@ public class Land extends LoopTyme {
 
   public static final String[] NAMES = {"玄天", "朱天", "苍天", "阳天", "钧天", "幽天", "颢天", "变天", "炎天"};
 
-  protected Land(int index) {
+  public Land(int index) {
     super(NAMES, index);
   }
 
-  protected Land(String name) {
+  public Land(String name) {
     super(NAMES, name);
   }
 

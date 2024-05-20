@@ -35,7 +35,7 @@ public class SolarMonth extends AbstractTyme {
    * @param year  年
    * @param month 月
    */
-  protected SolarMonth(int year, int month) {
+  public SolarMonth(int year, int month) {
     this.year = SolarYear.fromYear(year);
     if (month < 1 || month > 12) {
       throw new IllegalArgumentException(String.format("illegal solar month: %d", month));

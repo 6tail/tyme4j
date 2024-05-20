@@ -16,11 +16,11 @@ public class TwentyEightStar extends LoopTyme {
 
   public static final String[] NAMES = {"角", "亢", "氐", "房", "心", "尾", "箕", "斗", "牛", "女", "虚", "危", "室", "壁", "奎", "娄", "胃", "昴", "毕", "觜", "参", "井", "鬼", "柳", "星", "张", "翼", "轸"};
 
-  protected TwentyEightStar(int index) {
+  public TwentyEightStar(int index) {
     super(NAMES, index);
   }
 
-  protected TwentyEightStar(String name) {
+  public TwentyEightStar(String name) {
     super(NAMES, name);
   }
 

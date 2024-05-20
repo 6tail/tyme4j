@@ -11,11 +11,11 @@ public class Nine extends LoopTyme {
 
   public static final String[] NAMES = {"一九", "二九", "三九", "四九", "五九", "六九", "七九", "八九", "九九"};
 
-  protected Nine(String name) {
+  public Nine(String name) {
     super(NAMES, name);
   }
 
-  protected Nine(int index) {
+  public Nine(int index) {
     super(NAMES, index);
   }
 

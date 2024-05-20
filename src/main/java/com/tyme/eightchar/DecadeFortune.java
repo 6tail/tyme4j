@@ -21,7 +21,7 @@ public class DecadeFortune extends AbstractTyme {
    */
   protected int index;
 
-  protected DecadeFortune(ChildLimit childLimit, int index) {
+  public DecadeFortune(ChildLimit childLimit, int index) {
     this.childLimit = childLimit;
     this.index = index;
   }

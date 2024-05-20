@@ -53,7 +53,7 @@ public class LunarMonth extends AbstractTyme {
    */
   protected JulianDay firstJulianDay;
 
-  protected LunarMonth(int year, int month) {
+  public LunarMonth(int year, int month) {
     LunarYear currentYear = LunarYear.fromYear(year);
     int currentLeapMonth = currentYear.getLeapMonth();
     if (month == 0 || month > 12 || month < -12) {

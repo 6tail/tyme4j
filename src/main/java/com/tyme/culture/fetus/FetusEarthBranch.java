@@ -11,7 +11,7 @@ public class FetusEarthBranch extends LoopTyme {
 
   public static final String[] NAMES = {"碓", "厕", "炉", "门", "栖", "床"};
 
-  protected FetusEarthBranch(int index) {
+  public FetusEarthBranch(int index) {
     super(NAMES, index);
   }
 

@@ -12,11 +12,11 @@ public class Zodiac extends LoopTyme {
 
   public static final String[] NAMES = {"鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪"};
 
-  protected Zodiac(int index) {
+  public Zodiac(int index) {
     super(NAMES, index);
   }
 
-  protected Zodiac(String name) {
+  public Zodiac(String name) {
     super(NAMES, name);
   }
 

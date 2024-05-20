@@ -33,7 +33,7 @@ public class FetusDay extends AbstractCulture {
    */
   protected Direction direction;
 
-  protected FetusDay(LunarDay lunarDay) {
+  public FetusDay(LunarDay lunarDay) {
     SixtyCycle sixtyCycle = lunarDay.getSixtyCycle();
     fetusHeavenStem = new FetusHeavenStem(sixtyCycle.getHeavenStem().getIndex() % 5);
     fetusEarthBranch = new FetusEarthBranch(sixtyCycle.getEarthBranch().getIndex() % 6);

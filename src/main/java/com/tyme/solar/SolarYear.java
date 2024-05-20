@@ -17,7 +17,7 @@ public class SolarYear extends AbstractTyme {
    */
   protected int year;
 
-  protected SolarYear(int year) {
+  public SolarYear(int year) {
     if (year < 1 || year > 9999) {
       throw new IllegalArgumentException(String.format("illegal solar year: %d", year));
     }

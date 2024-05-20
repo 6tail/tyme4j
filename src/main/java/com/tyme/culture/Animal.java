@@ -12,11 +12,11 @@ public class Animal extends LoopTyme {
 
   public static final String[] NAMES = {"蛟", "龙", "貉", "兔", "狐", "虎", "豹", "獬", "牛", "蝠", "鼠", "燕", "猪", "獝", "狼", "狗", "彘", "鸡", "乌", "猴", "猿", "犴", "羊", "獐", "马", "鹿", "蛇", "蚓"};
 
-  protected Animal(int index) {
+  public Animal(int index) {
     super(NAMES, index);
   }
 
-  protected Animal(String name) {
+  public Animal(String name) {
     super(NAMES, name);
   }
 

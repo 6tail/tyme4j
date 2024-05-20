@@ -343,7 +343,7 @@ public class ShouXingUtil {
     t /= 10;
     double v = 0, tn = 1;
     int n1, n2;
-    double m;
+    int m;
     double c;
     int pn = 1;
     double n0, m0 = XL0[pn + 1] - XL0[pn];
@@ -378,8 +378,7 @@ public class ShouXingUtil {
   }
 
   public static double mLon(double t, int n) {
-    double[][] ob = XL1;
-    int obl = ob[0].length;
+    int obl = XL1[0].length;
     double tn = 1;
     double v = 0;
     int j;
@@ -402,8 +401,8 @@ public class ShouXingUtil {
     if (n < 0) {
       n = obl;
     }
-    for (int i = 0, x = ob.length; i < x; i++, tn *= t) {
-      double[] f = ob[i];
+    for (int i = 0, x = XL1.length; i < x; i++, tn *= t) {
+      double[] f = XL1[i];
       int l = f.length;
       int m = (int) (n * l / obl + 0.5);
       if (i > 0) {
@@ -474,8 +473,8 @@ public class ShouXingUtil {
   }
 
   public static double saLonT(double w) {
-    double t, v = 628.3319653318;
-    t = (w - 1.75347 - Math.PI) / v;
+    double v = 628.3319653318;
+    double t = (w - 1.75347 - Math.PI) / v;
     v = ev(t);
     t += (w - saLon(t, 10)) / v;
     v = ev(t);
@@ -488,8 +487,8 @@ public class ShouXingUtil {
   }
 
   public static double msaLonT(double w) {
-    double t, v = 7771.37714500204;
-    t = (w + 1.08472) / v;
+    double v = 7771.37714500204;
+    double t = (w + 1.08472) / v;
     t += (w - msaLon(t, 3, 3)) / v;
     v = mv(t) - ev(t);
     t += (w - msaLon(t, 20, 10)) / v;
@@ -506,12 +505,12 @@ public class ShouXingUtil {
   }
 
   public static double msaLonT2(double w) {
-    double t, v = 7771.37714500204;
-    t = (w + 1.08472) / v;
-    double l, t2 = t * t;
+    double v = 7771.37714500204;
+    double t = (w + 1.08472) / v;
+    double t2 = t * t;
     t -= (-0.00003309 * t2 + 0.10976 * Math.cos(0.784758 + 8328.6914246 * t + 0.000152292 * t2) + 0.02224 * Math.cos(0.18740 + 7214.0628654 * t - 0.00021848 * t2) - 0.03342 * Math.cos(4.669257 + 628.307585 * t)) / v;
     t2 = t * t;
-    l = mLon(t, 20) - (4.8950632 + 628.3319653318 * t + 0.000005297 * t2 + 0.0334166 * Math.cos(4.669257 + 628.307585 * t) + 0.0002061 * Math.cos(2.67823 + 628.307585 * t) * t + 0.000349 * Math.cos(4.6261 + 1256.61517 * t) - 20.5 / SECOND_PER_RAD);
+    double l = mLon(t, 20) - (4.8950632 + 628.3319653318 * t + 0.000005297 * t2 + 0.0334166 * Math.cos(4.669257 + 628.307585 * t) + 0.0002061 * Math.cos(2.67823 + 628.307585 * t) * t + 0.000349 * Math.cos(4.6261 + 1256.61517 * t) - 20.5 / SECOND_PER_RAD);
     v = 7771.38 - 914 * Math.sin(0.7848 + 8328.691425 * t + 0.0001523 * t2) - 179 * Math.sin(2.543 + 15542.7543 * t) - 160 * Math.sin(0.1874 + 7214.0629 * t);
     t += (w - l) / v;
     return t;

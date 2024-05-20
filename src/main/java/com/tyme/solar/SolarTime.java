@@ -43,7 +43,7 @@ public class SolarTime extends AbstractTyme {
    * @param minute 分
    * @param second 秒
    */
-  protected SolarTime(int year, int month, int day, int hour, int minute, int second) {
+  public SolarTime(int year, int month, int day, int hour, int minute, int second) {
     if (hour < 0 || hour > 23) {
       throw new IllegalArgumentException(String.format("illegal hour: %d", hour));
     }

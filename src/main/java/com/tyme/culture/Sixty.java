@@ -11,11 +11,11 @@ public class Sixty extends LoopTyme {
 
   public static final String[] NAMES = {"上元", "中元", "下元"};
 
-  protected Sixty(int index) {
+  public Sixty(int index) {
     super(NAMES, index);
   }
 
-  protected Sixty(String name) {
+  public Sixty(String name) {
     super(NAMES, name);
   }
 

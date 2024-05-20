@@ -38,7 +38,7 @@ public class LunarWeek extends AbstractTyme {
    * @param index 索引，0-5
    * @param start 起始星期，1234560分别代表星期一至星期天
    */
-  protected LunarWeek(int year, int month, int index, int start) {
+  public LunarWeek(int year, int month, int index, int start) {
     if (index < 0 || index > 5) {
       throw new IllegalArgumentException(String.format("illegal lunar week index: %d", index));
     }

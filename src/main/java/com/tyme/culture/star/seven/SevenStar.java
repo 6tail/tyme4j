@@ -12,11 +12,11 @@ public class SevenStar extends LoopTyme {
 
   public static final String[] NAMES = {"日", "月", "火", "水", "木", "金", "土"};
 
-  protected SevenStar(int index) {
+  public SevenStar(int index) {
     super(NAMES, index);
   }
 
-  protected SevenStar(String name) {
+  public SevenStar(String name) {
     super(NAMES, name);
   }
 

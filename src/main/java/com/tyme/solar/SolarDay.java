@@ -41,18 +41,19 @@ public class SolarDay extends AbstractTyme {
    * @param month 月
    * @param day   日
    */
-  protected SolarDay(int year, int month, int day) {
-    this.month = SolarMonth.fromYm(year, month);
+  public SolarDay(int year, int month, int day) {
     if (day < 1) {
       throw new IllegalArgumentException(String.format("illegal solar day: %d-%d-%d", year, month, day));
     }
+    SolarMonth m = SolarMonth.fromYm(year, month);
     if (1582 == year && 10 == month) {
       if ((day > 4 && day < 15) || day > 31) {
         throw new IllegalArgumentException(String.format("illegal solar day: %d-%d-%d", year, month, day));
       }
-    } else if (day > this.month.getDayCount()) {
+    } else if (day > m.getDayCount()) {
       throw new IllegalArgumentException(String.format("illegal solar day: %d-%d-%d", year, month, day));
     }
+    this.month = m;
     this.day = day;
   }
 

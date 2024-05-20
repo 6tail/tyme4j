@@ -12,11 +12,11 @@ public class Week extends LoopTyme {
 
   public static final String[] NAMES = {"日", "一", "二", "三", "四", "五", "六"};
 
-  protected Week(int index) {
+  public Week(int index) {
     super(NAMES, index);
   }
 
-  protected Week(String name) {
+  public Week(String name) {
     super(NAMES, name);
   }
 

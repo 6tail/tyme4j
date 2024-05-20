@@ -39,7 +39,7 @@ public class ChildLimit {
    */
   protected ChildLimitInfo info;
 
-  protected ChildLimit(SolarTime birthTime, Gender gender) {
+  public ChildLimit(SolarTime birthTime, Gender gender) {
     this.gender = gender;
     eightChar = birthTime.getLunarHour().getEightChar();
     // 阳男阴女顺推，阴男阳女逆推

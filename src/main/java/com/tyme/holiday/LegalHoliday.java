@@ -35,7 +35,7 @@ public class LegalHoliday extends AbstractTyme {
    */
   protected boolean work;
 
-  protected LegalHoliday(int year, int month, int day, String data) {
+  public LegalHoliday(int year, int month, int day, String data) {
     this.day = SolarDay.fromYmd(year, month, day);
     work = '0' == data.charAt(8);
     name = NAMES[data.charAt(9) - '0'];

@@ -21,7 +21,7 @@ public class Fortune extends AbstractTyme {
    */
   protected int index;
 
-  protected Fortune(ChildLimit childLimit, int index) {
+  public Fortune(ChildLimit childLimit, int index) {
     this.childLimit = childLimit;
     this.index = index;
   }

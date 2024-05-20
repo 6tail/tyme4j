@@ -11,11 +11,11 @@ public class Element extends LoopTyme {
 
   public static final String[] NAMES = {"木", "火", "土", "金", "水"};
 
-  protected Element(int index) {
+  public Element(int index) {
     super(NAMES, index);
   }
 
-  protected Element(String name) {
+  public Element(String name) {
     super(NAMES, name);
   }
 

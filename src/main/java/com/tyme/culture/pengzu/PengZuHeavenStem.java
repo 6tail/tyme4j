@@ -11,11 +11,11 @@ public class PengZuHeavenStem extends LoopTyme {
 
   public static final String[] NAMES = {"甲不开仓财物耗散", "乙不栽植千株不长", "丙不修灶必见灾殃", "丁不剃头头必生疮", "戊不受田田主不祥", "己不破券二比并亡", "庚不经络织机虚张", "辛不合酱主人不尝", "壬不泱水更难提防", "癸不词讼理弱敌强"};
 
-  protected PengZuHeavenStem(String name) {
+  public PengZuHeavenStem(String name) {
     super(NAMES, name);
   }
 
-  protected PengZuHeavenStem(int index) {
+  public PengZuHeavenStem(int index) {
     super(NAMES, index);
   }
 

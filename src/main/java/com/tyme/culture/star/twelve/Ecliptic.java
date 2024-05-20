@@ -12,11 +12,11 @@ public class Ecliptic extends LoopTyme {
 
   public static final String[] NAMES = {"黄道", "黑道"};
 
-  protected Ecliptic(int index) {
+  public Ecliptic(int index) {
     super(NAMES, index);
   }
 
-  protected Ecliptic(String name) {
+  public Ecliptic(String name) {
     super(NAMES, name);
   }
 

@@ -52,7 +52,7 @@ public class LunarYear extends AbstractTyme {
     }
   }
 
-  protected LunarYear(int year) {
+  public LunarYear(int year) {
     if (year < -1 || year > 9999) {
       throw new IllegalArgumentException(String.format("illegal lunar year: %d", year));
     }

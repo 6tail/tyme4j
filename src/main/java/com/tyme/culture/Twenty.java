@@ -11,11 +11,11 @@ public class Twenty extends LoopTyme {
 
   public static final String[] NAMES = {"一运", "二运", "三运", "四运", "五运", "六运", "七运", "八运", "九运"};
 
-  protected Twenty(int index) {
+  public Twenty(int index) {
     super(NAMES, index);
   }
 
-  protected Twenty(String name) {
+  public Twenty(String name) {
     super(NAMES, name);
   }
 

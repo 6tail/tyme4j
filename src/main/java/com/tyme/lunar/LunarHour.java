@@ -45,7 +45,7 @@ public class LunarHour extends AbstractTyme {
    * @param minute 分
    * @param second 秒
    */
-  protected LunarHour(int year, int month, int day, int hour, int minute, int second) {
+  public LunarHour(int year, int month, int day, int hour, int minute, int second) {
     if (hour < 0 || hour > 23) {
       throw new IllegalArgumentException(String.format("illegal hour: %d", hour));
     }

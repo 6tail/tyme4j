@@ -45,7 +45,7 @@ public class LunarFestival extends AbstractTyme {
    */
   protected String name;
 
-  protected LunarFestival(FestivalType type, LunarDay day, SolarTerm solarTerm, String data) {
+  public LunarFestival(FestivalType type, LunarDay day, SolarTerm solarTerm, String data) {
     this.type = type;
     this.day = day;
     this.solarTerm = solarTerm;

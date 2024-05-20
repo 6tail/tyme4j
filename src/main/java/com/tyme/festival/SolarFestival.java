@@ -44,7 +44,7 @@ public class SolarFestival extends AbstractTyme {
    */
   protected int startYear;
 
-  protected SolarFestival(FestivalType type, SolarDay day, int startYear, String data) {
+  public SolarFestival(FestivalType type, SolarDay day, int startYear, String data) {
     this.type = type;
     this.day = day;
     this.startYear = startYear;

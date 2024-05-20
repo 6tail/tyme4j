@@ -18,17 +18,17 @@ public class SolarTerm extends LoopTyme {
    */
   protected double cursoryJulianDay;
 
-  protected SolarTerm(int year, int index) {
+  public SolarTerm(int year, int index) {
     super(NAMES, index);
     initByYear(year, index);
   }
 
-  protected SolarTerm(int year, String name) {
+  public SolarTerm(int year, String name) {
     super(NAMES, name);
     initByYear(year, index);
   }
 
-  protected SolarTerm(double cursoryJulianDay, int index) {
+  public SolarTerm(double cursoryJulianDay, int index) {
     super(NAMES, index);
     this.cursoryJulianDay = cursoryJulianDay;
   }

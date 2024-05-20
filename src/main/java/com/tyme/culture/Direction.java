@@ -14,11 +14,11 @@ public class Direction extends LoopTyme {
    */
   public static final String[] NAMES = {"北", "西南", "东", "东南", "中", "西北", "西", "东北", "南"};
 
-  protected Direction(int index) {
+  public Direction(int index) {
     super(NAMES, index);
   }
 
-  protected Direction(String name) {
+  public Direction(String name) {
     super(NAMES, name);
   }
 
