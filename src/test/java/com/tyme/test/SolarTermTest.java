@@ -76,4 +76,17 @@ public class SolarTermTest {
     Assert.assertEquals("寒露", SolarDay.fromYmd(2023, 10, 10).getTerm().getName());
   }
 
+  @Test
+  public void test4() {
+    // 大雪当天
+    Assert.assertEquals("大雪第1天", SolarDay.fromYmd(2023, 12, 7).getTermDay().toString());
+    // 天数索引
+    Assert.assertEquals(0, SolarDay.fromYmd(2023, 12, 7).getTermDay().getDayIndex());
+
+    Assert.assertEquals("大雪第2天", SolarDay.fromYmd(2023, 12, 8).getTermDay().toString());
+    Assert.assertEquals("大雪第15天", SolarDay.fromYmd(2023, 12, 21).getTermDay().toString());
+
+    Assert.assertEquals("冬至第1天", SolarDay.fromYmd(2023, 12, 22).getTermDay().toString());
+  }
+
 }

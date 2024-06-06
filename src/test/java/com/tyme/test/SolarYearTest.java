@@ -7,7 +7,6 @@ import com.tyme.solar.SolarYear;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.List;
 
 /**
  * 公历年测试
