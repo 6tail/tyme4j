@@ -31,10 +31,10 @@ public class SolarSeason extends AbstractTyme {
    * @param index 索引，0-3
    */
   public SolarSeason(int year, int index) {
-    this.year = SolarYear.fromYear(year);
     if (index < 0 || index > 3) {
       throw new IllegalArgumentException(String.format("illegal solar season index: %d", index));
     }
+    this.year = SolarYear.fromYear(year);
     this.index = index;
   }
 

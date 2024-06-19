@@ -57,29 +57,26 @@ public class SolarFestival extends AbstractTyme {
       throw new IllegalArgumentException(String.format("illegal index: %d", index));
     }
     Matcher matcher = Pattern.compile(String.format("@%02d\\d+", index)).matcher(DATA);
-    if (matcher.find()) {
-      String data = matcher.group();
-      FestivalType type = FestivalType.fromCode(data.charAt(3) - '0');
-      if (type == FestivalType.DAY) {
-        int startYear = Integer.parseInt(data.substring(8), 10);
-        if (year >= startYear) {
-          return new SolarFestival(type, SolarDay.fromYmd(year, Integer.parseInt(data.substring(4, 6), 10), Integer.parseInt(data.substring(6, 8), 10)), startYear, data);
-        }
-      }
+    if (!matcher.find()) {
+      return null;
     }
-    return null;
+    String data = matcher.group();
+    FestivalType type = FestivalType.fromCode(data.charAt(3) - '0');
+    if (type != FestivalType.DAY) {
+      return null;
+    }
+    int startYear = Integer.parseInt(data.substring(8), 10);
+    return year < startYear ? null : new SolarFestival(type, SolarDay.fromYmd(year, Integer.parseInt(data.substring(4, 6), 10), Integer.parseInt(data.substring(6, 8), 10)), startYear, data);
   }
 
   public static SolarFestival fromYmd(int year, int month, int day) {
     Matcher matcher = Pattern.compile(String.format("@\\d{2}0%02d%02d\\d+", month, day)).matcher(DATA);
-    if (matcher.find()) {
-      String data = matcher.group();
-      int startYear = Integer.parseInt(data.substring(8), 10);
-      if (year >= startYear) {
-        return new SolarFestival(FestivalType.DAY, SolarDay.fromYmd(year, month, day), startYear, data);
-      }
+    if (!matcher.find()) {
+      return null;
     }
-    return null;
+    String data = matcher.group();
+    int startYear = Integer.parseInt(data.substring(8), 10);
+    return year < startYear ? null : new SolarFestival(FestivalType.DAY, SolarDay.fromYmd(year, month, day), startYear, data);
   }
 
   public SolarFestival next(int n) {
@@ -89,7 +86,7 @@ public class SolarFestival extends AbstractTyme {
       return fromYmd(year, m.getMonth(), day.getDay());
     }
     int size = NAMES.length;
-    int t = this.index + n;
+    int t = index + n;
     int offset = indexOf(t, size);
     if (t < 0) {
       t -= size;

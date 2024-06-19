@@ -118,12 +118,10 @@ public class SolarTime extends AbstractTyme {
     if (!day.equals(target.getDay())) {
       return day.isBefore(target.getDay());
     }
-    int bHour = target.getHour();
-    if (hour == bHour) {
-      int bMinute = target.getMinute();
-      return minute == bMinute ? second < target.getSecond() : minute < bMinute;
+    if (hour != target.getHour()) {
+      return hour < target.getHour();
     }
-    return hour < bHour;
+    return minute != target.getMinute() ? minute < target.getMinute() : second < target.getSecond();
   }
 
   /**
@@ -136,12 +134,10 @@ public class SolarTime extends AbstractTyme {
     if (!day.equals(target.getDay())) {
       return day.isAfter(target.getDay());
     }
-    int bHour = target.getHour();
-    if (hour == bHour) {
-      int bMinute = target.getMinute();
-      return minute == bMinute ? second > target.getSecond() : minute > bMinute;
+    if (hour != target.getHour()) {
+      return hour > target.getHour();
     }
-    return hour > bHour;
+    return minute != target.getMinute() ? minute > target.getMinute() : second > target.getSecond();
   }
 
   /**
@@ -163,8 +159,8 @@ public class SolarTime extends AbstractTyme {
    * @return 儒略日
    */
   public JulianDay getJulianDay() {
-    SolarMonth month = day.getMonth();
-    return JulianDay.fromYmdHms(month.getYear().getYear(), month.getMonth(), day.getDay(), hour, minute, second);
+    SolarMonth m = day.getMonth();
+    return JulianDay.fromYmdHms(m.getYear().getYear(), m.getMonth(), day.getDay(), hour, minute, second);
   }
 
   /**
@@ -194,8 +190,8 @@ public class SolarTime extends AbstractTyme {
    */
   public SolarTime next(int n) {
     if (n == 0) {
-      SolarMonth month = day.getMonth();
-      return SolarTime.fromYmdHms(month.getYear().getYear(), month.getMonth(), day.getDay(), hour, minute, second);
+      SolarMonth m = day.getMonth();
+      return SolarTime.fromYmdHms(m.getYear().getYear(), m.getMonth(), day.getDay(), hour, minute, second);
     }
     int ts = second + n;
     int tm = minute + ts / 60;
@@ -218,7 +214,7 @@ public class SolarTime extends AbstractTyme {
     }
 
     SolarDay d = day.next(td);
-    SolarMonth m = d.getMonth();
+    SolarMonth m = day.getMonth();
     return SolarTime.fromYmdHms(m.getYear().getYear(), m.getMonth(), d.getDay(), th, tm, ts);
   }
 

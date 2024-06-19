@@ -123,8 +123,7 @@ public class SolarWeek extends AbstractTyme {
     while (forward ? (d >= weeksInMonth) : (d < 0)) {
       if (forward) {
         d -= weeksInMonth;
-      }
-      if (!forward) {
+      } else {
         if (!SolarDay.fromYmd(m.getYear().getYear(), m.getMonth(), 1).getWeek().equals(start)) {
           d += add;
         }
@@ -149,8 +148,7 @@ public class SolarWeek extends AbstractTyme {
    * @return 公历日
    */
   public SolarDay getFirstDay() {
-    SolarMonth m = getMonth();
-    SolarDay firstDay = SolarDay.fromYmd(m.getYear().getYear(), m.getMonth(), 1);
+    SolarDay firstDay = SolarDay.fromYmd(month.getYear().getYear(), month.getMonth(), 1);
     return firstDay.next(index * 7 - indexOf(firstDay.getWeek().getIndex() - start.getIndex(), 7));
   }
 

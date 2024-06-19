@@ -56,7 +56,7 @@ public class SolarTerm extends LoopTyme {
   }
 
   /**
-   * 是否节
+   * 是否节令
    *
    * @return true/false
    */
@@ -65,7 +65,7 @@ public class SolarTerm extends LoopTyme {
   }
 
   /**
-   * 是否气
+   * 是否气令
    *
    * @return true/false
    */
