@@ -2,6 +2,7 @@ package com.tyme.lunar;
 
 import com.tyme.AbstractTyme;
 import com.tyme.culture.star.nine.NineStar;
+import com.tyme.culture.star.twelve.TwelveStar;
 import com.tyme.eightchar.EightChar;
 import com.tyme.sixtycycle.EarthBranch;
 import com.tyme.sixtycycle.HeavenStem;
@@ -238,6 +239,15 @@ public class LunarHour extends AbstractTyme {
     int earthBranchIndex = getIndexInDay() % 12;
     int heavenStemIndex = getDaySixtyCycle().getHeavenStem().getIndex() % 5 * 2 + earthBranchIndex;
     return SixtyCycle.fromName(HeavenStem.fromIndex(heavenStemIndex).getName() + EarthBranch.fromIndex(earthBranchIndex).getName());
+  }
+
+  /**
+   * 黄道黑道十二神
+   *
+   * @return 黄道黑道十二神
+   */
+  public TwelveStar getTwelveStar() {
+    return TwelveStar.fromIndex(getSixtyCycle().getEarthBranch().getIndex() + (8 - getDaySixtyCycle().getEarthBranch().getIndex() % 6) * 2);
   }
 
   /**

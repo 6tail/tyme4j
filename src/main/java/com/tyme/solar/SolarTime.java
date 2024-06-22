@@ -146,7 +146,14 @@ public class SolarTime extends AbstractTyme {
    * @return 节气
    */
   public SolarTerm getTerm() {
-    SolarTerm term = SolarTerm.fromIndex(day.getMonth().getYear().getYear() + 1, 0);
+    SolarMonth m = day.getMonth();
+    int y = m.getYear().getYear();
+    int i = m.getMonth() * 2;
+    if (i == 24) {
+      y += 1;
+      i = 0;
+    }
+    SolarTerm term = SolarTerm.fromIndex(y, i);
     while (isBefore(term.getJulianDay().getSolarTime())) {
       term = term.next(-1);
     }
@@ -214,7 +221,7 @@ public class SolarTime extends AbstractTyme {
     }
 
     SolarDay d = day.next(td);
-    SolarMonth m = day.getMonth();
+    SolarMonth m = d.getMonth();
     return SolarTime.fromYmdHms(m.getYear().getYear(), m.getMonth(), d.getDay(), th, tm, ts);
   }
 

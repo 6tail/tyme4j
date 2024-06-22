@@ -6,7 +6,7 @@
 
     <groupId>cn.6tail</groupId>
     <artifactId>tyme4j</artifactId>
-    <version>1.0.7</version>
+    <version>1.0.8</version>
     <packaging>jar</packaging>
 
     <name>${project.artifactId}</name>

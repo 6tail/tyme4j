@@ -17,6 +17,9 @@ import com.tyme.sixtycycle.SixtyCycle;
 import com.tyme.solar.SolarDay;
 import com.tyme.solar.SolarTerm;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 农历日
  *
@@ -327,6 +330,22 @@ public class LunarDay extends AbstractTyme {
    */
   public LunarFestival getFestival() {
     return LunarFestival.fromYmd(month.getYear().getYear(), month.getMonthWithLeap(), day);
+  }
+
+  /**
+   * 当天的时辰列表
+   *
+   * @return 时辰列表
+   */
+  public List<LunarHour> getHours() {
+    List<LunarHour> l = new ArrayList<>();
+    int y = month.getYear().getYear();
+    int m = month.getMonth();
+    l.add(LunarHour.fromYmdHms(y, m, day, 0, 0, 0));
+    for (int i = 0; i < 24; i += 2) {
+      l.add(LunarHour.fromYmdHms(y, m, day, i + 1, 0, 0));
+    }
+    return l;
   }
 
   @Override
