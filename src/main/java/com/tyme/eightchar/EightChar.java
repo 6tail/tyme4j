@@ -6,7 +6,6 @@ import com.tyme.sixtycycle.EarthBranch;
 import com.tyme.sixtycycle.HeavenStem;
 import com.tyme.sixtycycle.SixtyCycle;
 import com.tyme.solar.SolarDay;
-import com.tyme.solar.SolarMonth;
 import com.tyme.solar.SolarTerm;
 import com.tyme.solar.SolarTime;
 
@@ -185,11 +184,11 @@ public class EightChar extends AbstractCulture {
           term = term.next(m);
         }
         SolarTime solarTime = term.getJulianDay().getSolarTime();
-        if (solarTime.getDay().getMonth().getYear().getYear() >= startYear) {
+        if (solarTime.getYear() >= startYear) {
           int mi = 0;
           int s = 0;
           // 日干支和节令干支的偏移值
-          SolarDay solarDay = solarTime.getDay();
+          SolarDay solarDay = solarTime.getSolarDay();
           int d = day.next(-solarDay.getLunarDay().getSixtyCycle().getIndex()).getIndex();
           if (d > 0) {
             // 从节令推移天数
@@ -199,8 +198,7 @@ public class EightChar extends AbstractCulture {
             mi = solarTime.getMinute();
             s = solarTime.getSecond();
           }
-          SolarMonth solarMonth = solarDay.getMonth();
-          SolarTime time = SolarTime.fromYmdHms(solarMonth.getYear().getYear(), solarMonth.getMonth(), solarDay.getDay(), h, mi, s);
+          SolarTime time = SolarTime.fromYmdHms(solarDay.getYear(), solarDay.getMonth(), solarDay.getDay(), h, mi, s);
           // 验证一下
           if (time.getLunarHour().getEightChar().equals(this)) {
             l.add(time);

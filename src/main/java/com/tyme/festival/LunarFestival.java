@@ -3,7 +3,6 @@ package com.tyme.festival;
 import com.tyme.AbstractTyme;
 import com.tyme.enums.FestivalType;
 import com.tyme.lunar.LunarDay;
-import com.tyme.lunar.LunarMonth;
 import com.tyme.solar.SolarTerm;
 
 import java.util.regex.Matcher;
@@ -86,8 +85,7 @@ public class LunarFestival extends AbstractTyme {
       String data = matcher.group();
       SolarTerm solarTerm = SolarTerm.fromIndex(year, Integer.parseInt(data.substring(4), 10));
       LunarDay lunarDay = solarTerm.getJulianDay().getSolarDay().getLunarDay();
-      LunarMonth lunarMonth = lunarDay.getMonth();
-      if (lunarMonth.getYear().getYear() == year && lunarMonth.getMonth() == month && lunarDay.getDay() == day) {
+      if (lunarDay.getYear() == year && lunarDay.getMonth() == month && lunarDay.getDay() == day) {
         return new LunarFestival(FestivalType.TERM, lunarDay, solarTerm, data);
       }
     }
@@ -97,14 +95,12 @@ public class LunarFestival extends AbstractTyme {
     }
     LunarDay lunarDay = LunarDay.fromYmd(year, month, day);
     LunarDay nextDay = lunarDay.next(1);
-    return nextDay.getMonth().getMonth() == 1 && nextDay.getDay() == 1 ? new LunarFestival(FestivalType.EVE, lunarDay, null, matcher.group()) : null;
+    return nextDay.getMonth() == 1 && nextDay.getDay() == 1 ? new LunarFestival(FestivalType.EVE, lunarDay, null, matcher.group()) : null;
   }
 
   public LunarFestival next(int n) {
-    LunarMonth m = day.getMonth();
-    int year = m.getYear().getYear();
     if (n == 0) {
-      return fromYmd(year, m.getMonthWithLeap(), day.getDay());
+      return fromYmd(day.getYear(), day.getMonth(), day.getDay());
     }
     int size = NAMES.length;
     int t = index + n;
@@ -112,7 +108,7 @@ public class LunarFestival extends AbstractTyme {
     if (t < 0) {
       t -= size;
     }
-    return fromIndex(year + t / size, offset);
+    return fromIndex(day.getYear() + t / size, offset);
   }
 
   /**

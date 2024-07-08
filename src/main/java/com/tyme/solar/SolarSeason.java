@@ -43,12 +43,21 @@ public class SolarSeason extends AbstractTyme {
   }
 
   /**
+   * 公历年
+   *
+   * @return 公历年
+   */
+  public SolarYear getSolarYear() {
+    return year;
+  }
+
+  /**
    * 年
    *
    * @return 年
    */
-  public SolarYear getYear() {
-    return year;
+  public int getYear() {
+    return year.getYear();
   }
 
   /**
@@ -71,10 +80,10 @@ public class SolarSeason extends AbstractTyme {
 
   public SolarSeason next(int n) {
     if (n == 0) {
-      return fromIndex(year.getYear(), index);
+      return fromIndex(getYear(), index);
     }
     int i = index + n;
-    int y = year.getYear() + i / 4;
+    int y = getYear() + i / 4;
     i %= 4;
     if (i < 0) {
       i += 4;
@@ -90,7 +99,7 @@ public class SolarSeason extends AbstractTyme {
    */
   public List<SolarMonth> getMonths() {
     List<SolarMonth> l = new ArrayList<>(3);
-    int y = year.getYear();
+    int y = getYear();
     for (int i = 0; i < 3; i++) {
       l.add(SolarMonth.fromYm(y, index * 3 + i + 1));
     }

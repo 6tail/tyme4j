@@ -3,7 +3,6 @@ package com.tyme.festival;
 import com.tyme.AbstractTyme;
 import com.tyme.enums.FestivalType;
 import com.tyme.solar.SolarDay;
-import com.tyme.solar.SolarMonth;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -80,10 +79,8 @@ public class SolarFestival extends AbstractTyme {
   }
 
   public SolarFestival next(int n) {
-    SolarMonth m = day.getMonth();
-    int year = m.getYear().getYear();
     if (n == 0) {
-      return fromYmd(year, m.getMonth(), day.getDay());
+      return fromYmd(day.getYear(), day.getMonth(), day.getDay());
     }
     int size = NAMES.length;
     int t = index + n;
@@ -91,7 +88,7 @@ public class SolarFestival extends AbstractTyme {
     if (t < 0) {
       t -= size;
     }
-    return fromIndex(year + t / size, offset);
+    return fromIndex(day.getYear() + t / size, offset);
   }
 
   /**

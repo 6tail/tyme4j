@@ -84,12 +84,12 @@ public class SolarDayTest {
 
   @Test
   public void test22() {
-    Assert.assertEquals("甲辰", SolarDay.fromYmd(2024, 2, 10).getLunarDay().getMonth().getYear().getSixtyCycle().getName());
+    Assert.assertEquals("甲辰", SolarDay.fromYmd(2024, 2, 10).getLunarDay().getLunarMonth().getLunarYear().getSixtyCycle().getName());
   }
 
   @Test
   public void test23() {
-    Assert.assertEquals("癸卯", SolarDay.fromYmd(2024, 2, 9).getLunarDay().getMonth().getYear().getSixtyCycle().getName());
+    Assert.assertEquals("癸卯", SolarDay.fromYmd(2024, 2, 9).getLunarDay().getLunarMonth().getLunarYear().getSixtyCycle().getName());
   }
 
 }

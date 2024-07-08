@@ -59,12 +59,30 @@ public class LunarWeek extends AbstractTyme {
   }
 
   /**
+   * 农历月
+   *
+   * @return 农历月
+   */
+  public LunarMonth getLunarMonth() {
+    return month;
+  }
+
+  /**
+   * 年
+   *
+   * @return 年
+   */
+  public int getYear() {
+    return month.getYear();
+  }
+
+  /**
    * 月
    *
    * @return 月
    */
-  public LunarMonth getMonth() {
-    return month;
+  public int getMonth() {
+    return month.getMonthWithLeap();
   }
 
   /**
@@ -97,7 +115,7 @@ public class LunarWeek extends AbstractTyme {
   public LunarWeek next(int n) {
     int startIndex = start.getIndex();
     if (n == 0) {
-      return fromYm(month.getYear().getYear(), month.getMonthWithLeap(), index, startIndex);
+      return fromYm(getYear(), getMonth(), index, startIndex);
     }
     int d = index + n;
     LunarMonth m = month;
@@ -109,13 +127,13 @@ public class LunarWeek extends AbstractTyme {
         d -= weeksInMonth;
       }
       if (!forward) {
-        if (!LunarDay.fromYmd(m.getYear().getYear(), m.getMonthWithLeap(), 1).getWeek().equals(start)) {
+        if (!LunarDay.fromYmd(m.getYear(), m.getMonthWithLeap(), 1).getWeek().equals(start)) {
           d += add;
         }
       }
       m = m.next(add);
       if (forward) {
-        if (!LunarDay.fromYmd(m.getYear().getYear(), m.getMonthWithLeap(), 1).getWeek().equals(start)) {
+        if (!LunarDay.fromYmd(m.getYear(), m.getMonthWithLeap(), 1).getWeek().equals(start)) {
           d += add;
         }
       }
@@ -124,7 +142,7 @@ public class LunarWeek extends AbstractTyme {
         d += weeksInMonth;
       }
     }
-    return fromYm(m.getYear().getYear(), m.getMonthWithLeap(), d, startIndex);
+    return fromYm(m.getYear(), m.getMonthWithLeap(), d, startIndex);
   }
 
   /**
@@ -133,7 +151,7 @@ public class LunarWeek extends AbstractTyme {
    * @return 农历日
    */
   public LunarDay getFirstDay() {
-    LunarDay firstDay = LunarDay.fromYmd(month.getYear().getYear(), month.getMonthWithLeap(), 1);
+    LunarDay firstDay = LunarDay.fromYmd(getYear(), getMonth(), 1);
     return firstDay.next(index * 7 - indexOf(firstDay.getWeek().getIndex() - start.getIndex(), 7));
   }
 

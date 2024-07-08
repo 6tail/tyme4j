@@ -117,8 +117,17 @@ public class LunarMonth extends AbstractTyme {
    *
    * @return 农历年
    */
-  public LunarYear getYear() {
+  public LunarYear getLunarYear() {
     return year;
+  }
+
+  /**
+   * 年
+   *
+   * @return 年
+   */
+  public int getYear() {
+    return year.getYear();
   }
 
   /**
@@ -210,7 +219,7 @@ public class LunarMonth extends AbstractTyme {
 
   public LunarMonth next(int n) {
     if (n == 0) {
-      return fromYm(year.getYear(), getMonthWithLeap());
+      return fromYm(getYear(), getMonthWithLeap());
     }
     int m = indexInYear + 1 + n;
     LunarYear y = year;
@@ -248,7 +257,7 @@ public class LunarMonth extends AbstractTyme {
    */
   public List<LunarDay> getDays() {
     int size = getDayCount();
-    int y = year.getYear();
+    int y = getYear();
     int m = getMonthWithLeap();
     List<LunarDay> l = new ArrayList<>(size);
     for (int i = 0; i < size; i++) {
@@ -265,7 +274,7 @@ public class LunarMonth extends AbstractTyme {
    */
   public List<LunarWeek> getWeeks(int start) {
     int size = getWeekCount(start);
-    int y = year.getYear();
+    int y = getYear();
     int m = getMonthWithLeap();
     List<LunarWeek> l = new ArrayList<>(size);
     for (int i = 0; i < size; i++) {
@@ -318,7 +327,7 @@ public class LunarMonth extends AbstractTyme {
       return false;
     }
     LunarMonth target = (LunarMonth) o;
-    return year.equals(target.getYear()) && getMonthWithLeap() == target.getMonthWithLeap();
+    return getYear() == target.getYear() && getMonthWithLeap() == target.getMonthWithLeap();
   }
 
 }

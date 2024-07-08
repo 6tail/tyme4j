@@ -64,12 +64,30 @@ public class SolarDay extends AbstractTyme {
   }
 
   /**
+   * 公历月
+   *
+   * @return 公历月
+   */
+  public SolarMonth getSolarMonth() {
+    return month;
+  }
+
+  /**
+   * 年
+   *
+   * @return 年
+   */
+  public int getYear() {
+    return month.getYear();
+  }
+
+  /**
    * 月
    *
    * @return 月
    */
-  public SolarMonth getMonth() {
-    return month;
+  public int getMonth() {
+    return month.getMonth();
   }
 
   /**
@@ -97,7 +115,7 @@ public class SolarDay extends AbstractTyme {
    */
   public Constellation getConstellation() {
     int index = 11;
-    int y = month.getMonth() * 100 + day;
+    int y = getMonth() * 100 + day;
     if (y >= 321 && y <= 419) {
       index = 0;
     } else if (y >= 420 && y <= 520) {
@@ -144,13 +162,14 @@ public class SolarDay extends AbstractTyme {
    * @return true/false
    */
   public boolean isBefore(SolarDay target) {
-    SolarMonth bMonth = target.getMonth();
-    int aYear = month.getYear().getYear();
-    int bYear = bMonth.getYear().getYear();
+    int aYear = getYear();
+    int bYear = target.getYear();
     if (aYear != bYear) {
       return aYear < bYear;
     }
-    return month.getMonth() != bMonth.getMonth() ? month.getMonth() < bMonth.getMonth() : day < target.getDay();
+    int aMonth = getMonth();
+    int bMonth = target.getMonth();
+    return aMonth != bMonth ? aMonth < bMonth : day < target.getDay();
   }
 
   /**
@@ -160,13 +179,14 @@ public class SolarDay extends AbstractTyme {
    * @return true/false
    */
   public boolean isAfter(SolarDay target) {
-    SolarMonth bMonth = target.getMonth();
-    int aYear = month.getYear().getYear();
-    int bYear = bMonth.getYear().getYear();
+    int aYear = getYear();
+    int bYear = target.getYear();
     if (aYear != bYear) {
       return aYear > bYear;
     }
-    return month.getMonth() != bMonth.getMonth() ? month.getMonth() > bMonth.getMonth() : day > target.getDay();
+    int aMonth = getMonth();
+    int bMonth = target.getMonth();
+    return aMonth != bMonth ? aMonth > bMonth : day > target.getDay();
   }
 
   /**
@@ -184,8 +204,8 @@ public class SolarDay extends AbstractTyme {
    * @return 节气第几天
    */
   public SolarTermDay getTermDay() {
-    int y = month.getYear().getYear();
-    int i = month.getMonth() * 2;
+    int y = getYear();
+    int i = getMonth() * 2;
     if (i == 24) {
       y += 1;
       i = 0;
@@ -206,8 +226,8 @@ public class SolarDay extends AbstractTyme {
    * @return 公历周
    */
   public SolarWeek getSolarWeek(int start) {
-    int y = month.getYear().getYear();
-    int m = month.getMonth();
+    int y = getYear();
+    int m = getMonth();
     return SolarWeek.fromYm(y, m, (int) Math.ceil((day + fromYmd(y, m, 1).getWeek().next(-start).getIndex()) / 7D) - 1, start);
   }
 
@@ -233,7 +253,7 @@ public class SolarDay extends AbstractTyme {
    * @return 三伏天
    */
   public DogDay getDogDay() {
-    SolarTerm xiaZhi = SolarTerm.fromIndex(month.getYear().getYear(), 12);
+    SolarTerm xiaZhi = SolarTerm.fromIndex(getYear(), 12);
     // 第1个庚日
     SolarDay start = xiaZhi.getJulianDay().getSolarDay();
     int add = 6 - start.getLunarDay().getSixtyCycle().getHeavenStem().getIndex();
@@ -277,7 +297,7 @@ public class SolarDay extends AbstractTyme {
    * @return 数九天
    */
   public NineDay getNineDay() {
-    int year = month.getYear().getYear();
+    int year = getYear();
     SolarDay start = SolarTerm.fromIndex(year + 1, 0).getJulianDay().getSolarDay();
     if (isBefore(start)) {
       start = SolarTerm.fromIndex(year, 0).getJulianDay().getSolarDay();
@@ -297,7 +317,7 @@ public class SolarDay extends AbstractTyme {
    */
   public PlumRainDay getPlumRainDay() {
     // 芒种
-    SolarTerm grainInEar = SolarTerm.fromIndex(month.getYear().getYear(), 11);
+    SolarTerm grainInEar = SolarTerm.fromIndex(getYear(), 11);
     SolarDay start = grainInEar.getJulianDay().getSolarDay();
     int add = 2 - start.getLunarDay().getSixtyCycle().getHeavenStem().getIndex();
     if (add < 0) {
@@ -328,7 +348,7 @@ public class SolarDay extends AbstractTyme {
    * @return 索引
    */
   public int getIndexInYear() {
-    return subtract(fromYmd(month.getYear().getYear(), 1, 1));
+    return subtract(fromYmd(getYear(), 1, 1));
   }
 
   /**
@@ -347,7 +367,7 @@ public class SolarDay extends AbstractTyme {
    * @return 儒略日
    */
   public JulianDay getJulianDay() {
-    return JulianDay.fromYmdHms(month.getYear().getYear(), month.getMonth(), day, 0, 0, 0);
+    return JulianDay.fromYmdHms(getYear(), getMonth(), day, 0, 0, 0);
   }
 
   /**
@@ -356,13 +376,13 @@ public class SolarDay extends AbstractTyme {
    * @return 农历日
    */
   public LunarDay getLunarDay() {
-    LunarMonth m = LunarMonth.fromYm(month.getYear().getYear(), month.getMonth());
+    LunarMonth m = LunarMonth.fromYm(getYear(), getMonth());
     int days = subtract(m.getFirstJulianDay().getSolarDay());
     while (days < 0) {
       m = m.next(-1);
       days = subtract(m.getFirstJulianDay().getSolarDay());
     }
-    return LunarDay.fromYmd(m.getYear().getYear(), m.getMonthWithLeap(), days + 1);
+    return LunarDay.fromYmd(m.getYear(), m.getMonthWithLeap(), days + 1);
   }
 
   /**
@@ -371,7 +391,7 @@ public class SolarDay extends AbstractTyme {
    * @return 法定假日
    */
   public LegalHoliday getLegalHoliday() {
-    return LegalHoliday.fromYmd(month.getYear().getYear(), month.getMonth(), day);
+    return LegalHoliday.fromYmd(getYear(), getMonth(), day);
   }
 
   /**
@@ -380,7 +400,7 @@ public class SolarDay extends AbstractTyme {
    * @return 公历现代节日
    */
   public SolarFestival getFestival() {
-    return SolarFestival.fromYmd(month.getYear().getYear(), month.getMonth(), day);
+    return SolarFestival.fromYmd(getYear(), getMonth(), day);
   }
 
 }

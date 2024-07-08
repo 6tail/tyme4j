@@ -28,7 +28,7 @@ public class LegalHolidayTest {
   public void test1() {
     LegalHoliday d = LegalHoliday.fromYmd(2010, 1, 1);
     Assert.assertNotNull(d);
-    while (d.getDay().getMonth().getYear().getYear() < 2012) {
+    while (d.getDay().getYear() < 2012) {
       System.out.println(d);
       d = d.next(1);
     }
@@ -38,7 +38,7 @@ public class LegalHolidayTest {
   public void test2() {
     LegalHoliday d = LegalHoliday.fromYmd(2010, 1, 1);
     Assert.assertNotNull(d);
-    while (d.getDay().getMonth().getYear().getYear() > 2007) {
+    while (d.getDay().getYear() > 2007) {
       System.out.println(d);
       d = d.next(-1);
     }

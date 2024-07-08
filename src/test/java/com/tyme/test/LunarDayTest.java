@@ -2,7 +2,6 @@ package com.tyme.test;
 
 import com.tyme.culture.star.twentyeight.TwentyEightStar;
 import com.tyme.lunar.LunarDay;
-import com.tyme.solar.SolarTerm;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -119,12 +118,12 @@ public class LunarDayTest {
 
   @Test
   public void test22() {
-    Assert.assertEquals("甲辰", LunarDay.fromYmd(2024, 1, 1).getMonth().getYear().getSixtyCycle().getName());
+    Assert.assertEquals("甲辰", LunarDay.fromYmd(2024, 1, 1).getLunarMonth().getLunarYear().getSixtyCycle().getName());
   }
 
   @Test
   public void test23() {
-    Assert.assertEquals("癸卯", LunarDay.fromYmd(2023, 12, 30).getMonth().getYear().getSixtyCycle().getName());
+    Assert.assertEquals("癸卯", LunarDay.fromYmd(2023, 12, 30).getLunarMonth().getLunarYear().getSixtyCycle().getName());
   }
 
   /**
@@ -163,7 +162,7 @@ public class LunarDayTest {
   @Test
   public void test26() {
     LunarDay lunar = LunarDay.fromYmd(2005, 11, 23);
-    Assert.assertEquals("戊子", lunar.getMonth().getSixtyCycle().getName());
+    Assert.assertEquals("戊子", lunar.getLunarMonth().getSixtyCycle().getName());
     Assert.assertEquals("戊子", lunar.getMonthSixtyCycle().getName());
   }
 
