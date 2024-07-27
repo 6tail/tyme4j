@@ -30,5 +30,4 @@ public class LunarSeason extends LoopTyme {
   public LunarSeason next(int n) {
     return fromIndex(nextIndex(n));
   }
-
 }

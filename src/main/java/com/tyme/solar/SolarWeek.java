@@ -101,9 +101,10 @@ public class SolarWeek extends AbstractTyme {
    */
   public int getIndexInYear() {
     int i = 0;
+    SolarDay firstDay = getFirstDay();
     // 今年第1周
     SolarWeek w = SolarWeek.fromYm(getYear(), 1, 0, start.getIndex());
-    while (!w.equals(this)) {
+    while (!w.getFirstDay().equals(firstDay)) {
       w = w.next(1);
       i++;
     }
@@ -129,32 +130,29 @@ public class SolarWeek extends AbstractTyme {
   }
 
   public SolarWeek next(int n) {
+    int startIndex = start.getIndex();
     if (n == 0) {
-      return fromYm(getYear(), getMonth(), index, start.getIndex());
+      return fromYm(getYear(), getMonth(), index, startIndex);
     }
     int d = index + n;
     SolarMonth m = month;
-    int startIndex = start.getIndex();
-    int weeksInMonth = m.getWeekCount(startIndex);
-    boolean forward = n > 0;
-    int add = forward ? 1 : -1;
-    while (forward ? (d >= weeksInMonth) : (d < 0)) {
-      if (forward) {
-        d -= weeksInMonth;
-      } else {
+    if (n > 0) {
+      int weekCount = m.getWeekCount(startIndex);
+      while (d >= weekCount) {
+        d -= weekCount;
+        m = m.next(1);
         if (!SolarDay.fromYmd(m.getYear(), m.getMonth(), 1).getWeek().equals(start)) {
-          d += add;
+          d += 1;
         }
+        weekCount = m.getWeekCount(startIndex);
       }
-      m = m.next(add);
-      if (forward) {
+    } else {
+      while (d < 0) {
         if (!SolarDay.fromYmd(m.getYear(), m.getMonth(), 1).getWeek().equals(start)) {
-          d += add;
+          d -= 1;
         }
-      }
-      weeksInMonth = m.getWeekCount(startIndex);
-      if (!forward) {
-        d += weeksInMonth;
+        m = m.next(-1);
+        d += m.getWeekCount(startIndex);
       }
     }
     return fromYm(m.getYear(), m.getMonth(), d, startIndex);
@@ -185,4 +183,8 @@ public class SolarWeek extends AbstractTyme {
     return l;
   }
 
+  @Override
+  public boolean equals(Object o) {
+    return o instanceof SolarWeek && getFirstDay().equals(((SolarWeek) o).getFirstDay());
+  }
 }

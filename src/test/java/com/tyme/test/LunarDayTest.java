@@ -166,4 +166,10 @@ public class LunarDayTest {
     Assert.assertEquals("戊子", lunar.getMonthSixtyCycle().getName());
   }
 
+  @Test
+  public void test27() {
+    LunarDay lunar = LunarDay.fromYmd(2024, 1, 1);
+    Assert.assertEquals("农历甲辰年二月初三", lunar.next(31).toString());
+  }
+
 }

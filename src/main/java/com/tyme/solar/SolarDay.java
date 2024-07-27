@@ -380,7 +380,7 @@ public class SolarDay extends AbstractTyme {
     int days = subtract(m.getFirstJulianDay().getSolarDay());
     while (days < 0) {
       m = m.next(-1);
-      days = subtract(m.getFirstJulianDay().getSolarDay());
+      days += m.getDayCount();
     }
     return LunarDay.fromYmd(m.getYear(), m.getMonthWithLeap(), days + 1);
   }
@@ -402,5 +402,4 @@ public class SolarDay extends AbstractTyme {
   public SolarFestival getFestival() {
     return SolarFestival.fromYmd(getYear(), getMonth(), day);
   }
-
 }

@@ -100,8 +100,8 @@ public class SolarHalfYear extends AbstractTyme {
   public List<SolarMonth> getMonths() {
     List<SolarMonth> l = new ArrayList<>(6);
     int y = getYear();
-    for (int i = 0; i < 6; i++) {
-      l.add(SolarMonth.fromYm(y, index * 6 + i + 1));
+    for (int i = 1; i < 7; i++) {
+      l.add(SolarMonth.fromYm(y, index * 6 + i));
     }
     return l;
   }
@@ -119,5 +119,4 @@ public class SolarHalfYear extends AbstractTyme {
     }
     return l;
   }
-
 }

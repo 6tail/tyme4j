@@ -46,4 +46,18 @@ public class HeavenlyStemTest {
     Assert.assertEquals("正印", HeavenStem.fromName("甲").getTenStar(HeavenStem.fromName("癸")).getName());
   }
 
+  /**
+   * 天干五合
+   */
+  @Test
+  public void test4() {
+    Assert.assertEquals("乙", HeavenStem.fromName("庚").getCombine().getName());
+    Assert.assertEquals("庚", HeavenStem.fromName("乙").getCombine().getName());
+    Assert.assertEquals("土", HeavenStem.fromName("甲").combine(HeavenStem.fromName("己")).getName());
+    Assert.assertEquals("土", HeavenStem.fromName("己").combine(HeavenStem.fromName("甲")).getName());
+    Assert.assertEquals("木", HeavenStem.fromName("丁").combine(HeavenStem.fromName("壬")).getName());
+    Assert.assertEquals("木", HeavenStem.fromName("壬").combine(HeavenStem.fromName("丁")).getName());
+    Assert.assertNull(HeavenStem.fromName("甲").combine(HeavenStem.fromName("乙")));
+  }
+
 }

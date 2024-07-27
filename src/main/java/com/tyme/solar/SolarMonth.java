@@ -167,10 +167,9 @@ public class SolarMonth extends AbstractTyme {
     int size = getDayCount();
     int y = getYear();
     List<SolarDay> l = new ArrayList<>(size);
-    for (int i = 0; i < size; i++) {
-      l.add(SolarDay.fromYmd(y, month, i + 1));
+    for (int i = 1; i <= size; i++) {
+      l.add(SolarDay.fromYmd(y, month, i));
     }
     return l;
   }
-
 }

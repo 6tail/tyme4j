@@ -172,4 +172,14 @@ public class WeekTest {
     Assert.assertEquals("2024年2月第四周", week.toString());
   }
 
+  @Test
+  public void test25(){
+    LunarWeek week = LunarWeek.fromYm(2024, 6, 0, 0);
+    Assert.assertEquals("农历甲辰年六月第一周", week.toString());
+    Assert.assertEquals("农历甲辰年六月第三周", week.next(2).toString());
+    Assert.assertEquals("农历甲辰年七月第一周", week.next(5).toString());
+    Assert.assertEquals("农历甲辰年五月第四周", week.next(-1).toString());
+    Assert.assertEquals("农历甲辰年五月第一周", week.next(-4).toString());
+  }
+
 }

@@ -332,14 +332,4 @@ public class LunarHour extends AbstractTyme {
   public List<Taboo> getAvoids() {
     return Taboo.getHourAvoids(getDaySixtyCycle(), getSixtyCycle());
   }
-
-  @Override
-  public boolean equals(Object o) {
-    if (!(o instanceof LunarHour)) {
-      return false;
-    }
-    LunarHour target = (LunarHour) o;
-    return day.equals(target.getLunarDay()) && hour == target.getHour() && minute == target.getMinute() && second == target.getSecond();
-  }
-
 }

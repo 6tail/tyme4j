@@ -67,4 +67,12 @@ public class Element extends LoopTyme {
     return next(-2);
   }
 
+  /**
+   * 方位
+   *
+   * @return 方位
+   */
+  public Direction getDirection() {
+    return Direction.fromIndex(new int[]{2, 8, 4, 6, 0}[index]);
+  }
 }
