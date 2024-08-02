@@ -79,6 +79,18 @@ public class HeavenStem extends LoopTyme {
   }
 
   /**
+   * 十神（生我者，正印偏印。我生者，伤官食神。克我者，正官七杀。我克者，正财偏财。同我者，劫财比肩。）
+   *
+   * @param target 天干
+   * @return 十神
+   */
+  public TenStar getTenGod(HeavenStem target) {
+    int baseOffset = target.index - this.index;
+    int offset = (this.index % 2 != 0 && target.index % 2 == 0) ? baseOffset + 2 : baseOffset;
+    return TenStar.fromIndex(offset);
+  }
+
+  /**
    * 方位
    *
    * @return 方位
