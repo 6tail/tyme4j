@@ -32,7 +32,7 @@ public class Element extends LoopTyme {
   }
 
   /**
-   * 我生者（生）
+   * 我生者（泄）
    *
    * @return 五行
    */
@@ -50,7 +50,7 @@ public class Element extends LoopTyme {
   }
 
   /**
-   * 生我者（泄）
+   * 生我者（生）
    *
    * @return 五行
    */
