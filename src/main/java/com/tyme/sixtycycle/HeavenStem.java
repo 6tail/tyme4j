@@ -63,19 +63,12 @@ public class HeavenStem extends LoopTyme {
     if (null == target) {
       return null;
     }
-    Element host = getElement();
-    Element guest = target.getElement();
-    int index = 0;
-    if (host.getReinforce().equals(guest)) {
-      index = 1;
-    } else if (host.getRestrain().equals(guest)) {
-      index = 2;
-    } else if (host.getRestrained().equals(guest)) {
-      index = 3;
-    } else if (host.getReinforced().equals(guest)) {
-      index = 4;
+    int targetIndex = target.getIndex();
+    int offset = targetIndex - index;
+    if (index % 2 != 0 && targetIndex % 2 == 0) {
+      offset += 2;
     }
-    return TenStar.fromIndex(index * 2 + (getYinYang().equals(target.getYinYang()) ? 0 : 1));
+    return TenStar.fromIndex(offset);
   }
 
   /**

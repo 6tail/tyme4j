@@ -701,4 +701,12 @@ public class EightCharTest {
     // 为了不影响其他测试用例，恢复默认起运算法
     ChildLimit.provider = new DefaultChildLimitProvider();
   }
+
+  @Test
+  public void test44() {
+    // 童限
+    ChildLimit childLimit = ChildLimit.fromSolarTime(SolarTime.fromYmdHms(1989, 12, 31, 23, 7, 17), Gender.MAN);
+    // 童限结束(即开始起运)的公历时刻
+    Assert.assertEquals("1998年3月1日 19:47:17", childLimit.getEndTime().toString());
+  }
 }
