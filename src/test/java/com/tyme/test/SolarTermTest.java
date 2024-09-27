@@ -89,4 +89,8 @@ public class SolarTermTest {
     Assert.assertEquals("冬至第1天", SolarDay.fromYmd(2023, 12, 22).getTermDay().toString());
   }
 
+  @Test
+  public void test5() {
+    Assert.assertEquals("2024年1月6日 04:49:20", SolarTerm.fromName(2024, "小寒").getJulianDay().getSolarTime().toString());
+  }
 }

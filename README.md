@@ -8,7 +8,7 @@ Tyme是一个非常强大的日历工具库，可以看作 [Lunar](https://6tail
 <dependency>
   <groupId>cn.6tail</groupId>
   <artifactId>tyme4j</artifactId>
-  <version>1.1.2</version>
+  <version>1.1.3</version>
 </dependency>
 ```
 

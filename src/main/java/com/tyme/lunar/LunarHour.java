@@ -96,7 +96,7 @@ public class LunarHour extends AbstractTyme {
    * @return 年
    */
   public int getYear() {
-    return day.getLunarMonth().getYear();
+    return day.getYear();
   }
 
   /**
@@ -105,7 +105,7 @@ public class LunarHour extends AbstractTyme {
    * @return 月
    */
   public int getMonth() {
-    return day.getLunarMonth().getMonthWithLeap();
+    return day.getMonth();
   }
 
   /**
@@ -163,6 +163,9 @@ public class LunarHour extends AbstractTyme {
   }
 
   public LunarHour next(int n) {
+    if (n == 0) {
+      return fromYmdHms(getYear(), getMonth(), getDay(), hour, minute, second);
+    }
     int h = hour + n * 2;
     int diff = h < 0 ? -1 : 1;
     int hour = Math.abs(h);

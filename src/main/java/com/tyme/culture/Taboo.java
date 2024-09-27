@@ -71,6 +71,15 @@ public class Taboo extends LoopTyme {
     return fromIndex(nextIndex(n));
   }
 
+  private static List<Taboo> getTaboos(String[] data, int supIndex, int subIndex, int index) {
+    List<Taboo> l = new ArrayList<>();
+    String d = data[supIndex].split(";", -1)[subIndex].split(",", -1)[index];
+    for (int i = 0, j = d.length(); i < j; i += 2) {
+      l.add(Taboo.fromIndex(Integer.parseInt(d.substring(i, i + 2), 16)));
+    }
+    return l;
+  }
+
   /**
    * 日宜
    *
@@ -79,12 +88,7 @@ public class Taboo extends LoopTyme {
    * @return 宜忌列表
    */
   public static List<Taboo> getDayRecommends(SixtyCycle month, SixtyCycle day) {
-    List<Taboo> l = new ArrayList<>();
-    String data = dayTaboo[month.getEarthBranch().getIndex()].split(";", -1)[day.getIndex()].split(",", -1)[0];
-    for (int i = 0, j = data.length(); i < j; i += 2) {
-      l.add(Taboo.fromIndex(Integer.parseInt(data.substring(i, i + 2), 16)));
-    }
-    return l;
+    return getTaboos(dayTaboo, month.getEarthBranch().getIndex(), day.getIndex(), 0);
   }
 
   /**
@@ -95,12 +99,7 @@ public class Taboo extends LoopTyme {
    * @return 宜忌列表
    */
   public static List<Taboo> getDayAvoids(SixtyCycle month, SixtyCycle day) {
-    List<Taboo> l = new ArrayList<>();
-    String data = dayTaboo[month.getEarthBranch().getIndex()].split(";", -1)[day.getIndex()].split(",", -1)[1];
-    for (int i = 0, j = data.length(); i < j; i += 2) {
-      l.add(Taboo.fromIndex(Integer.parseInt(data.substring(i, i + 2), 16)));
-    }
-    return l;
+    return getTaboos(dayTaboo, month.getEarthBranch().getIndex(), day.getIndex(), 1);
   }
 
   /**
@@ -111,12 +110,7 @@ public class Taboo extends LoopTyme {
    * @return 宜忌列表
    */
   public static List<Taboo> getHourRecommends(SixtyCycle day, SixtyCycle hour) {
-    List<Taboo> l = new ArrayList<>();
-    String data = hourTaboo[hour.getEarthBranch().getIndex()].split(";", -1)[day.getIndex()].split(",", -1)[0];
-    for (int i = 0, j = data.length(); i < j; i += 2) {
-      l.add(Taboo.fromIndex(Integer.parseInt(data.substring(i, i + 2), 16)));
-    }
-    return l;
+    return getTaboos(hourTaboo, hour.getEarthBranch().getIndex(), day.getIndex(), 0);
   }
 
   /**
@@ -127,11 +121,6 @@ public class Taboo extends LoopTyme {
    * @return 宜忌列表
    */
   public static List<Taboo> getHourAvoids(SixtyCycle day, SixtyCycle hour) {
-    List<Taboo> l = new ArrayList<>();
-    String data = hourTaboo[hour.getEarthBranch().getIndex()].split(";", -1)[day.getIndex()].split(",", -1)[1];
-    for (int i = 0, j = data.length(); i < j; i += 2) {
-      l.add(Taboo.fromIndex(Integer.parseInt(data.substring(i, i + 2), 16)));
-    }
-    return l;
+    return getTaboos(hourTaboo, hour.getEarthBranch().getIndex(), day.getIndex(), 1);
   }
 }

@@ -312,6 +312,7 @@ public class EightCharTest {
     Assert.assertEquals(2001, decadeFortune.getStartLunarYear().getYear());
     // 结束年
     Assert.assertEquals(2010, decadeFortune.getEndLunarYear().getYear());
+    System.out.println(decadeFortune.getEndLunarYear());
     // 干支
     Assert.assertEquals("庚子", decadeFortune.getName());
     // 下一大运
@@ -708,5 +709,12 @@ public class EightCharTest {
     ChildLimit childLimit = ChildLimit.fromSolarTime(SolarTime.fromYmdHms(1989, 12, 31, 23, 7, 17), Gender.MAN);
     // 童限结束(即开始起运)的公历时刻
     Assert.assertEquals("1998年3月1日 19:47:17", childLimit.getEndTime().toString());
+  }
+
+  @Test
+  public void test45() {
+    // 童限
+    ChildLimit childLimit = ChildLimit.fromSolarTime(SolarTime.fromYmdHms(1994, 10, 16, 1, 0, 0), Gender.MAN);
+    Assert.assertEquals("壬午", childLimit.getStartDecadeFortune().getStartLunarYear().getSixtyCycle().getName());
   }
 }

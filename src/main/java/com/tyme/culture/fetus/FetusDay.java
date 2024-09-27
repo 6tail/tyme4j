@@ -82,7 +82,7 @@ public class FetusDay extends AbstractCulture {
   /**
    * 内外
    *
-   * @return 侧
+   * @return 内外
    */
   public Side getSide() {
     return side;
