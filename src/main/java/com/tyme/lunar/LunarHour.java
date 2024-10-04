@@ -5,6 +5,8 @@ import com.tyme.culture.Taboo;
 import com.tyme.culture.star.nine.NineStar;
 import com.tyme.culture.star.twelve.TwelveStar;
 import com.tyme.eightchar.EightChar;
+import com.tyme.eightchar.provider.EightCharProvider;
+import com.tyme.eightchar.provider.impl.DefaultEightCharProvider;
 import com.tyme.sixtycycle.EarthBranch;
 import com.tyme.sixtycycle.HeavenStem;
 import com.tyme.sixtycycle.SixtyCycle;
@@ -20,6 +22,11 @@ import java.util.List;
  * @author 6tail
  */
 public class LunarHour extends AbstractTyme {
+
+  /**
+   * 八字计算接口
+   */
+  public static EightCharProvider provider = new DefaultEightCharProvider();
 
   /**
    * 农历日
@@ -315,7 +322,7 @@ public class LunarHour extends AbstractTyme {
    * @return 八字
    */
   public EightChar getEightChar() {
-    return new EightChar(getYearSixtyCycle(), getMonthSixtyCycle(), getDaySixtyCycle(), getSixtyCycle());
+    return provider.getEightChar(this);
   }
 
   /**

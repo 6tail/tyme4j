@@ -1,9 +1,6 @@
 package com.tyme.eightchar.provider.impl;
 
 import com.tyme.eightchar.ChildLimitInfo;
-import com.tyme.eightchar.provider.ChildLimitProvider;
-import com.tyme.solar.SolarDay;
-import com.tyme.solar.SolarMonth;
 import com.tyme.solar.SolarTerm;
 import com.tyme.solar.SolarTime;
 
@@ -12,7 +9,7 @@ import com.tyme.solar.SolarTime;
  *
  * @author 6tail
  */
-public class DefaultChildLimitProvider implements ChildLimitProvider {
+public class DefaultChildLimitProvider extends AbstractChildLimitProvider {
   @Override
   public ChildLimitInfo getInfo(SolarTime birthTime, SolarTerm term) {
     // 出生时刻和节令时刻相差的秒数
@@ -32,26 +29,7 @@ public class DefaultChildLimitProvider implements ChildLimitProvider {
     // 1秒 = 2分，1秒/2=0.5秒 = 1分
     int minute = seconds * 2;
 
-    SolarDay birthday = birthTime.getSolarDay();
-
-    int d = birthday.getDay() + day;
-    int h = birthTime.getHour() + hour;
-    int mi = birthTime.getMinute() + minute;
-    h += mi / 60;
-    mi %= 60;
-    d += h / 24;
-    h %= 24;
-
-    SolarMonth sm = SolarMonth.fromYm(birthday.getYear() + year, birthday.getMonth()).next(month);
-
-    int dc = sm.getDayCount();
-    while (d > dc) {
-      d -= dc;
-      sm = sm.next(1);
-      dc = sm.getDayCount();
-    }
-
-    return new ChildLimitInfo(birthTime, SolarTime.fromYmdHms(sm.getYear(), sm.getMonth(), d, h, mi, birthTime.getSecond()), year, month, day, hour, minute);
+    return next(birthTime, year, month, day, hour, minute, 0);
   }
 
 }

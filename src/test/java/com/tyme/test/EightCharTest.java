@@ -6,6 +6,7 @@ import com.tyme.eightchar.EightChar;
 import com.tyme.eightchar.Fortune;
 import com.tyme.eightchar.provider.impl.China95ChildLimitProvider;
 import com.tyme.eightchar.provider.impl.DefaultChildLimitProvider;
+import com.tyme.eightchar.provider.impl.LunarSect1ChildLimitProvider;
 import com.tyme.enums.Gender;
 import com.tyme.lunar.LunarHour;
 import com.tyme.sixtycycle.HeavenStem;
@@ -312,7 +313,6 @@ public class EightCharTest {
     Assert.assertEquals(2001, decadeFortune.getStartLunarYear().getYear());
     // 结束年
     Assert.assertEquals(2010, decadeFortune.getEndLunarYear().getYear());
-    System.out.println(decadeFortune.getEndLunarYear());
     // 干支
     Assert.assertEquals("庚子", decadeFortune.getName());
     // 下一大运
@@ -714,7 +714,10 @@ public class EightCharTest {
   @Test
   public void test45() {
     // 童限
-    ChildLimit childLimit = ChildLimit.fromSolarTime(SolarTime.fromYmdHms(1994, 10, 16, 1, 0, 0), Gender.MAN);
-    Assert.assertEquals("壬午", childLimit.getStartDecadeFortune().getStartLunarYear().getSixtyCycle().getName());
+    ChildLimit.provider = new LunarSect1ChildLimitProvider();
+
+    ChildLimit childLimit = ChildLimit.fromSolarTime(SolarTime.fromYmdHms(1994, 10, 17, 1, 0, 0), Gender.MAN);
+    Assert.assertEquals("2002年1月27日 01:00:00", childLimit.getEndTime().toString());
+    Assert.assertEquals("辛巳", childLimit.getStartDecadeFortune().getStartLunarYear().getSixtyCycle().getName());
   }
 }

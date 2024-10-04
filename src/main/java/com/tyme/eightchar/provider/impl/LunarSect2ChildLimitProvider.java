@@ -5,11 +5,11 @@ import com.tyme.solar.SolarTerm;
 import com.tyme.solar.SolarTime;
 
 /**
- * 元亨利贞的童限计算
+ * Lunar的流派2童限计算（按分钟数计算）
  *
  * @author 6tail
  */
-public class China95ChildLimitProvider extends AbstractChildLimitProvider {
+public class LunarSect2ChildLimitProvider extends AbstractChildLimitProvider {
   @Override
   public ChildLimitInfo getInfo(SolarTime birthTime, SolarTerm term) {
     // 出生时刻和节令时刻相差的分钟数
@@ -19,8 +19,10 @@ public class China95ChildLimitProvider extends AbstractChildLimitProvider {
     int month = minutes / 360;
     minutes %= 360;
     int day = minutes / 12;
+    minutes %= 12;
+    int hour = minutes * 2;
 
-    return next(birthTime, year, month, day, 0, 0, 0);
+    return next(birthTime, year, month, day, hour, 0, 0);
   }
 
 }
