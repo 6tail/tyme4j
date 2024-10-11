@@ -96,4 +96,10 @@ public class LunarHourTest {
     Assert.assertEquals("癸卯", h.getLunarDay().getLunarMonth().getLunarYear().getSixtyCycle().getName());
   }
 
+  @Test
+  public void test28() {
+    LunarHour h = LunarHour.fromYmdHms(2024, 9, 7, 10, 0, 0);
+    Assert.assertEquals("留连", h.getMinorRen().getName());
+  }
+
 }

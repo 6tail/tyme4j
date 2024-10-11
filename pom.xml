@@ -6,7 +6,7 @@
 
     <groupId>cn.6tail</groupId>
     <artifactId>tyme4j</artifactId>
-    <version>1.1.4</version>
+    <version>1.1.5</version>
     <packaging>jar</packaging>
 
     <name>${project.artifactId}</name>
@@ -120,6 +120,7 @@
                             <goal>jar</goal>
                         </goals>
                         <configuration>
+                            <javadocExecutable>${java.home}/../bin/javadoc</javadocExecutable>
                             <additionalparam>-Xdoclint:none</additionalparam>
                             <source>${source-version}</source>
                         </configuration>

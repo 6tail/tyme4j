@@ -256,4 +256,9 @@ public class LunarMonthTest {
     Assert.assertEquals("辛丑", LunarMonth.fromYm(1991, 12).getSixtyCycle().toString());
   }
 
+  @Test
+  public void test42() {
+    Assert.assertEquals("速喜", LunarMonth.fromYm(1991, 3).getMinorRen().getName());
+  }
+
 }

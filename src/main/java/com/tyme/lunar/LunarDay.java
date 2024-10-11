@@ -3,6 +3,7 @@ package com.tyme.lunar;
 import com.tyme.AbstractTyme;
 import com.tyme.culture.*;
 import com.tyme.culture.fetus.FetusDay;
+import com.tyme.culture.ren.MinorRen;
 import com.tyme.culture.star.nine.NineStar;
 import com.tyme.culture.star.six.SixStar;
 import com.tyme.culture.star.twelve.TwelveStar;
@@ -366,5 +367,14 @@ public class LunarDay extends AbstractTyme {
    */
   public List<Taboo> getAvoids() {
     return Taboo.getDayAvoids(getMonthSixtyCycle(), getSixtyCycle());
+  }
+
+  /**
+   * 小六壬
+   *
+   * @return 小六壬
+   */
+  public MinorRen getMinorRen() {
+    return getLunarMonth().getMinorRen().next(day - 1);
   }
 }

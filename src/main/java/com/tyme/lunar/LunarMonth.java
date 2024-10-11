@@ -3,6 +3,7 @@ package com.tyme.lunar;
 import com.tyme.AbstractTyme;
 import com.tyme.culture.Direction;
 import com.tyme.culture.fetus.FetusMonth;
+import com.tyme.culture.ren.MinorRen;
 import com.tyme.culture.star.nine.NineStar;
 import com.tyme.jd.JulianDay;
 import com.tyme.sixtycycle.EarthBranch;
@@ -359,5 +360,14 @@ public class LunarMonth extends AbstractTyme {
    */
   public FetusMonth getFetus() {
     return FetusMonth.fromLunarMonth(this);
+  }
+
+  /**
+   * 小六壬
+   *
+   * @return 小六壬
+   */
+  public MinorRen getMinorRen() {
+    return MinorRen.fromIndex((month - 1) % 6);
   }
 }

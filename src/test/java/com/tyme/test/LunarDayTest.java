@@ -172,4 +172,10 @@ public class LunarDayTest {
     Assert.assertEquals("农历甲辰年二月初三", lunar.next(31).toString());
   }
 
+  @Test
+  public void test28() {
+    LunarDay lunar = LunarDay.fromYmd(2024, 3, 5);
+    Assert.assertEquals("大安", lunar.getMinorRen().getName());
+  }
+
 }

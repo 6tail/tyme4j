@@ -2,6 +2,7 @@ package com.tyme.lunar;
 
 import com.tyme.AbstractTyme;
 import com.tyme.culture.Taboo;
+import com.tyme.culture.ren.MinorRen;
 import com.tyme.culture.star.nine.NineStar;
 import com.tyme.culture.star.twelve.TwelveStar;
 import com.tyme.eightchar.EightChar;
@@ -341,5 +342,14 @@ public class LunarHour extends AbstractTyme {
    */
   public List<Taboo> getAvoids() {
     return Taboo.getHourAvoids(getDaySixtyCycle(), getSixtyCycle());
+  }
+
+  /**
+   * 小六壬
+   *
+   * @return 小六壬
+   */
+  public MinorRen getMinorRen() {
+    return getLunarDay().getMinorRen().next(getIndexInDay());
   }
 }

@@ -3,7 +3,7 @@ package com.tyme.culture.star.six;
 import com.tyme.LoopTyme;
 
 /**
- * 六曜（孔明六曜星、小六壬）
+ * 六曜（孔明六曜星）
  *
  * @author 6tail
  */

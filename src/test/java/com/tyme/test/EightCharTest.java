@@ -4,9 +4,7 @@ import com.tyme.eightchar.ChildLimit;
 import com.tyme.eightchar.DecadeFortune;
 import com.tyme.eightchar.EightChar;
 import com.tyme.eightchar.Fortune;
-import com.tyme.eightchar.provider.impl.China95ChildLimitProvider;
-import com.tyme.eightchar.provider.impl.DefaultChildLimitProvider;
-import com.tyme.eightchar.provider.impl.LunarSect1ChildLimitProvider;
+import com.tyme.eightchar.provider.impl.*;
 import com.tyme.enums.Gender;
 import com.tyme.lunar.LunarHour;
 import com.tyme.sixtycycle.HeavenStem;
@@ -719,5 +717,24 @@ public class EightCharTest {
     ChildLimit childLimit = ChildLimit.fromSolarTime(SolarTime.fromYmdHms(1994, 10, 17, 1, 0, 0), Gender.MAN);
     Assert.assertEquals("2002年1月27日 01:00:00", childLimit.getEndTime().toString());
     Assert.assertEquals("辛巳", childLimit.getStartDecadeFortune().getStartLunarYear().getSixtyCycle().getName());
+
+    // 为了不影响其他测试用例，恢复默认起运算法
+    ChildLimit.provider = new DefaultChildLimitProvider();
+  }
+
+  @Test
+  public void test46() {
+    LunarHour.provider = new LunarSect2EightCharProvider();
+    List<SolarTime> solarTimes = new EightChar("壬寅", "丙午", "己亥", "丙子").getSolarTimes(1900, 2024);
+    List<String> actual = new ArrayList<>();
+    for (SolarTime solarTime : solarTimes) {
+      actual.add(solarTime.toString());
+    }
+
+    List<String> expected = new ArrayList<>();
+    expected.add("1962年6月30日 23:00:00");
+    expected.add("2022年6月15日 23:00:00");
+    Assert.assertEquals(expected, actual);
+    LunarHour.provider = new DefaultEightCharProvider();
   }
 }
