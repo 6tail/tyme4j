@@ -7,7 +7,7 @@ import com.tyme.culture.star.ten.TenStar;
 import com.tyme.enums.YinYang;
 
 /**
- * 天干
+ * 天干（天元）
  *
  * @author 6tail
  */

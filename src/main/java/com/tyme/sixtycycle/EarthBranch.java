@@ -5,10 +5,14 @@ import com.tyme.culture.Direction;
 import com.tyme.culture.Element;
 import com.tyme.culture.Zodiac;
 import com.tyme.culture.pengzu.PengZuEarthBranch;
+import com.tyme.enums.HideHeavenStemType;
 import com.tyme.enums.YinYang;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * 地支
+ * 地支（地元）
  *
  * @author 6tail
  */
@@ -81,6 +85,25 @@ public class EarthBranch extends LoopTyme {
   public HeavenStem getHideHeavenStemResidual() {
     int n = new int[]{-1, 7, 4, -1, 9, 4, -1, 1, 4, -1, 3, -1}[index];
     return n == -1 ? null : HeavenStem.fromIndex(n);
+  }
+
+  /**
+   * 藏干列表
+   *
+   * @return 藏干列表
+   */
+  public List<HideHeavenStem> getHideHeavenStems() {
+    List<HideHeavenStem> l = new ArrayList<>();
+    l.add(new HideHeavenStem(getHideHeavenStemMain(), HideHeavenStemType.MAIN));
+    HeavenStem o = getHideHeavenStemMiddle();
+    if (null != o) {
+      l.add(new HideHeavenStem(o, HideHeavenStemType.MIDDLE));
+    }
+    o = getHideHeavenStemResidual();
+    if (null != o) {
+      l.add(new HideHeavenStem(o, HideHeavenStemType.RESIDUAL));
+    }
+    return l;
   }
 
   /**

@@ -4,6 +4,8 @@ import com.tyme.eightchar.provider.ChildLimitProvider;
 import com.tyme.eightchar.provider.impl.DefaultChildLimitProvider;
 import com.tyme.enums.Gender;
 import com.tyme.enums.YinYang;
+import com.tyme.lunar.LunarHour;
+import com.tyme.lunar.LunarYear;
 import com.tyme.solar.SolarTerm;
 import com.tyme.solar.SolarTime;
 
@@ -173,6 +175,24 @@ public class ChildLimit {
    */
   public Fortune getStartFortune() {
     return Fortune.fromChildLimit(this, 0);
+  }
+
+  /**
+   * 结束农历年
+   *
+   * @return 农历年
+   */
+  public LunarYear getEndLunarYear() {
+    SolarTime endTime = getEndTime();
+    int solarYear = endTime.getYear();
+    LunarYear y = endTime.getLunarHour().getLunarDay().getLunarMonth().getLunarYear();
+    if (y.getYear() < solarYear) {
+      // 正月初一在立春之后的，农历年往后推一年
+      if (LunarHour.fromYmdHms(solarYear, 1, 1, 0, 0, 0).getSolarTime().isAfter(SolarTerm.fromIndex(solarYear, 3).getJulianDay().getSolarTime())) {
+        y = y.next(1);
+      }
+    }
+    return y;
   }
 
 }

@@ -11,11 +11,14 @@ import com.tyme.culture.phenology.Phenology;
 import com.tyme.culture.phenology.PhenologyDay;
 import com.tyme.culture.plumrain.PlumRain;
 import com.tyme.culture.plumrain.PlumRainDay;
+import com.tyme.enums.HideHeavenStemType;
 import com.tyme.festival.SolarFestival;
 import com.tyme.holiday.LegalHoliday;
 import com.tyme.jd.JulianDay;
 import com.tyme.lunar.LunarDay;
 import com.tyme.lunar.LunarMonth;
+import com.tyme.sixtycycle.HideHeavenStem;
+import com.tyme.sixtycycle.HideHeavenStemDay;
 
 /**
  * 公历日
@@ -340,6 +343,41 @@ public class SolarDay extends AbstractTyme {
       return null;
     }
     return equals(end) ? new PlumRainDay(PlumRain.fromIndex(1), 0) : new PlumRainDay(PlumRain.fromIndex(0), subtract(start));
+  }
+
+  /**
+   * 人元司令分野
+   *
+   * @return 人元司令分野
+   */
+  public HideHeavenStemDay getHideHeavenStemDay() {
+    int[] dayCounts = {3, 5, 7, 9, 10, 30};
+    SolarTerm term = getTerm();
+    if (term.isQi()) {
+      term = term.next(-1);
+    }
+    int dayIndex = subtract(term.getJulianDay().getSolarDay());
+    int startIndex = (term.getIndex() - 1) * 3;
+    String data = "93705542220504xx1513904541632524533533105544806564xx7573304542018584xx95".substring(startIndex, startIndex + 6);
+    int days = 0;
+    int heavenStemIndex = 0;
+    int typeIndex = 0;
+    while (typeIndex < 3) {
+      int i = typeIndex * 2;
+      String d = data.substring(i, i + 1);
+      int count = 0;
+      if (!d.equals("x")) {
+        heavenStemIndex = Integer.parseInt(d);
+        count = dayCounts[Integer.parseInt(data.substring(i + 1, i + 2))];
+        days += count;
+      }
+      if (dayIndex <= days) {
+        dayIndex -= days - count;
+        break;
+      }
+      typeIndex++;
+    }
+    return new HideHeavenStemDay(new HideHeavenStem(heavenStemIndex, HideHeavenStemType.fromCode(typeIndex)), dayIndex);
   }
 
   /**

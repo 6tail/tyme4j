@@ -43,7 +43,7 @@ public class Fortune extends AbstractTyme {
    * @return 年龄
    */
   public int getAge() {
-    return childLimit.getYearCount() + 1 + index;
+    return childLimit.getEndTime().getYear() - childLimit.getStartTime().getYear() + 1 + index;
   }
 
   /**
@@ -52,7 +52,7 @@ public class Fortune extends AbstractTyme {
    * @return 农历年
    */
   public LunarYear getLunarYear() {
-    return childLimit.getEndTime().getLunarHour().getLunarDay().getLunarMonth().getLunarYear().next(index);
+    return childLimit.getEndLunarYear().next(index);
   }
 
   /**

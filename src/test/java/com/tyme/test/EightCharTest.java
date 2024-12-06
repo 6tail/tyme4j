@@ -445,7 +445,7 @@ public class EightCharTest {
     // 小运
     Fortune fortune = childLimit.getStartFortune();
     // 年龄
-    Assert.assertEquals(7, fortune.getAge());
+    Assert.assertEquals(8, fortune.getAge());
   }
 
   @Test
@@ -716,7 +716,7 @@ public class EightCharTest {
 
     ChildLimit childLimit = ChildLimit.fromSolarTime(SolarTime.fromYmdHms(1994, 10, 17, 1, 0, 0), Gender.MAN);
     Assert.assertEquals("2002年1月27日 01:00:00", childLimit.getEndTime().toString());
-    Assert.assertEquals("辛巳", childLimit.getStartDecadeFortune().getStartLunarYear().getSixtyCycle().getName());
+    Assert.assertEquals("壬午", childLimit.getStartDecadeFortune().getStartLunarYear().getSixtyCycle().getName());
 
     // 为了不影响其他测试用例，恢复默认起运算法
     ChildLimit.provider = new DefaultChildLimitProvider();
@@ -737,4 +737,5 @@ public class EightCharTest {
     Assert.assertEquals(expected, actual);
     LunarHour.provider = new DefaultEightCharProvider();
   }
+
 }

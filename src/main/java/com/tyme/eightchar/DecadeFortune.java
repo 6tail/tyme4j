@@ -43,7 +43,7 @@ public class DecadeFortune extends AbstractTyme {
    * @return 开始年龄
    */
   public int getStartAge() {
-    return childLimit.getYearCount() + 1 + index * 10;
+    return childLimit.getEndTime().getYear() - childLimit.getStartTime().getYear() + 1 + index * 10;
   }
 
   /**
@@ -61,7 +61,7 @@ public class DecadeFortune extends AbstractTyme {
    * @return 农历年
    */
   public LunarYear getStartLunarYear() {
-    return childLimit.getEndTime().getLunarHour().getLunarDay().getLunarMonth().getLunarYear().next(index * 10);
+    return childLimit.getEndLunarYear().next(index * 10);
   }
 
   /**
