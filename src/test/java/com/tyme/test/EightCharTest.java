@@ -7,6 +7,7 @@ import com.tyme.eightchar.Fortune;
 import com.tyme.eightchar.provider.impl.*;
 import com.tyme.enums.Gender;
 import com.tyme.lunar.LunarHour;
+import com.tyme.sixtycycle.EarthBranch;
 import com.tyme.sixtycycle.HeavenStem;
 import com.tyme.sixtycycle.SixtyCycle;
 import com.tyme.solar.SolarTime;
@@ -736,6 +737,17 @@ public class EightCharTest {
     expected.add("2022年6月15日 23:00:00");
     Assert.assertEquals(expected, actual);
     LunarHour.provider = new DefaultEightCharProvider();
+  }
+
+  /**
+   * 地势(长生十二神)
+   */
+  @Test
+  public void test47() {
+    // 日元(日主、日干)
+    HeavenStem me = HeavenStem.fromName("丙");
+    // 地势
+    Assert.assertEquals("长生", me.getTerrain(EarthBranch.fromName("寅")).getName());
   }
 
 }

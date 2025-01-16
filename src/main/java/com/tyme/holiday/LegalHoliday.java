@@ -34,10 +34,18 @@ public class LegalHoliday extends AbstractTyme {
    */
   protected boolean work;
 
+  /**
+   * 节假日当天的公历日
+   */
+  protected SolarDay target;
+
   public LegalHoliday(int year, int month, int day, String data) {
-    this.day = SolarDay.fromYmd(year, month, day);
+    SolarDay d = SolarDay.fromYmd(year, month, day);
+    this.day = d;
     work = '0' == data.charAt(8);
     name = NAMES[data.charAt(9) - '0'];
+    int offset = Integer.parseInt(data.substring(data.length()-2));
+    target = d.next('-' == data.charAt(10) ? -offset : offset);
   }
 
   public static LegalHoliday fromYmd(int year, int month, int day) {
@@ -115,6 +123,10 @@ public class LegalHoliday extends AbstractTyme {
 
   public String getName() {
     return name;
+  }
+
+  public SolarDay getTarget() {
+    return target;
   }
 
   /**
