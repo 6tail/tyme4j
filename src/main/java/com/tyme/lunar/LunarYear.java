@@ -2,6 +2,7 @@ package com.tyme.lunar;
 
 import com.tyme.AbstractTyme;
 import com.tyme.culture.Direction;
+import com.tyme.culture.KitchenGodSteed;
 import com.tyme.culture.Twenty;
 import com.tyme.culture.star.nine.NineStar;
 import com.tyme.sixtycycle.SixtyCycle;
@@ -180,4 +181,14 @@ public class LunarYear extends AbstractTyme {
     }
     return l;
   }
+
+  /**
+   * 灶马头
+   *
+   * @return 灶马头
+   */
+  public KitchenGodSteed getKitchenGodSteed() {
+    return KitchenGodSteed.fromLunarYear(year);
+  }
+
 }

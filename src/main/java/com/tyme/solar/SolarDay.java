@@ -256,16 +256,11 @@ public class SolarDay extends AbstractTyme {
    * @return 三伏天
    */
   public DogDay getDogDay() {
+    // 夏至
     SolarTerm xiaZhi = SolarTerm.fromIndex(getYear(), 12);
-    // 第1个庚日
     SolarDay start = xiaZhi.getJulianDay().getSolarDay();
-    int add = 6 - start.getLunarDay().getSixtyCycle().getHeavenStem().getIndex();
-    if (add < 0) {
-      add += 10;
-    }
     // 第3个庚日，即初伏第1天
-    add += 20;
-    start = start.next(add);
+    start = start.next(start.getLunarDay().getSixtyCycle().getHeavenStem().stepsTo(6) + 20);
     int days = subtract(start);
     // 初伏以前
     if (days < 0) {
@@ -322,22 +317,14 @@ public class SolarDay extends AbstractTyme {
     // 芒种
     SolarTerm grainInEar = SolarTerm.fromIndex(getYear(), 11);
     SolarDay start = grainInEar.getJulianDay().getSolarDay();
-    int add = 2 - start.getLunarDay().getSixtyCycle().getHeavenStem().getIndex();
-    if (add < 0) {
-      add += 10;
-    }
     // 芒种后的第1个丙日
-    start = start.next(add);
+    start = start.next(start.getLunarDay().getSixtyCycle().getHeavenStem().stepsTo(2));
 
     // 小暑
     SolarTerm slightHeat = grainInEar.next(2);
     SolarDay end = slightHeat.getJulianDay().getSolarDay();
-    add = 7 - end.getLunarDay().getSixtyCycle().getEarthBranch().getIndex();
-    if (add < 0) {
-      add += 12;
-    }
     // 小暑后的第1个未日
-    end = end.next(add);
+    end = end.next(end.getLunarDay().getSixtyCycle().getEarthBranch().stepsTo(7));
 
     if (isBefore(start) || isAfter(end)) {
       return null;

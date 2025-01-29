@@ -39,7 +39,7 @@ public class NineStar extends LoopTyme {
    * @return 颜色
    */
   public String getColor() {
-    return new String[]{"白", "黒", "碧", "绿", "黄", "白", "赤", "白", "紫"}[index];
+    return new String[]{"白", "黑", "碧", "绿", "黄", "白", "赤", "白", "紫"}[index];
   }
 
   /**
