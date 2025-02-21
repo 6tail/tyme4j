@@ -117,32 +117,8 @@ public class SolarDay extends AbstractTyme {
    * @return 星座
    */
   public Constellation getConstellation() {
-    int index = 11;
     int y = getMonth() * 100 + day;
-    if (y >= 321 && y <= 419) {
-      index = 0;
-    } else if (y >= 420 && y <= 520) {
-      index = 1;
-    } else if (y >= 521 && y <= 621) {
-      index = 2;
-    } else if (y >= 622 && y <= 722) {
-      index = 3;
-    } else if (y >= 723 && y <= 822) {
-      index = 4;
-    } else if (y >= 823 && y <= 922) {
-      index = 5;
-    } else if (y >= 923 && y <= 1023) {
-      index = 6;
-    } else if (y >= 1024 && y <= 1122) {
-      index = 7;
-    } else if (y >= 1123 && y <= 1221) {
-      index = 8;
-    } else if (y >= 1222 || y <= 119) {
-      index = 9;
-    } else if (y <= 218) {
-      index = 10;
-    }
-    return Constellation.fromIndex(index);
+    return Constellation.fromIndex(y > 1221 || y < 120 ? 9 : y < 219 ? 10 : y < 321 ? 11 : y < 420 ? 0 : y < 521 ? 1 : y < 622 ? 2 : y < 723 ? 3 : y < 823 ? 4 : y < 923 ? 5 : y < 1024 ? 6 : y < 1123 ? 7 : 8);
   }
 
   public String getName() {

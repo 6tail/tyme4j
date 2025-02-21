@@ -1,5 +1,6 @@
 package com.tyme.test;
 
+import com.tyme.lunar.LunarDay;
 import com.tyme.solar.SolarDay;
 import org.junit.Assert;
 import org.junit.Test;
@@ -90,6 +91,17 @@ public class SolarDayTest {
   @Test
   public void test23() {
     Assert.assertEquals("癸卯", SolarDay.fromYmd(2024, 2, 9).getLunarDay().getLunarMonth().getLunarYear().getSixtyCycle().getName());
+  }
+
+  @Test
+  public void test24() {
+    SolarDay prev = LunarDay.fromYmd(2025, 1, 1).getSolarDay();
+    SolarDay next = LunarDay.fromYmd(2026, 1, 1).getSolarDay();
+    SolarDay today = SolarDay.fromYmd(2025, 2, 17);
+    Assert.assertEquals("2025年1月29日", prev.toString());
+    Assert.assertEquals("2026年2月17日", next.toString());
+    Assert.assertEquals(384, next.subtract(prev));
+    Assert.assertEquals(365, next.subtract(today));
   }
 
 }

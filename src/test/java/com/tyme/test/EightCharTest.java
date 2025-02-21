@@ -309,9 +309,9 @@ public class EightCharTest {
     // 结束年龄
     Assert.assertEquals(19, decadeFortune.getEndAge());
     // 开始年
-    Assert.assertEquals(2001, decadeFortune.getStartLunarYear().getYear());
+    Assert.assertEquals(2000, decadeFortune.getStartLunarYear().getYear());
     // 结束年
-    Assert.assertEquals(2010, decadeFortune.getEndLunarYear().getYear());
+    Assert.assertEquals(2009, decadeFortune.getEndLunarYear().getYear());
     // 干支
     Assert.assertEquals("庚子", decadeFortune.getName());
     // 下一大运
@@ -322,7 +322,7 @@ public class EightCharTest {
     // 年龄
     Assert.assertEquals(10, fortune.getAge());
     // 农历年
-    Assert.assertEquals(2001, fortune.getLunarYear().getYear());
+    Assert.assertEquals(2000, fortune.getLunarYear().getYear());
     // 干支
     Assert.assertEquals("戊申", fortune.getName());
     // 小运推移
@@ -330,7 +330,7 @@ public class EightCharTest {
     Assert.assertEquals("庚戌", fortune.next(-2).getName());
 
     // 流年
-    Assert.assertEquals("辛巳", fortune.getLunarYear().getSixtyCycle().getName());
+    Assert.assertEquals("庚辰", fortune.getLunarYear().getSixtyCycle().getName());
   }
 
   /**
@@ -750,4 +750,17 @@ public class EightCharTest {
     Assert.assertEquals("长生", me.getTerrain(EarthBranch.fromName("寅")).getName());
   }
 
+  @Test
+  public void test48() {
+    // 童限
+    ChildLimit.provider = new LunarSect1ChildLimitProvider();
+
+    ChildLimit childLimit = ChildLimit.fromSolarTime(SolarTime.fromYmdHms(2025, 2, 18, 16, 0, 0), Gender.MAN);
+    Assert.assertEquals("甲寅", childLimit.getStartFortune().getSixtyCycle().getName());
+    Assert.assertEquals("2030年1月18日 16:00:00", childLimit.getEndTime().toString());
+    Assert.assertEquals("庚戌", childLimit.getEndLunarYear().getSixtyCycle().getName());
+    Assert.assertEquals("庚戌", childLimit.getStartFortune().getLunarYear().getSixtyCycle().getName());
+    // 为了不影响其他测试用例，恢复默认起运算法
+    ChildLimit.provider = new DefaultChildLimitProvider();
+  }
 }

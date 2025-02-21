@@ -79,18 +79,8 @@ public class SolarSeason extends AbstractTyme {
   }
 
   public SolarSeason next(int n) {
-    int i = index;
-    int y = getYear();
-    if (n != 0) {
-      i += n;
-      y += i / 4;
-      i %= 4;
-      if (i < 0) {
-        i += 4;
-        y -= 1;
-      }
-    }
-    return fromIndex(y, i);
+    int i = index + n;
+    return fromIndex((getYear() * 4 + i) / 4, indexOf(i, 4));
   }
 
   /**

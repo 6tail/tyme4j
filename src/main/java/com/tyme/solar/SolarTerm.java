@@ -14,23 +14,24 @@ public class SolarTerm extends LoopTyme {
   public static final String[] NAMES = {"冬至", "小寒", "大寒", "立春", "雨水", "惊蛰", "春分", "清明", "谷雨", "立夏", "小满", "芒种", "夏至", "小暑", "大暑", "立秋", "处暑", "白露", "秋分", "寒露", "霜降", "立冬", "小雪", "大雪"};
 
   /**
+   * 年
+   */
+  protected int year;
+
+  /**
    * 粗略的儒略日
    */
   protected double cursoryJulianDay;
 
   public SolarTerm(int year, int index) {
     super(NAMES, index);
-    initByYear(year, index);
+    int size = getSize();
+    initByYear((year * size + index) / size, getIndex());
   }
 
   public SolarTerm(int year, String name) {
     super(NAMES, name);
     initByYear(year, index);
-  }
-
-  public SolarTerm(double cursoryJulianDay, int index) {
-    super(NAMES, index);
-    this.cursoryJulianDay = cursoryJulianDay;
   }
 
   protected void initByYear(int year, int offset) {
@@ -40,6 +41,7 @@ public class SolarTerm extends LoopTyme {
     if (ShouXingUtil.calcQi(w) > jd) {
       w -= 365.2422;
     }
+    this.year = year;
     cursoryJulianDay = ShouXingUtil.calcQi(w + 15.2184 * offset);
   }
 
@@ -52,7 +54,9 @@ public class SolarTerm extends LoopTyme {
   }
 
   public SolarTerm next(int n) {
-    return new SolarTerm(cursoryJulianDay + 15.2184 * n, nextIndex(n));
+    int size = getSize();
+    int i = index + n;
+    return fromIndex((year * size + i) / size, indexOf(i));
   }
 
   /**
@@ -80,6 +84,15 @@ public class SolarTerm extends LoopTyme {
    */
   public JulianDay getJulianDay() {
     return JulianDay.fromJulianDay(ShouXingUtil.qiAccurate2(cursoryJulianDay) + JulianDay.J2000);
+  }
+
+  /**
+   * 年
+   *
+   * @return 年
+   */
+  public int getYear() {
+    return year;
   }
 
   /**

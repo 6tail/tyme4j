@@ -34,6 +34,8 @@ public class LunarFestivalTest {
   public void test2() {
     LunarFestival f = LunarFestival.fromIndex(2023, 0);
     Assert.assertNotNull(f);
+    Assert.assertEquals("农历癸卯年正月初一 春节", f.toString());
+    Assert.assertEquals("农历癸卯年十一月初十 冬至节", f.next(10).toString());
     Assert.assertEquals("农历甲辰年正月初一 春节", f.next(13).toString());
     Assert.assertEquals("农历壬寅年十一月廿九 冬至节", f.next(-3).toString());
   }
