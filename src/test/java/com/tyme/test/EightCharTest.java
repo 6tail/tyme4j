@@ -258,9 +258,9 @@ public class EightCharTest {
     // 结束年龄
     Assert.assertEquals(16, decadeFortune.getEndAge());
     // 开始年
-    Assert.assertEquals(1989, decadeFortune.getStartLunarYear().getYear());
+    Assert.assertEquals(1989, decadeFortune.getStartSixtyCycleYear().getYear());
     // 结束年
-    Assert.assertEquals(1998, decadeFortune.getEndLunarYear().getYear());
+    Assert.assertEquals(1998, decadeFortune.getEndSixtyCycleYear().getYear());
     // 干支
     Assert.assertEquals("乙卯", decadeFortune.getName());
     // 下一大运
@@ -275,12 +275,12 @@ public class EightCharTest {
     // 年龄
     Assert.assertEquals(7, fortune.getAge());
     // 农历年
-    Assert.assertEquals(1989, fortune.getLunarYear().getYear());
+    Assert.assertEquals(1989, fortune.getSixtyCycleYear().getYear());
     // 干支
     Assert.assertEquals("辛巳", fortune.getName());
 
     // 流年
-    Assert.assertEquals("己巳", fortune.getLunarYear().getSixtyCycle().getName());
+    Assert.assertEquals("己巳", fortune.getSixtyCycleYear().getSixtyCycle().getName());
   }
 
   @Test
@@ -309,9 +309,9 @@ public class EightCharTest {
     // 结束年龄
     Assert.assertEquals(19, decadeFortune.getEndAge());
     // 开始年
-    Assert.assertEquals(2000, decadeFortune.getStartLunarYear().getYear());
+    Assert.assertEquals(2001, decadeFortune.getStartSixtyCycleYear().getYear());
     // 结束年
-    Assert.assertEquals(2009, decadeFortune.getEndLunarYear().getYear());
+    Assert.assertEquals(2010, decadeFortune.getEndSixtyCycleYear().getYear());
     // 干支
     Assert.assertEquals("庚子", decadeFortune.getName());
     // 下一大运
@@ -322,7 +322,7 @@ public class EightCharTest {
     // 年龄
     Assert.assertEquals(10, fortune.getAge());
     // 农历年
-    Assert.assertEquals(2000, fortune.getLunarYear().getYear());
+    Assert.assertEquals(2001, fortune.getSixtyCycleYear().getYear());
     // 干支
     Assert.assertEquals("戊申", fortune.getName());
     // 小运推移
@@ -330,7 +330,7 @@ public class EightCharTest {
     Assert.assertEquals("庚戌", fortune.next(-2).getName());
 
     // 流年
-    Assert.assertEquals("庚辰", fortune.getLunarYear().getSixtyCycle().getName());
+    Assert.assertEquals("辛巳", fortune.getSixtyCycleYear().getSixtyCycle().getName());
   }
 
   /**
@@ -498,12 +498,22 @@ public class EightCharTest {
 
   @Test
   public void test26() {
-    Assert.assertEquals("己丑", SolarTime.fromYmdHms(1986, 5, 29, 13, 37, 0).getLunarHour().getEightChar().getBodySign().getName());
+    EightChar eightChar = SolarTime.fromYmdHms(1986, 5, 29, 13, 37, 0).getLunarHour().getEightChar();
+    Assert.assertEquals("丙寅 癸巳 癸酉 己未", eightChar.toString());
+    Assert.assertEquals("癸巳", eightChar.getOwnSign().getName());
+    Assert.assertEquals("辛丑", eightChar.getBodySign().getName());
+    Assert.assertEquals("甲申", eightChar.getFetalOrigin().getName());
+    Assert.assertEquals("戊辰", eightChar.getFetalBreath().getName());
   }
 
   @Test
   public void test27() {
-    Assert.assertEquals("乙丑", SolarTime.fromYmdHms(1994, 12, 6, 2, 0, 0).getLunarHour().getEightChar().getBodySign().getName());
+    EightChar eightChar = SolarTime.fromYmdHms(1994, 12, 6, 2, 0, 0).getLunarHour().getEightChar();
+    Assert.assertEquals("甲戌 乙亥 丙寅 己丑", eightChar.toString());
+    Assert.assertEquals("己巳", eightChar.getOwnSign().getName());
+    Assert.assertEquals("丁丑", eightChar.getBodySign().getName());
+    Assert.assertEquals("丙寅", eightChar.getFetalOrigin().getName());
+    Assert.assertEquals("辛亥", eightChar.getFetalBreath().getName());
   }
 
   @Test
@@ -717,7 +727,7 @@ public class EightCharTest {
 
     ChildLimit childLimit = ChildLimit.fromSolarTime(SolarTime.fromYmdHms(1994, 10, 17, 1, 0, 0), Gender.MAN);
     Assert.assertEquals("2002年1月27日 01:00:00", childLimit.getEndTime().toString());
-    Assert.assertEquals("壬午", childLimit.getStartDecadeFortune().getStartLunarYear().getSixtyCycle().getName());
+    Assert.assertEquals("壬午", childLimit.getStartDecadeFortune().getStartSixtyCycleYear().getSixtyCycle().getName());
 
     // 为了不影响其他测试用例，恢复默认起运算法
     ChildLimit.provider = new DefaultChildLimitProvider();
@@ -758,9 +768,18 @@ public class EightCharTest {
     ChildLimit childLimit = ChildLimit.fromSolarTime(SolarTime.fromYmdHms(2025, 2, 18, 16, 0, 0), Gender.MAN);
     Assert.assertEquals("甲寅", childLimit.getStartFortune().getSixtyCycle().getName());
     Assert.assertEquals("2030年1月18日 16:00:00", childLimit.getEndTime().toString());
-    Assert.assertEquals("庚戌", childLimit.getEndLunarYear().getSixtyCycle().getName());
-    Assert.assertEquals("庚戌", childLimit.getStartFortune().getLunarYear().getSixtyCycle().getName());
+    Assert.assertEquals("庚戌", childLimit.getEndSixtyCycleYear().getSixtyCycle().getName());
+    Assert.assertEquals("庚戌", childLimit.getStartFortune().getSixtyCycleYear().getSixtyCycle().getName());
     // 为了不影响其他测试用例，恢复默认起运算法
     ChildLimit.provider = new DefaultChildLimitProvider();
+  }
+
+  @Test
+  public void test49() {
+    EightChar eightChar = SolarTime.fromYmdHms(1980, 6, 15, 12, 30, 30).getLunarHour().getEightChar();
+    Assert.assertEquals("辛巳", eightChar.getOwnSign().getName());
+    Assert.assertEquals("己丑", eightChar.getBodySign().getName());
+    Assert.assertEquals("癸酉", eightChar.getFetalOrigin().getName());
+    Assert.assertEquals("甲午", eightChar.getFetalBreath().getName());
   }
 }

@@ -182,4 +182,10 @@ public class WeekTest {
     Assert.assertEquals("农历甲辰年五月第一周", week.next(-4).toString());
   }
 
+  @Test
+  public void test26(){
+    SolarWeek week = SolarDay.fromYmd(2025, 3, 6).getSolarWeek(0);
+    Assert.assertEquals("2025年3月第二周", week.toString());
+    Assert.assertEquals("2025年3月2日", week.getFirstDay().toString());
+  }
 }

@@ -1,6 +1,7 @@
 package com.tyme.test;
 
 import com.tyme.lunar.LunarHour;
+import com.tyme.sixtycycle.SixtyCycleHour;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -63,17 +64,18 @@ public class LunarHourTest {
   @Test
   public void test8() {
     LunarHour h = LunarHour.fromYmdHms(2023, 11, 14, 23, 0, 0);
+    SixtyCycleHour sixtyCycleHour = h.getSixtyCycleHour();
     Assert.assertEquals("甲子", h.getSixtyCycle().getName());
 
-    Assert.assertEquals("己未", h.getDaySixtyCycle().getName());
+    Assert.assertEquals("己未", sixtyCycleHour.getDay().getName());
     Assert.assertEquals("戊午", h.getLunarDay().getSixtyCycle().getName());
     Assert.assertEquals("农历癸卯年十一月十四", h.getLunarDay().toString());
 
-    Assert.assertEquals("甲子", h.getMonthSixtyCycle().getName());
+    Assert.assertEquals("甲子", sixtyCycleHour.getMonth().getName());
     Assert.assertEquals("农历癸卯年十一月", h.getLunarDay().getLunarMonth().toString());
     Assert.assertEquals("乙丑", h.getLunarDay().getLunarMonth().getSixtyCycle().getName());
 
-    Assert.assertEquals("癸卯", h.getYearSixtyCycle().getName());
+    Assert.assertEquals("癸卯", sixtyCycleHour.getYear().getName());
     Assert.assertEquals("农历癸卯年", h.getLunarDay().getLunarMonth().getLunarYear().toString());
     Assert.assertEquals("癸卯", h.getLunarDay().getLunarMonth().getLunarYear().getSixtyCycle().getName());
   }
@@ -81,17 +83,18 @@ public class LunarHourTest {
   @Test
   public void test9() {
     LunarHour h = LunarHour.fromYmdHms(2023, 11, 14, 6, 0, 0);
+    SixtyCycleHour sixtyCycleHour = h.getSixtyCycleHour();
     Assert.assertEquals("乙卯", h.getSixtyCycle().getName());
 
-    Assert.assertEquals("戊午", h.getDaySixtyCycle().getName());
+    Assert.assertEquals("戊午", sixtyCycleHour.getDay().getName());
     Assert.assertEquals("戊午", h.getLunarDay().getSixtyCycle().getName());
     Assert.assertEquals("农历癸卯年十一月十四", h.getLunarDay().toString());
 
-    Assert.assertEquals("甲子", h.getMonthSixtyCycle().getName());
+    Assert.assertEquals("甲子", sixtyCycleHour.getMonth().getName());
     Assert.assertEquals("农历癸卯年十一月", h.getLunarDay().getLunarMonth().toString());
     Assert.assertEquals("乙丑", h.getLunarDay().getLunarMonth().getSixtyCycle().getName());
 
-    Assert.assertEquals("癸卯", h.getYearSixtyCycle().getName());
+    Assert.assertEquals("癸卯", sixtyCycleHour.getYear().getName());
     Assert.assertEquals("农历癸卯年", h.getLunarDay().getLunarMonth().getLunarYear().toString());
     Assert.assertEquals("癸卯", h.getLunarDay().getLunarMonth().getLunarYear().getSixtyCycle().getName());
   }

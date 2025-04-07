@@ -12,6 +12,7 @@ import com.tyme.festival.LunarFestival;
 import com.tyme.sixtycycle.EarthBranch;
 import com.tyme.sixtycycle.HeavenStem;
 import com.tyme.sixtycycle.SixtyCycle;
+import com.tyme.sixtycycle.SixtyCycleDay;
 import com.tyme.solar.SolarDay;
 import com.tyme.solar.SolarTerm;
 
@@ -36,6 +37,16 @@ public class LunarDay extends AbstractTyme {
    * 日
    */
   protected int day;
+
+  /**
+   * 公历日（第一次使用时才会初始化）
+   */
+  protected SolarDay solarDay;
+
+  /**
+   * 干支日（第一次使用时才会初始化）
+   */
+  protected SixtyCycleDay sixtyCycleDay;
 
   /**
    * 初始化
@@ -110,7 +121,7 @@ public class LunarDay extends AbstractTyme {
   }
 
   public LunarDay next(int n) {
-    return 0 != n ? getSolarDay().next(n).getLunarDay() : fromYmd(getYear(), getMonth(), day);
+    return getSolarDay().next(n).getLunarDay();
   }
 
   /**
@@ -166,40 +177,22 @@ public class LunarDay extends AbstractTyme {
    * 当天的年干支（立春换）
    *
    * @return 干支
+   * @see SixtyCycleDay#getYear()
    */
+  @Deprecated
   public SixtyCycle getYearSixtyCycle() {
-    SolarDay solarDay = getSolarDay();
-    int solarYear = solarDay.getYear();
-    SolarDay springSolarDay = SolarTerm.fromIndex(solarYear, 3).getJulianDay().getSolarDay();
-    LunarYear lunarYear = month.getLunarYear();
-    int year = lunarYear.getYear();
-    SixtyCycle sixtyCycle = lunarYear.getSixtyCycle();
-    if (year == solarYear) {
-      if (solarDay.isBefore(springSolarDay)) {
-        sixtyCycle = sixtyCycle.next(-1);
-      }
-    } else if (year < solarYear) {
-      if (!solarDay.isBefore(springSolarDay)) {
-        sixtyCycle = sixtyCycle.next(1);
-      }
-    }
-    return sixtyCycle;
+    return getSixtyCycleDay().getYear();
   }
 
   /**
    * 当天的月干支（节气换）
    *
    * @return 干支
+   * @see SixtyCycleDay#getMonth()
    */
+  @Deprecated
   public SixtyCycle getMonthSixtyCycle() {
-    SolarDay solarDay = getSolarDay();
-    int year = solarDay.getYear();
-    SolarTerm term = solarDay.getTerm();
-    int index = term.getIndex() - 3;
-    if (index < 0 && term.getJulianDay().getSolarDay().isAfter(SolarTerm.fromIndex(year, 3).getJulianDay().getSolarDay())) {
-      index += 24;
-    }
-    return LunarMonth.fromYm(year, 1).getSixtyCycle().next((int) Math.floor(index * 1D / 2));
+    return getSixtyCycleDay().getMonth();
   }
 
   /**
@@ -216,18 +209,20 @@ public class LunarDay extends AbstractTyme {
    * 建除十二值神
    *
    * @return 建除十二值神
+   * @see SixtyCycleDay
    */
   public Duty getDuty() {
-    return Duty.fromIndex(getSixtyCycle().getEarthBranch().getIndex() - getMonthSixtyCycle().getEarthBranch().getIndex());
+    return getSixtyCycleDay().getDuty();
   }
 
   /**
    * 黄道黑道十二神
    *
    * @return 黄道黑道十二神
+   * @see SixtyCycleDay
    */
   public TwelveStar getTwelveStar() {
-    return TwelveStar.fromIndex(getSixtyCycle().getEarthBranch().getIndex() + (8 - getMonthSixtyCycle().getEarthBranch().getIndex() % 6) * 2);
+    return getSixtyCycleDay().getTwelveStar();
   }
 
   /**
@@ -236,8 +231,8 @@ public class LunarDay extends AbstractTyme {
    * @return 九星
    */
   public NineStar getNineStar() {
-    SolarDay solar = getSolarDay();
-    SolarTerm dongZhi = SolarTerm.fromIndex(solar.getYear(), 0);
+    SolarDay d = getSolarDay();
+    SolarTerm dongZhi = SolarTerm.fromIndex(d.getYear(), 0);
     SolarTerm xiaZhi = dongZhi.next(12);
     SolarTerm dongZhi2 = dongZhi.next(24);
     SolarDay dongZhiSolar = dongZhi.getJulianDay().getSolarDay();
@@ -250,14 +245,14 @@ public class LunarDay extends AbstractTyme {
     SolarDay solarShunBai2 = dongZhiSolar2.next(dongZhiIndex2 > 29 ? 60 - dongZhiIndex2 : -dongZhiIndex2);
     SolarDay solarNiZi = xiaZhiSolar.next(xiaZhiIndex > 29 ? 60 - xiaZhiIndex : -xiaZhiIndex);
     int offset = 0;
-    if (!solar.isBefore(solarShunBai) && solar.isBefore(solarNiZi)) {
-      offset = solar.subtract(solarShunBai);
-    } else if (!solar.isBefore(solarNiZi) && solar.isBefore(solarShunBai2)) {
-      offset = 8 - solar.subtract(solarNiZi);
-    } else if (!solar.isBefore(solarShunBai2)) {
-      offset = solar.subtract(solarShunBai2);
-    } else if (solar.isBefore(solarShunBai)) {
-      offset = 8 + solarShunBai.subtract(solar);
+    if (!d.isBefore(solarShunBai) && d.isBefore(solarNiZi)) {
+      offset = d.subtract(solarShunBai);
+    } else if (!d.isBefore(solarNiZi) && d.isBefore(solarShunBai2)) {
+      offset = 8 - d.subtract(solarNiZi);
+    } else if (!d.isBefore(solarShunBai2)) {
+      offset = d.subtract(solarShunBai2);
+    } else if (d.isBefore(solarShunBai)) {
+      offset = 8 + solarShunBai.subtract(d);
     }
     return NineStar.fromIndex(offset);
   }
@@ -305,7 +300,22 @@ public class LunarDay extends AbstractTyme {
    * @return 公历日
    */
   public SolarDay getSolarDay() {
-    return month.getFirstJulianDay().next(day - 1).getSolarDay();
+    if (null == solarDay) {
+      solarDay = month.getFirstJulianDay().next(day - 1).getSolarDay();
+    }
+    return solarDay;
+  }
+
+  /**
+   * 干支日
+   *
+   * @return 干支日
+   */
+  public SixtyCycleDay getSixtyCycleDay() {
+    if (null == sixtyCycleDay) {
+      sixtyCycleDay = getSolarDay().getSixtyCycleDay();
+    }
+    return sixtyCycleDay;
   }
 
   /**
@@ -327,9 +337,9 @@ public class LunarDay extends AbstractTyme {
   }
 
   /**
-   * 当天的时辰列表
+   * 当天的农历时辰列表
    *
-   * @return 时辰列表
+   * @return 农历时辰列表
    */
   public List<LunarHour> getHours() {
     List<LunarHour> l = new ArrayList<>();
@@ -348,7 +358,7 @@ public class LunarDay extends AbstractTyme {
    * @return 神煞列表
    */
   public List<God> getGods() {
-    return God.getDayGods(getMonthSixtyCycle(), getSixtyCycle());
+    return getSixtyCycleDay().getGods();
   }
 
   /**
@@ -357,7 +367,7 @@ public class LunarDay extends AbstractTyme {
    * @return 宜忌列表
    */
   public List<Taboo> getRecommends() {
-    return Taboo.getDayRecommends(getMonthSixtyCycle(), getSixtyCycle());
+    return getSixtyCycleDay().getRecommends();
   }
 
   /**
@@ -366,7 +376,7 @@ public class LunarDay extends AbstractTyme {
    * @return 宜忌列表
    */
   public List<Taboo> getAvoids() {
-    return Taboo.getDayAvoids(getMonthSixtyCycle(), getSixtyCycle());
+    return getSixtyCycleDay().getAvoids();
   }
 
   /**

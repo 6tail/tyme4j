@@ -3,6 +3,7 @@ package com.tyme.eightchar;
 import com.tyme.AbstractTyme;
 import com.tyme.lunar.LunarYear;
 import com.tyme.sixtycycle.SixtyCycle;
+import com.tyme.sixtycycle.SixtyCycleYear;
 
 /**
  * 大运（10年1大运）
@@ -43,7 +44,7 @@ public class DecadeFortune extends AbstractTyme {
    * @return 开始年龄
    */
   public int getStartAge() {
-    return childLimit.getEndTime().getYear() - childLimit.getStartTime().getYear() + 1 + index * 10;
+    return childLimit.getEndSixtyCycleYear().getYear() - childLimit.getStartSixtyCycleYear().getYear() + 1 + index * 10;
   }
 
   /**
@@ -59,7 +60,9 @@ public class DecadeFortune extends AbstractTyme {
    * 开始农历年
    *
    * @return 农历年
+   * @see #getStartSixtyCycleYear()
    */
+  @Deprecated
   public LunarYear getStartLunarYear() {
     return childLimit.getEndLunarYear().next(index * 10);
   }
@@ -68,9 +71,29 @@ public class DecadeFortune extends AbstractTyme {
    * 结束农历年
    *
    * @return 农历年
+   * @see #getEndSixtyCycleYear()
    */
+  @Deprecated
   public LunarYear getEndLunarYear() {
     return getStartLunarYear().next(9);
+  }
+
+  /**
+   * 开始干支年
+   *
+   * @return 干支年
+   */
+  public SixtyCycleYear getStartSixtyCycleYear() {
+    return childLimit.getEndSixtyCycleYear().next(index * 10);
+  }
+
+  /**
+   * 结束干支年
+   *
+   * @return 干支年
+   */
+  public SixtyCycleYear getEndSixtyCycleYear() {
+    return getStartSixtyCycleYear().next(9);
   }
 
   /**
@@ -80,7 +103,7 @@ public class DecadeFortune extends AbstractTyme {
    */
   public SixtyCycle getSixtyCycle() {
     int n = index + 1;
-    return childLimit.getEightChar().getMonth().next(childLimit.isForward() ? n: -n);
+    return childLimit.getEightChar().getMonth().next(childLimit.isForward() ? n : -n);
   }
 
   public String getName() {

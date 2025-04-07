@@ -20,14 +20,14 @@ import java.util.Map;
 public class LunarYear extends AbstractTyme {
 
   /**
-   * 缓存{闰月:年}
-   */
-  protected static final Map<Integer, List<Integer>> LEAP = new HashMap<>(12);
-
-  /**
    * 年
    */
   protected int year;
+
+  /**
+   * 缓存{闰月:年}
+   */
+  protected static final Map<Integer, List<Integer>> LEAP = new HashMap<>(12);
 
   static {
     String chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_@";
@@ -80,6 +80,15 @@ public class LunarYear extends AbstractTyme {
   }
 
   /**
+   * 干支
+   *
+   * @return 干支
+   */
+  public SixtyCycle getSixtyCycle() {
+    return SixtyCycle.fromIndex(year - 4);
+  }
+
+  /**
    * 天数
    *
    * @return 天数
@@ -110,36 +119,6 @@ public class LunarYear extends AbstractTyme {
     return String.format("农历%s年", getSixtyCycle());
   }
 
-  public LunarYear next(int n) {
-    return fromYear(year + n);
-  }
-
-  /**
-   * 闰月
-   *
-   * @return 闰月数字，1代表闰1月，0代表无闰月
-   */
-  public int getLeapMonth() {
-    if (year == -1) {
-      return 11;
-    }
-    for (Map.Entry<Integer, List<Integer>> entry : LEAP.entrySet()) {
-      if (entry.getValue().contains(year)) {
-        return entry.getKey();
-      }
-    }
-    return 0;
-  }
-
-  /**
-   * 干支
-   *
-   * @return 干支
-   */
-  public SixtyCycle getSixtyCycle() {
-    return SixtyCycle.fromIndex(year - 4);
-  }
-
   /**
    * 运
    *
@@ -167,6 +146,36 @@ public class LunarYear extends AbstractTyme {
     return Direction.fromIndex(new int[]{0, 7, 7, 2, 3, 3, 8, 1, 1, 6, 0, 0}[getSixtyCycle().getEarthBranch().getIndex()]);
   }
 
+  public LunarYear next(int n) {
+    return fromYear(year + n);
+  }
+
+  /**
+   * 闰月
+   *
+   * @return 闰月数字，1代表闰1月，0代表无闰月
+   */
+  public int getLeapMonth() {
+    if (year == -1) {
+      return 11;
+    }
+    for (Map.Entry<Integer, List<Integer>> entry : LEAP.entrySet()) {
+      if (entry.getValue().contains(year)) {
+        return entry.getKey();
+      }
+    }
+    return 0;
+  }
+
+  /**
+   * 首月（农历月，即一月，俗称正月）
+   *
+   * @return 农历月
+   */
+  public LunarMonth getFirstMonth() {
+    return LunarMonth.fromYm(year, 1);
+  }
+
   /**
    * 月份列表
    *
@@ -174,7 +183,7 @@ public class LunarYear extends AbstractTyme {
    */
   public List<LunarMonth> getMonths() {
     List<LunarMonth> l = new ArrayList<>(13);
-    LunarMonth m = LunarMonth.fromYm(year, 1);
+    LunarMonth m = getFirstMonth();
     while (m.getYear() == year) {
       l.add(m);
       m = m.next(1);

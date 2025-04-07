@@ -292,7 +292,7 @@ public class LunarMonth extends AbstractTyme {
   }
 
   /**
-   * 获取本月的农历日列表
+   * 本月的农历日列表
    *
    * @return 农历日列表
    */

@@ -11,6 +11,7 @@ import com.tyme.eightchar.provider.impl.DefaultEightCharProvider;
 import com.tyme.sixtycycle.EarthBranch;
 import com.tyme.sixtycycle.HeavenStem;
 import com.tyme.sixtycycle.SixtyCycle;
+import com.tyme.sixtycycle.SixtyCycleHour;
 import com.tyme.solar.SolarDay;
 import com.tyme.solar.SolarTerm;
 import com.tyme.solar.SolarTime;
@@ -18,7 +19,7 @@ import com.tyme.solar.SolarTime;
 import java.util.List;
 
 /**
- * 时辰
+ * 农历时辰
  *
  * @author 6tail
  */
@@ -48,6 +49,16 @@ public class LunarHour extends AbstractTyme {
    * 秒
    */
   protected int second;
+
+  /**
+   * 公历时刻（第一次使用时才会初始化）
+   */
+  protected SolarTime solarTime;
+
+  /**
+   * 干支时辰（第一次使用时才会初始化）
+   */
+  protected SixtyCycleHour sixtyCycleHour;
 
   /**
    * 初始化
@@ -223,50 +234,33 @@ public class LunarHour extends AbstractTyme {
    * 当时的年干支（立春换）
    *
    * @return 干支
+   * @see SixtyCycleHour#getYear()
    */
+  @Deprecated
   public SixtyCycle getYearSixtyCycle() {
-    SolarTime solarTime = getSolarTime();
-    int solarYear = day.getSolarDay().getYear();
-    SolarTime springSolarTime = SolarTerm.fromIndex(solarYear, 3).getJulianDay().getSolarTime();
-    LunarYear lunarYear = day.getLunarMonth().getLunarYear();
-    int year = lunarYear.getYear();
-    SixtyCycle sixtyCycle = lunarYear.getSixtyCycle();
-    if (year == solarYear) {
-      if (solarTime.isBefore(springSolarTime)) {
-        sixtyCycle = sixtyCycle.next(-1);
-      }
-    } else if (year < solarYear) {
-      if (!solarTime.isBefore(springSolarTime)) {
-        sixtyCycle = sixtyCycle.next(1);
-      }
-    }
-    return sixtyCycle;
+    return getSixtyCycleHour().getYear();
   }
 
   /**
    * 当时的月干支（节气换）
    *
    * @return 干支
+   * @see SixtyCycleHour#getMonth()
    */
+  @Deprecated
   public SixtyCycle getMonthSixtyCycle() {
-    SolarTime solarTime = getSolarTime();
-    int year = solarTime.getYear();
-    SolarTerm term = solarTime.getTerm();
-    int index = term.getIndex() - 3;
-    if (index < 0 && term.getJulianDay().getSolarTime().isAfter(SolarTerm.fromIndex(year, 3).getJulianDay().getSolarTime())) {
-      index += 24;
-    }
-    return LunarMonth.fromYm(year, 1).getSixtyCycle().next((int) Math.floor(index * 1D / 2));
+    return getSixtyCycleHour().getMonth();
   }
 
   /**
    * 当时的日干支（23:00开始算做第二天）
    *
    * @return 干支
+   * @see SixtyCycleHour#getDay()
    */
+  @Deprecated
   public SixtyCycle getDaySixtyCycle() {
-    SixtyCycle d = day.getSixtyCycle();
-    return hour < 23 ? d : d.next(1);
+    return getSixtyCycleHour().getDay();
   }
 
   /**
@@ -276,7 +270,11 @@ public class LunarHour extends AbstractTyme {
    */
   public SixtyCycle getSixtyCycle() {
     int earthBranchIndex = getIndexInDay() % 12;
-    int heavenStemIndex = getDaySixtyCycle().getHeavenStem().getIndex() % 5 * 2 + earthBranchIndex;
+    SixtyCycle d = day.getSixtyCycle();
+    if (hour >= 23) {
+      d = d.next(1);
+    }
+    int heavenStemIndex = d.getHeavenStem().getIndex() % 5 * 2 + earthBranchIndex;
     return SixtyCycle.fromName(HeavenStem.fromIndex(heavenStemIndex).getName() + EarthBranch.fromIndex(earthBranchIndex).getName());
   }
 
@@ -286,7 +284,7 @@ public class LunarHour extends AbstractTyme {
    * @return 黄道黑道十二神
    */
   public TwelveStar getTwelveStar() {
-    return TwelveStar.fromIndex(getSixtyCycle().getEarthBranch().getIndex() + (8 - getDaySixtyCycle().getEarthBranch().getIndex() % 6) * 2);
+    return TwelveStar.fromIndex(getSixtyCycle().getEarthBranch().getIndex() + (8 - getSixtyCycleHour().getDay().getEarthBranch().getIndex() % 6) * 2);
   }
 
   /**
@@ -313,8 +311,11 @@ public class LunarHour extends AbstractTyme {
    * @return 公历时刻
    */
   public SolarTime getSolarTime() {
-    SolarDay d = day.getSolarDay();
-    return SolarTime.fromYmdHms(d.getYear(), d.getMonth(), d.getDay(), hour, minute, second);
+    if (null == solarTime) {
+      SolarDay d = day.getSolarDay();
+      solarTime = SolarTime.fromYmdHms(d.getYear(), d.getMonth(), d.getDay(), hour, minute, second);
+    }
+    return solarTime;
   }
 
   /**
@@ -327,12 +328,24 @@ public class LunarHour extends AbstractTyme {
   }
 
   /**
+   * 干支时辰
+   *
+   * @return 干支时辰
+   */
+  public SixtyCycleHour getSixtyCycleHour() {
+    if (null == sixtyCycleHour) {
+      sixtyCycleHour = getSolarTime().getSixtyCycleHour();
+    }
+    return sixtyCycleHour;
+  }
+
+  /**
    * 宜
    *
    * @return 宜忌列表
    */
   public List<Taboo> getRecommends() {
-    return Taboo.getHourRecommends(getDaySixtyCycle(), getSixtyCycle());
+    return Taboo.getHourRecommends(getSixtyCycleHour().getDay(), getSixtyCycle());
   }
 
   /**
@@ -341,7 +354,7 @@ public class LunarHour extends AbstractTyme {
    * @return 宜忌列表
    */
   public List<Taboo> getAvoids() {
-    return Taboo.getHourAvoids(getDaySixtyCycle(), getSixtyCycle());
+    return Taboo.getHourAvoids(getSixtyCycleHour().getDay(), getSixtyCycle());
   }
 
   /**

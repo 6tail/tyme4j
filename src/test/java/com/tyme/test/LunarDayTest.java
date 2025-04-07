@@ -163,7 +163,7 @@ public class LunarDayTest {
   public void test26() {
     LunarDay lunar = LunarDay.fromYmd(2005, 11, 23);
     Assert.assertEquals("戊子", lunar.getLunarMonth().getSixtyCycle().getName());
-    Assert.assertEquals("戊子", lunar.getMonthSixtyCycle().getName());
+    Assert.assertEquals("戊子", lunar.getSixtyCycleDay().getMonth().getName());
   }
 
   @Test

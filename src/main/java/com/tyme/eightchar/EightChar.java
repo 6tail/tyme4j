@@ -5,6 +5,7 @@ import com.tyme.culture.Duty;
 import com.tyme.sixtycycle.EarthBranch;
 import com.tyme.sixtycycle.HeavenStem;
 import com.tyme.sixtycycle.SixtyCycle;
+import com.tyme.sixtycycle.SixtyCycleDay;
 import com.tyme.solar.SolarDay;
 import com.tyme.solar.SolarTerm;
 import com.tyme.solar.SolarTime;
@@ -138,9 +139,7 @@ public class EightChar extends AbstractCulture {
    * @return 身宫
    */
   public SixtyCycle getBodySign() {
-    int offset = month.getEarthBranch().getIndex() + hour.getEarthBranch().getIndex();
-    offset %= 12;
-    offset -= 1;
+    int offset = (month.getEarthBranch().getIndex() + hour.getEarthBranch().getIndex() - 1) % 12;
     return SixtyCycle.fromName(HeavenStem.fromIndex((year.getHeavenStem().getIndex() + 1) * 2 + offset).getName() + EarthBranch.fromIndex(2 + offset).getName());
   }
 
@@ -148,7 +147,9 @@ public class EightChar extends AbstractCulture {
    * 建除十二值神
    *
    * @return 建除十二值神
+   * @see SixtyCycleDay#getDuty()
    */
+  @Deprecated
   public Duty getDuty() {
     return Duty.fromIndex(day.getEarthBranch().getIndex() - month.getEarthBranch().getIndex());
   }

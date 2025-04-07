@@ -163,38 +163,48 @@ public class LunarMonthTest {
 
   @Test
   public void test29() {
-    LunarDay d = SolarDay.fromYmd(2023, 10, 7).getLunarDay();
-    Assert.assertEquals("壬戌", d.getLunarMonth().getSixtyCycle().toString());
-    Assert.assertEquals("辛酉", d.getMonthSixtyCycle().toString());
+    SolarDay solarDay = SolarDay.fromYmd(2023, 10, 7);
+    LunarDay lunarDay = solarDay.getLunarDay();
+    Assert.assertEquals("壬戌", lunarDay.getLunarMonth().getSixtyCycle().toString());
+    Assert.assertEquals("辛酉", lunarDay.getSixtyCycleDay().getMonth().toString());
+    Assert.assertEquals("辛酉", solarDay.getSixtyCycleDay().getMonth().toString());
   }
 
   @Test
   public void test30() {
-    LunarDay d = SolarDay.fromYmd(2023, 10, 8).getLunarDay();
-    Assert.assertEquals("壬戌", d.getLunarMonth().getSixtyCycle().toString());
-    Assert.assertEquals("壬戌", d.getMonthSixtyCycle().toString());
+    SolarDay solarDay = SolarDay.fromYmd(2023, 10, 8);
+    LunarDay lunarDay = solarDay.getLunarDay();
+    Assert.assertEquals("壬戌", lunarDay.getLunarMonth().getSixtyCycle().toString());
+    Assert.assertEquals("壬戌", lunarDay.getSixtyCycleDay().getMonth().toString());
+    Assert.assertEquals("壬戌", solarDay.getSixtyCycleDay().getMonth().toString());
   }
 
   @Test
   public void test31() {
-    LunarDay d = SolarDay.fromYmd(2023, 10, 15).getLunarDay();
-    Assert.assertEquals("九月", d.getLunarMonth().getName());
-    Assert.assertEquals("癸亥", d.getLunarMonth().getSixtyCycle().toString());
-    Assert.assertEquals("壬戌", d.getMonthSixtyCycle().toString());
+    SolarDay solarDay = SolarDay.fromYmd(2023, 10, 15);
+    LunarDay lunarDay = solarDay.getLunarDay();
+    Assert.assertEquals("九月", lunarDay.getLunarMonth().getName());
+    Assert.assertEquals("癸亥", lunarDay.getLunarMonth().getSixtyCycle().toString());
+    Assert.assertEquals("壬戌", lunarDay.getSixtyCycleDay().getMonth().toString());
+    Assert.assertEquals("壬戌", solarDay.getSixtyCycleDay().getMonth().toString());
   }
 
   @Test
   public void test32() {
-    LunarDay d = SolarDay.fromYmd(2023, 11, 7).getLunarDay();
-    Assert.assertEquals("癸亥", d.getLunarMonth().getSixtyCycle().toString());
-    Assert.assertEquals("壬戌", d.getMonthSixtyCycle().toString());
+    SolarDay solarDay = SolarDay.fromYmd(2023, 11, 7);
+    LunarDay lunarDay = solarDay.getLunarDay();
+    Assert.assertEquals("癸亥", lunarDay.getLunarMonth().getSixtyCycle().toString());
+    Assert.assertEquals("壬戌", lunarDay.getSixtyCycleDay().getMonth().toString());
+    Assert.assertEquals("壬戌", solarDay.getSixtyCycleDay().getMonth().toString());
   }
 
   @Test
   public void test33() {
-    LunarDay d = SolarDay.fromYmd(2023, 11, 8).getLunarDay();
-    Assert.assertEquals("癸亥", d.getLunarMonth().getSixtyCycle().toString());
-    Assert.assertEquals("癸亥", d.getMonthSixtyCycle().toString());
+    SolarDay solarDay = SolarDay.fromYmd(2023, 11, 8);
+    LunarDay lunarDay = solarDay.getLunarDay();
+    Assert.assertEquals("癸亥", lunarDay.getLunarMonth().getSixtyCycle().toString());
+    Assert.assertEquals("癸亥", lunarDay.getSixtyCycleDay().getMonth().toString());
+    Assert.assertEquals("癸亥", solarDay.getSixtyCycleDay().getMonth().toString());
   }
 
   @Test
@@ -220,23 +230,29 @@ public class LunarMonthTest {
 
   @Test
   public void test36() {
-    LunarDay d = SolarDay.fromYmd(1983, 2, 15).getLunarDay();
-    Assert.assertEquals("甲寅", d.getLunarMonth().getSixtyCycle().toString());
-    Assert.assertEquals("甲寅", d.getMonthSixtyCycle().toString());
+    SolarDay solarDay = SolarDay.fromYmd(1983, 2, 15);
+    LunarDay lunarDay = solarDay.getLunarDay();
+    Assert.assertEquals("甲寅", lunarDay.getLunarMonth().getSixtyCycle().toString());
+    Assert.assertEquals("甲寅", lunarDay.getSixtyCycleDay().getMonth().toString());
+    Assert.assertEquals("甲寅", solarDay.getSixtyCycleDay().getMonth().toString());
   }
 
   @Test
   public void test37() {
-    LunarDay d = SolarDay.fromYmd(2023, 10, 30).getLunarDay();
-    Assert.assertEquals("癸亥", d.getLunarMonth().getSixtyCycle().toString());
-    Assert.assertEquals("壬戌", d.getMonthSixtyCycle().toString());
+    SolarDay solarDay = SolarDay.fromYmd(2023, 10, 30);
+    LunarDay lunarDay = solarDay.getLunarDay();
+    Assert.assertEquals("癸亥", lunarDay.getLunarMonth().getSixtyCycle().toString());
+    Assert.assertEquals("壬戌", lunarDay.getSixtyCycleDay().getMonth().toString());
+    Assert.assertEquals("壬戌", solarDay.getSixtyCycleDay().getMonth().toString());
   }
 
   @Test
   public void test38() {
-    LunarDay d = SolarDay.fromYmd(2023, 10, 19).getLunarDay();
-    Assert.assertEquals("癸亥", d.getLunarMonth().getSixtyCycle().toString());
-    Assert.assertEquals("壬戌", d.getMonthSixtyCycle().toString());
+    SolarDay solarDay = SolarDay.fromYmd(2023, 10, 19);
+    LunarDay lunarDay = solarDay.getLunarDay();
+    Assert.assertEquals("癸亥", lunarDay.getLunarMonth().getSixtyCycle().toString());
+    Assert.assertEquals("壬戌", lunarDay.getSixtyCycleDay().getMonth().toString());
+    Assert.assertEquals("壬戌", solarDay.getSixtyCycleDay().getMonth().toString());
   }
 
   @Test
@@ -248,7 +264,8 @@ public class LunarMonthTest {
 
   @Test
   public void test40() {
-    Assert.assertEquals("庚申", LunarDay.fromYmd(2018, 6, 26).getMonthSixtyCycle().toString());
+    Assert.assertEquals("己未", LunarDay.fromYmd(2018, 6, 26).getLunarMonth().getSixtyCycle().toString());
+    Assert.assertEquals("庚申", LunarDay.fromYmd(2018, 6, 26).getSixtyCycleDay().getMonth().toString());
   }
 
   @Test

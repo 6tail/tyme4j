@@ -3,6 +3,7 @@ package com.tyme.eightchar;
 import com.tyme.AbstractTyme;
 import com.tyme.lunar.LunarYear;
 import com.tyme.sixtycycle.SixtyCycle;
+import com.tyme.sixtycycle.SixtyCycleYear;
 
 /**
  * 小运
@@ -43,16 +44,27 @@ public class Fortune extends AbstractTyme {
    * @return 年龄
    */
   public int getAge() {
-    return childLimit.getEndTime().getYear() - childLimit.getStartTime().getYear() + 1 + index;
+    return childLimit.getEndSixtyCycleYear().getYear() - childLimit.getStartSixtyCycleYear().getYear() + 1 + index;
   }
 
   /**
    * 农历年
    *
    * @return 农历年
+   * @see #getSixtyCycleYear()
    */
+  @Deprecated
   public LunarYear getLunarYear() {
     return childLimit.getEndLunarYear().next(index);
+  }
+
+  /**
+   * 干支年
+   *
+   * @return 干支年
+   */
+  public SixtyCycleYear getSixtyCycleYear() {
+    return childLimit.getEndSixtyCycleYear().next(index);
   }
 
   /**

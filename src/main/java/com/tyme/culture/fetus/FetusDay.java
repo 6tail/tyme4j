@@ -5,6 +5,7 @@ import com.tyme.culture.Direction;
 import com.tyme.enums.Side;
 import com.tyme.sixtycycle.SixtyCycle;
 import com.tyme.lunar.LunarDay;
+import com.tyme.sixtycycle.SixtyCycleDay;
 
 /**
  * 逐日胎神
@@ -33,13 +34,20 @@ public class FetusDay extends AbstractCulture {
    */
   protected Direction direction;
 
-  public FetusDay(LunarDay lunarDay) {
-    SixtyCycle sixtyCycle = lunarDay.getSixtyCycle();
+  protected FetusDay(SixtyCycle sixtyCycle) {
     fetusHeavenStem = new FetusHeavenStem(sixtyCycle.getHeavenStem().getIndex() % 5);
     fetusEarthBranch = new FetusEarthBranch(sixtyCycle.getEarthBranch().getIndex() % 6);
     int index = new int[]{3, 3, 8, 8, 8, 8, 8, 1, 1, 1, 1, 1, 1, 6, 6, 6, 6, 6, 5, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0, -9, -9, -9, -9, -9, -5, -5, -1, -1, -1, -3, -7, -7, -7, -7, -5, 7, 7, 7, 7, 7, 7, 2, 2, 2, 2, 2, 3, 3, 3, 3}[sixtyCycle.getIndex()];
     side = Side.fromCode(index < 0 ? 0 : 1);
     direction = Direction.fromIndex(index);
+  }
+
+  public FetusDay(LunarDay lunarDay) {
+    this(lunarDay.getSixtyCycle());
+  }
+
+  public FetusDay(SixtyCycleDay sixtyCycleDay) {
+    this(sixtyCycleDay.getDay());
   }
 
   /**
@@ -50,6 +58,16 @@ public class FetusDay extends AbstractCulture {
    */
   public static FetusDay fromLunarDay(LunarDay lunarDay) {
     return new FetusDay(lunarDay);
+  }
+
+  /**
+   * 从干支日初始化
+   *
+   * @param sixtyCycleDay 干支日
+   * @return 逐日胎神
+   */
+  public static FetusDay fromSixtyCycleDay(SixtyCycleDay sixtyCycleDay) {
+    return new FetusDay(sixtyCycleDay);
   }
 
   public String getName() {

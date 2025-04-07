@@ -4,6 +4,7 @@ import com.tyme.AbstractTyme;
 import com.tyme.jd.JulianDay;
 import com.tyme.lunar.LunarDay;
 import com.tyme.lunar.LunarHour;
+import com.tyme.sixtycycle.SixtyCycleHour;
 
 /**
  * 公历时刻
@@ -248,13 +249,22 @@ public class SolarTime extends AbstractTyme {
   }
 
   /**
-   * 时辰
+   * 农历时辰
    *
    * @return 农历时辰
    */
   public LunarHour getLunarHour() {
     LunarDay d = day.getLunarDay();
     return LunarHour.fromYmdHms(d.getYear(), d.getMonth(), d.getDay(), hour, minute, second);
+  }
+
+  /**
+   * 干支时辰
+   *
+   * @return 干支时辰
+   */
+  public SixtyCycleHour getSixtyCycleHour() {
+    return SixtyCycleHour.fromSolarTime(this);
   }
 
 }
