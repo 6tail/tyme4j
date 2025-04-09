@@ -3,6 +3,7 @@ package com.tyme.sixtycycle;
 import com.tyme.AbstractTyme;
 import com.tyme.culture.Taboo;
 import com.tyme.culture.star.nine.NineStar;
+import com.tyme.culture.star.twelve.TwelveStar;
 import com.tyme.eightchar.EightChar;
 import com.tyme.lunar.LunarDay;
 import com.tyme.lunar.LunarHour;
@@ -96,15 +97,15 @@ public class SixtyCycleHour extends AbstractTyme {
    * @return 日柱
    */
   public SixtyCycle getDay() {
-    return day.getDay();
+    return day.getSixtyCycle();
   }
 
   /**
-   * 时柱
+   * 干支
    *
-   * @return 时柱
+   * @return 干支
    */
-  public SixtyCycle getHour() {
+  public SixtyCycle getSixtyCycle() {
     return hour;
   }
 
@@ -141,7 +142,8 @@ public class SixtyCycleHour extends AbstractTyme {
    * @return 索引
    */
   public int getIndexInDay() {
-    return (solarTime.getHour() + 1) / 2;
+    int h = solarTime.getHour();
+    return h == 23 ? 0 : (h + 1) / 2;
   }
 
   /**
@@ -160,6 +162,15 @@ public class SixtyCycleHour extends AbstractTyme {
     }
     int earthBranchIndex = getIndexInDay() % 12;
     return NineStar.fromIndex(start + (asc ? earthBranchIndex : -earthBranchIndex));
+  }
+
+  /**
+   * 黄道黑道十二神
+   *
+   * @return 黄道黑道十二神
+   */
+  public TwelveStar getTwelveStar() {
+    return TwelveStar.fromIndex(hour.getEarthBranch().getIndex() + (8 - getDay().getEarthBranch().getIndex() % 6) * 2);
   }
 
   /**

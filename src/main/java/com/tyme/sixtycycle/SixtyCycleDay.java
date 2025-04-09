@@ -87,9 +87,9 @@ public class SixtyCycleDay extends AbstractTyme {
   }
 
   /**
-   * 干支年
+   * 干支月
    *
-   * @return 干支年
+   * @return 干支月
    */
   public SixtyCycleMonth getSixtyCycleMonth() {
     return month;
@@ -114,11 +114,11 @@ public class SixtyCycleDay extends AbstractTyme {
   }
 
   /**
-   * 日柱
+   * 干支
    *
-   * @return 日柱
+   * @return 干支
    */
-  public SixtyCycle getDay() {
+  public SixtyCycle getSixtyCycle() {
     return day;
   }
 

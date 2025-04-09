@@ -83,8 +83,7 @@ public class SixtyCycleMonth extends AbstractTyme {
   }
 
   public SixtyCycleMonth next(int n) {
-    int i = getIndexInYear() + n;
-    return new SixtyCycleMonth(SixtyCycleYear.fromYear((year.getYear() * 12 + i) / 12), month.next(n));
+    return new SixtyCycleMonth(SixtyCycleYear.fromYear((year.getYear() * 12 + getIndexInYear() + n) / 12), month.next(n));
   }
 
   /**

@@ -15,6 +15,6 @@ public class LunarSect2EightCharProvider implements EightCharProvider {
   @Override
   public EightChar getEightChar(LunarHour hour) {
     SixtyCycleHour h = hour.getSixtyCycleHour();
-    return new EightChar(h.getYear(), h.getMonth(), hour.getLunarDay().getSixtyCycle(), h.getHour());
+    return new EightChar(h.getYear(), h.getMonth(), hour.getLunarDay().getSixtyCycle(), h.getSixtyCycle());
   }
 }

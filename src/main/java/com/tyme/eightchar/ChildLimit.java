@@ -160,12 +160,21 @@ public class ChildLimit {
   }
 
   /**
-   * 大运
+   * 起运大运
    *
    * @return 大运
    */
   public DecadeFortune getStartDecadeFortune() {
     return DecadeFortune.fromChildLimit(this, 0);
+  }
+
+  /**
+   * 所属大运
+   *
+   * @return 大运
+   */
+  public DecadeFortune getDecadeFortune() {
+    return DecadeFortune.fromChildLimit(this, -1);
   }
 
   /**
@@ -204,6 +213,25 @@ public class ChildLimit {
    */
   public SixtyCycleYear getEndSixtyCycleYear() {
     return SixtyCycleYear.fromYear(getEndTime().getYear());
+  }
+
+  /**
+   * 开始年龄
+   *
+   * @return 开始年龄
+   */
+  public int getStartAge() {
+    return 1;
+  }
+
+  /**
+   * 结束年龄
+   *
+   * @return 结束年龄
+   */
+  public int getEndAge() {
+    int n = getEndSixtyCycleYear().getYear() - getStartSixtyCycleYear().getYear();
+    return Math.max(n, 1);
   }
 
 }

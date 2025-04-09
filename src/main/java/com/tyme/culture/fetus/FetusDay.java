@@ -47,7 +47,7 @@ public class FetusDay extends AbstractCulture {
   }
 
   public FetusDay(SixtyCycleDay sixtyCycleDay) {
-    this(sixtyCycleDay.getDay());
+    this(sixtyCycleDay.getSixtyCycle());
   }
 
   /**

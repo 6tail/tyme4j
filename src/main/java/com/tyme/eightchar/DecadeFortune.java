@@ -102,8 +102,7 @@ public class DecadeFortune extends AbstractTyme {
    * @return 干支
    */
   public SixtyCycle getSixtyCycle() {
-    int n = index + 1;
-    return childLimit.getEightChar().getMonth().next(childLimit.isForward() ? n : -n);
+    return childLimit.getEightChar().getMonth().next(childLimit.isForward() ? index + 1 : -index - 1);
   }
 
   public String getName() {
