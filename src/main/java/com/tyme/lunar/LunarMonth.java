@@ -308,7 +308,7 @@ public class LunarMonth extends AbstractTyme {
   }
 
   /**
-   * 获取本月的农历周列表
+   * 本月的农历周列表
    *
    * @param start 星期几作为一周的开始，1234560分别代表星期一至星期天
    * @return 周列表
