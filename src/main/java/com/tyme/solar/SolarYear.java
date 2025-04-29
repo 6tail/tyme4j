@@ -1,6 +1,7 @@
 package com.tyme.solar;
 
 import com.tyme.AbstractTyme;
+import com.tyme.rabbyung.RabByungYear;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,5 +113,14 @@ public class SolarYear extends AbstractTyme {
       l.add(SolarHalfYear.fromIndex(year, i));
     }
     return l;
+  }
+
+  /**
+   * 藏历年
+   *
+   * @return 藏历年
+   */
+  public RabByungYear getRabByungYear() {
+    return RabByungYear.fromYear(year);
   }
 }

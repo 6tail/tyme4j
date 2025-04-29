@@ -17,6 +17,7 @@ import com.tyme.holiday.LegalHoliday;
 import com.tyme.jd.JulianDay;
 import com.tyme.lunar.LunarDay;
 import com.tyme.lunar.LunarMonth;
+import com.tyme.rabbyung.RabByungDay;
 import com.tyme.sixtycycle.HideHeavenStem;
 import com.tyme.sixtycycle.HideHeavenStemDay;
 import com.tyme.sixtycycle.SixtyCycleDay;
@@ -394,6 +395,15 @@ public class SolarDay extends AbstractTyme {
    */
   public SixtyCycleDay getSixtyCycleDay() {
     return SixtyCycleDay.fromSolarDay(this);
+  }
+
+  /**
+   * 藏历日
+   *
+   * @return 藏历日
+   */
+  public RabByungDay getRabByungDay() {
+    return RabByungDay.fromSolarDay(this);
   }
 
   /**

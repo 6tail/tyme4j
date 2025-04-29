@@ -356,6 +356,7 @@ public class LunarDay extends AbstractTyme {
    * 神煞列表(吉神宜趋，凶神宜忌)
    *
    * @return 神煞列表
+   * @see SixtyCycleDay#getGods()
    */
   public List<God> getGods() {
     return getSixtyCycleDay().getGods();
@@ -365,6 +366,7 @@ public class LunarDay extends AbstractTyme {
    * 宜
    *
    * @return 宜忌列表
+   * @see SixtyCycleDay#getRecommends()
    */
   public List<Taboo> getRecommends() {
     return getSixtyCycleDay().getRecommends();
@@ -374,6 +376,7 @@ public class LunarDay extends AbstractTyme {
    * 忌
    *
    * @return 宜忌列表
+   * @see SixtyCycleDay#getAvoids()
    */
   public List<Taboo> getAvoids() {
     return getSixtyCycleDay().getAvoids();
