@@ -467,6 +467,7 @@ public class EightCharTest {
   @Test
   public void test20() {
     EightChar eightChar = ChildLimit.fromSolarTime(SolarTime.fromYmdHms(2024, 1, 29, 9, 33, 0), Gender.MAN).getEightChar();
+    Assert.assertEquals("癸卯 乙丑 壬辰 乙巳", eightChar.toString());
     Assert.assertEquals("癸亥", eightChar.getOwnSign().getName());
     Assert.assertEquals("己未", eightChar.getBodySign().getName());
   }

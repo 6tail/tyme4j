@@ -2,6 +2,7 @@ package com.tyme.test;
 
 import com.tyme.festival.LunarFestival;
 import com.tyme.lunar.LunarDay;
+import com.tyme.solar.SolarDay;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -59,6 +60,20 @@ public class LunarFestivalTest {
     LunarFestival f = LunarDay.fromYmd(2021, 12, 29).getFestival();
     Assert.assertNotNull(f);
     Assert.assertEquals("农历辛丑年十二月廿九 除夕", f.toString());
+  }
+
+  @Test
+  public void test6() {
+    LunarFestival f = SolarDay.fromYmd(2025, 12, 21).getLunarDay().getFestival();
+    Assert.assertNotNull(f);
+    Assert.assertEquals("农历乙巳年十一月初二 冬至节", f.toString());
+  }
+
+  @Test
+  public void test7() {
+    LunarFestival f = LunarDay.fromYmd(2025, 5, 5).getFestival();
+    Assert.assertNotNull(f);
+    Assert.assertEquals("农历乙巳年五月初五 端午节", f.toString());
   }
 
 }

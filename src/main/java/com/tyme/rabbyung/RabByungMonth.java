@@ -78,7 +78,7 @@ public class RabByungMonth extends AbstractTyme {
     this.leap = leap;
     // 位于当年的索引
     int index = m - 1;
-    if (leap || (leapMonth > 0 && m > leapMonth)) {
+    if (leap || (0 < leapMonth && leapMonth < m)) {
       index += 1;
     }
     indexInYear = index;

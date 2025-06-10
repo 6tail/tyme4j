@@ -182,7 +182,7 @@ public class RabByungYear extends AbstractTyme {
   public List<RabByungMonth> getMonths() {
     List<RabByungMonth> l = new ArrayList<>();
     int leapMonth = getLeapMonth();
-    for (int i = 1; i <= 12; i++) {
+    for (int i = 1; i < 13; i++) {
       l.add(new RabByungMonth(this, i));
       if (i == leapMonth) {
         l.add(new RabByungMonth(this, -i));
