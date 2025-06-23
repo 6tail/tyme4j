@@ -1,6 +1,7 @@
 package com.tyme.solar;
 
 import com.tyme.AbstractTyme;
+import com.tyme.culture.phenology.Phenology;
 import com.tyme.jd.JulianDay;
 import com.tyme.lunar.LunarDay;
 import com.tyme.lunar.LunarHour;
@@ -173,17 +174,24 @@ public class SolarTime extends AbstractTyme {
    * @return 节气
    */
   public SolarTerm getTerm() {
-    int y = getYear();
-    int i = getMonth() * 2;
-    if (i == 24) {
-      y += 1;
-      i = 0;
-    }
-    SolarTerm term = SolarTerm.fromIndex(y, i);
-    while (isBefore(term.getJulianDay().getSolarTime())) {
+    SolarTerm term = day.getTerm();
+    if (isBefore(term.getJulianDay().getSolarTime())) {
       term = term.next(-1);
     }
     return term;
+  }
+
+  /**
+   * 候
+   *
+   * @return 候
+   */
+  public Phenology getPhenology() {
+    Phenology p = day.getPhenology();
+    if (isBefore(p.getJulianDay().getSolarTime())) {
+      p = p.next(-1);
+    }
+    return p;
   }
 
   /**
