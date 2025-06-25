@@ -211,8 +211,8 @@ public class EightCharTest {
     Assert.assertEquals(9, childLimit.getMonthCount());
     Assert.assertEquals(2, childLimit.getDayCount());
     Assert.assertEquals(10, childLimit.getHourCount());
-    Assert.assertEquals(26, childLimit.getMinuteCount());
-    Assert.assertEquals("2030年12月12日 07:17:00", childLimit.getEndTime().toString());
+    Assert.assertEquals(6, childLimit.getMinuteCount());
+    Assert.assertEquals("2030年12月12日 06:57:00", childLimit.getEndTime().toString());
   }
 
   /**
@@ -225,8 +225,8 @@ public class EightCharTest {
     Assert.assertEquals(9, childLimit.getMonthCount());
     Assert.assertEquals(10, childLimit.getDayCount());
     Assert.assertEquals(1, childLimit.getHourCount());
-    Assert.assertEquals(42, childLimit.getMinuteCount());
-    Assert.assertEquals("2020年3月21日 11:12:00", childLimit.getEndTime().toString());
+    Assert.assertEquals(52, childLimit.getMinuteCount());
+    Assert.assertEquals("2020年3月21日 11:22:00", childLimit.getEndTime().toString());
   }
 
   /**
