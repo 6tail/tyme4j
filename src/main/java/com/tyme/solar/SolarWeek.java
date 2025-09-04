@@ -16,7 +16,7 @@ public class SolarWeek extends AbstractTyme {
   public static final String[] NAMES = {"第一周", "第二周", "第三周", "第四周", "第五周", "第六周"};
 
   /**
-   * 月
+   * 公历月
    */
   protected SolarMonth month;
 

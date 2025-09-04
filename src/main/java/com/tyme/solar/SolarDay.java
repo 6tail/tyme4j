@@ -308,8 +308,7 @@ public class SolarDay extends AbstractTyme {
     start = start.next(start.getLunarDay().getSixtyCycle().getHeavenStem().stepsTo(2));
 
     // 小暑
-    SolarTerm slightHeat = grainInEar.next(2);
-    SolarDay end = slightHeat.getJulianDay().getSolarDay();
+    SolarDay end = grainInEar.next(2).getJulianDay().getSolarDay();
     // 小暑后的第1个未日
     end = end.next(end.getLunarDay().getSixtyCycle().getEarthBranch().stepsTo(7));
 
@@ -366,7 +365,7 @@ public class SolarDay extends AbstractTyme {
   /**
    * 公历日期相减，获得相差天数
    *
-   * @param target 公历
+   * @param target 公历日
    * @return 天数
    */
   public int subtract(SolarDay target) {

@@ -69,7 +69,7 @@ public class SixtyCycleDay extends AbstractTyme {
       index += 24;
     }
     this.solarDay = solarDay;
-    this.month = new SixtyCycleMonth(SixtyCycleYear.fromYear(lunarYear.getYear()), LunarMonth.fromYm(solarYear, 1).getSixtyCycle().next((int) Math.floor(index * 1D / 2)));
+    this.month = new SixtyCycleMonth(SixtyCycleYear.fromYear(lunarYear.getYear()), LunarMonth.fromYm(solarYear, 1).getSixtyCycle().next((int) Math.floor(index * 0.5)));
     this.day = lunarDay.getSixtyCycle();
   }
 
@@ -156,11 +156,9 @@ public class SixtyCycleDay extends AbstractTyme {
    */
   public NineStar getNineStar() {
     SolarTerm dongZhi = SolarTerm.fromIndex(solarDay.getYear(), 0);
-    SolarTerm xiaZhi = dongZhi.next(12);
-    SolarTerm dongZhi2 = dongZhi.next(24);
     SolarDay dongZhiSolar = dongZhi.getJulianDay().getSolarDay();
-    SolarDay xiaZhiSolar = xiaZhi.getJulianDay().getSolarDay();
-    SolarDay dongZhiSolar2 = dongZhi2.getJulianDay().getSolarDay();
+    SolarDay xiaZhiSolar = dongZhi.next(12).getJulianDay().getSolarDay();
+    SolarDay dongZhiSolar2 = dongZhi.next(24).getJulianDay().getSolarDay();
     int dongZhiIndex = dongZhiSolar.getLunarDay().getSixtyCycle().getIndex();
     int xiaZhiIndex = xiaZhiSolar.getLunarDay().getSixtyCycle().getIndex();
     int dongZhiIndex2 = dongZhiSolar2.getLunarDay().getSixtyCycle().getIndex();

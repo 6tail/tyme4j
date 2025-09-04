@@ -220,6 +220,9 @@ public class EightChar extends AbstractCulture {
             s = solarTime.getSecond();
           }
           SolarTime time = SolarTime.fromYmdHms(solarDay.getYear(), solarDay.getMonth(), solarDay.getDay(), hour, mi, s);
+          if (d == 30) {
+            time = time.next(-3600);
+          }
           // 验证一下
           if (time.getLunarHour().getEightChar().equals(this)) {
             l.add(time);

@@ -20,18 +20,13 @@ public class Phenology extends LoopTyme {
 
   public Phenology(int year, String name) {
     super(NAMES, name);
-    initByYear(year, index);
+    this.year = year;
   }
 
   public Phenology(int year, int index) {
     super(NAMES, index);
     int size = getSize();
-    initByYear((year * size + index) / size, getIndex());
-  }
-
-  protected void initByYear(int year, int offset) {
-    this.year = year;
-    this.index = offset;
+    this.year = (year * size + index) / size;
   }
 
   /**

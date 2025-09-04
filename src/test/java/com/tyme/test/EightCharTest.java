@@ -626,6 +626,7 @@ public class EightCharTest {
     }
 
     List<String> expected = new ArrayList<>();
+    expected.add("1904年3月6日 07:00:00");
     expected.add("1964年2月20日 08:00:00");
     expected.add("2024年2月5日 08:00:00");
     Assert.assertEquals(expected, actual);
@@ -782,5 +783,20 @@ public class EightCharTest {
     Assert.assertEquals("己丑", eightChar.getBodySign().getName());
     Assert.assertEquals("癸酉", eightChar.getFetalOrigin().getName());
     Assert.assertEquals("甲午", eightChar.getFetalBreath().getName());
+  }
+
+  @Test
+  public void test50() {
+    List<SolarTime> solarTimes = new EightChar("壬申", "壬寅", "庚辰", "甲申").getSolarTimes(1801, 2099);
+    List<String> actual = new ArrayList<>();
+    for (SolarTime solarTime : solarTimes) {
+      actual.add(solarTime.toString());
+    }
+
+    List<String> expected = new ArrayList<>();
+    expected.add("1812年2月18日 16:00:00");
+    expected.add("1992年3月5日 15:00:00");
+    expected.add("2052年2月19日 16:00:00");
+    Assert.assertEquals(expected, actual);
   }
 }

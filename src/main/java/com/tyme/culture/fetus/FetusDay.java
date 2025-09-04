@@ -84,12 +84,12 @@ public class FetusDay extends AbstractCulture {
 
     s += " ";
 
-    String directionName = direction.getName();
     if (Side.IN == side) {
       s += "房";
     }
     s += side.getName();
 
+    String directionName = direction.getName();
     if (Side.OUT == side && "北南西东".contains(directionName)) {
       s += "正";
     }

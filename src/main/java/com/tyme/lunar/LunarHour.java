@@ -274,8 +274,7 @@ public class LunarHour extends AbstractTyme {
     if (hour >= 23) {
       d = d.next(1);
     }
-    int heavenStemIndex = d.getHeavenStem().getIndex() % 5 * 2 + earthBranchIndex;
-    return SixtyCycle.fromName(HeavenStem.fromIndex(heavenStemIndex).getName() + EarthBranch.fromIndex(earthBranchIndex).getName());
+    return SixtyCycle.fromName(HeavenStem.fromIndex(d.getHeavenStem().getIndex() % 5 * 2 + earthBranchIndex).getName() + EarthBranch.fromIndex(earthBranchIndex).getName());
   }
 
   /**
@@ -295,8 +294,7 @@ public class LunarHour extends AbstractTyme {
   public NineStar getNineStar() {
     SolarDay solar = day.getSolarDay();
     SolarTerm dongZhi = SolarTerm.fromIndex(solar.getYear(), 0);
-    SolarTerm xiaZhi = dongZhi.next(12);
-    boolean asc = !solar.isBefore(dongZhi.getJulianDay().getSolarDay()) && solar.isBefore(xiaZhi.getJulianDay().getSolarDay());
+    boolean asc = !solar.isBefore(dongZhi.getJulianDay().getSolarDay()) && solar.isBefore(dongZhi.next(12).getJulianDay().getSolarDay());
     int start = new int[]{8, 5, 2}[day.getSixtyCycle().getEarthBranch().getIndex() % 3];
     if (asc) {
       start = 8 - start;
