@@ -77,19 +77,18 @@ public class JulianDay extends AbstractTyme {
    * @return 公历时刻
    */
   public SolarTime getSolarTime() {
-    int n = (int) (day + 0.5);
-    double f = day + 0.5 - n;
+    int d = (int) (day + 0.5);
+    double f = day + 0.5 - d;
 
-    if (n >= 2299161) {
-      int c = (int) ((n - 1867216.25) / 36524.25);
-      n += 1 + c - (int) (c * 0.25);
+    if (d >= 2299161) {
+      int c = (int) ((d - 1867216.25) / 36524.25);
+      d += 1 + c - (int) (c * 0.25);
     }
-    n += 1524;
-    int y = (int) ((n - 122.1) / 365.25);
-    n -= (int) (365.25 * y);
-    int m = (int) (n / 30.601);
-    n -= (int) (30.601 * m);
-    int d = n;
+    d += 1524;
+    int y = (int) ((d - 122.1) / 365.25);
+    d -= (int) (365.25 * y);
+    int m = (int) (d / 30.601);
+    d -= (int) (30.601 * m);
     if (m > 13) {
       m -= 12;
     } else {

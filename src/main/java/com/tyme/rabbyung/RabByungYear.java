@@ -75,7 +75,7 @@ public class RabByungYear extends AbstractTyme {
    * @return 生肖
    */
   public Zodiac getZodiac() {
-    return getSixtyCycle().getEarthBranch().getZodiac();
+    return sixtyCycle.getEarthBranch().getZodiac();
   }
 
   /**
@@ -84,7 +84,7 @@ public class RabByungYear extends AbstractTyme {
    * @return 藏历五行
    */
   public RabByungElement getElement() {
-    return RabByungElement.fromIndex(getSixtyCycle().getHeavenStem().getElement().getIndex());
+    return RabByungElement.fromIndex(sixtyCycle.getHeavenStem().getElement().getIndex());
   }
 
   /**
@@ -125,7 +125,7 @@ public class RabByungYear extends AbstractTyme {
    * @return 年
    */
   public int getYear() {
-    return 1024 + rabByungIndex * 60 + getSixtyCycle().getIndex();
+    return 1024 + rabByungIndex * 60 + sixtyCycle.getIndex();
   }
 
   /**

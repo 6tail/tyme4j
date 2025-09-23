@@ -294,13 +294,14 @@ public class LunarHour extends AbstractTyme {
   public NineStar getNineStar() {
     SolarDay solar = day.getSolarDay();
     SolarTerm dongZhi = SolarTerm.fromIndex(solar.getYear(), 0);
-    boolean asc = !solar.isBefore(dongZhi.getJulianDay().getSolarDay()) && solar.isBefore(dongZhi.next(12).getJulianDay().getSolarDay());
-    int start = new int[]{8, 5, 2}[day.getSixtyCycle().getEarthBranch().getIndex() % 3];
-    if (asc) {
-      start = 8 - start;
-    }
     int earthBranchIndex = getIndexInDay() % 12;
-    return NineStar.fromIndex(start + (asc ? earthBranchIndex : -earthBranchIndex));
+    int index = new int[]{8, 5, 2}[day.getSixtyCycle().getEarthBranch().getIndex() % 3];
+    if (!solar.isBefore(dongZhi.getJulianDay().getSolarDay()) && solar.isBefore(dongZhi.next(12).getJulianDay().getSolarDay())) {
+      index = 8 + earthBranchIndex - index;
+    } else {
+      index -= earthBranchIndex;
+    }
+    return NineStar.fromIndex(index);
   }
 
   /**

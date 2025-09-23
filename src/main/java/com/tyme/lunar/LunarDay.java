@@ -275,12 +275,29 @@ public class LunarDay extends AbstractTyme {
   }
 
   /**
+   * 月相第几天
+   *
+   * @return 月相第几天
+   */
+  public PhaseDay getPhaseDay() {
+    SolarDay today = getSolarDay();
+    LunarMonth m = month.next(1);
+    Phase p = Phase.fromIndex(m.getYear(), m.getMonth(), 0);
+    SolarDay d = p.getSolarDay();
+    while (p.getSolarDay().isAfter(today)) {
+      p = p.next(-1);
+      d = p.getSolarDay();
+    }
+    return new PhaseDay(p, today.subtract(d));
+  }
+
+  /**
    * 月相
    *
    * @return 月相
    */
   public Phase getPhase() {
-    return Phase.fromIndex(day - 1);
+    return getPhaseDay().getPhase();
   }
 
   /**

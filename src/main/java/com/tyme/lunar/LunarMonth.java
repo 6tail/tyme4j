@@ -327,7 +327,7 @@ public class LunarMonth extends AbstractTyme {
    * @return 干支
    */
   public SixtyCycle getSixtyCycle() {
-    return SixtyCycle.fromName(HeavenStem.fromIndex((year.getSixtyCycle().getHeavenStem().getIndex() + 1) * 2 + indexInYear).getName() + EarthBranch.fromIndex(indexInYear + 2).getName());
+    return SixtyCycle.fromName(HeavenStem.fromIndex(year.getSixtyCycle().getHeavenStem().getIndex() * 2 + month + 1).getName() + EarthBranch.fromIndex(month + 1).getName());
   }
 
   /**

@@ -1,10 +1,12 @@
 package com.tyme.solar;
 
 import com.tyme.AbstractTyme;
+import com.tyme.culture.Phase;
 import com.tyme.culture.phenology.Phenology;
 import com.tyme.jd.JulianDay;
 import com.tyme.lunar.LunarDay;
 import com.tyme.lunar.LunarHour;
+import com.tyme.lunar.LunarMonth;
 import com.tyme.sixtycycle.SixtyCycleHour;
 
 /**
@@ -273,6 +275,20 @@ public class SolarTime extends AbstractTyme {
    */
   public SixtyCycleHour getSixtyCycleHour() {
     return SixtyCycleHour.fromSolarTime(this);
+  }
+
+  /**
+   * 月相
+   *
+   * @return 月相
+   */
+  public Phase getPhase() {
+    LunarMonth month = getLunarHour().getLunarDay().getLunarMonth().next(1);
+    Phase p = Phase.fromIndex(month.getYear(), month.getMonth(), 0);
+    while (p.getSolarTime().isAfter(this)) {
+      p = p.next(-1);
+    }
+    return p;
   }
 
 }

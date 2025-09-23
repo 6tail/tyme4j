@@ -150,9 +150,9 @@ public class RabByungMonth extends AbstractTyme {
   }
 
   /**
-   * 位于当年的索引(0-12)
+   * 位于当年的索引
    *
-   * @return 索引
+   * @return 索引(0-12)
    */
   public int getIndexInYear() {
     return indexInYear;
@@ -262,9 +262,9 @@ public class RabByungMonth extends AbstractTyme {
   }
 
   /**
-   * 特殊日子列表，闰日为正，缺日为负
+   * 特殊日子列表
    *
-   * @return 特殊日子列表
+   * @return 特殊日子列表，闰日为正，缺日为负
    */
   public List<Integer> getSpecialDays() {
     List<Integer> l = new ArrayList<>();
