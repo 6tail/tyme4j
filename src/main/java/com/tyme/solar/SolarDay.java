@@ -441,7 +441,7 @@ public class SolarDay extends AbstractTyme {
    */
   public PhaseDay getPhaseDay() {
     LunarMonth month = getLunarDay().getLunarMonth().next(1);
-    Phase p = Phase.fromIndex(month.getYear(), month.getMonth(), 0);
+    Phase p = Phase.fromIndex(month.getYear(), month.getMonthWithLeap(), 0);
     SolarDay d = p.getSolarDay();
     while (d.isAfter(this)) {
       p = p.next(-1);

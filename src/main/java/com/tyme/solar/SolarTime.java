@@ -284,7 +284,7 @@ public class SolarTime extends AbstractTyme {
    */
   public Phase getPhase() {
     LunarMonth month = getLunarHour().getLunarDay().getLunarMonth().next(1);
-    Phase p = Phase.fromIndex(month.getYear(), month.getMonth(), 0);
+    Phase p = Phase.fromIndex(month.getYear(), month.getMonthWithLeap(), 0);
     while (p.getSolarTime().isAfter(this)) {
       p = p.next(-1);
     }

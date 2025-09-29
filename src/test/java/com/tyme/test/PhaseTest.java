@@ -86,4 +86,16 @@ public class PhaseTest {
     Phase phase = SolarTime.fromYmdHms(2025, 9, 22, 3, 54, 8).getPhase();
     Assert.assertEquals("蛾眉月", phase.toString());
   }
+
+  @Test
+  public void test12() {
+    Phase phase = LunarDay.fromYmd(2025, -6, 20).getPhase();
+    Assert.assertEquals("亏凸月", phase.toString());
+  }
+
+  @Test
+  public void test13() {
+    Phase phase = SolarDay.fromYmd(2025, 8, 13).getPhase();
+    Assert.assertEquals("亏凸月", phase.toString());
+  }
 }

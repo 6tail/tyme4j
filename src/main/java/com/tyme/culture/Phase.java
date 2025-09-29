@@ -31,7 +31,7 @@ public class Phase extends LoopTyme {
     super(NAMES, index);
     LunarMonth m = LunarMonth.fromYm(lunarYear, lunarMonth).next(index / getSize());
     this.lunarYear = m.getYear();
-    this.lunarMonth = m.getMonth();
+    this.lunarMonth = m.getMonthWithLeap();
   }
 
   public Phase(int lunarYear, int lunarMonth, String name) {
@@ -59,23 +59,24 @@ public class Phase extends LoopTyme {
     if (i != 0) {
       m = m.next(i);
     }
-    return fromIndex(m.getYear(), m.getMonth(), nextIndex(n));
+    return fromIndex(m.getYear(), m.getMonthWithLeap(), nextIndex(n));
   }
 
   protected SolarTime getStartSolarTime() {
     int n = (int) Math.floor((lunarYear - 2000) * 365.2422 / 29.53058886);
     int i = 0;
+    double jd = JulianDay.J2000 + ShouXingUtil.ONE_THIRD;
     SolarDay d = LunarDay.fromYmd(lunarYear, lunarMonth, 1).getSolarDay();
     while (true) {
       double t = ShouXingUtil.msaLonT((n + i) * ShouXingUtil.PI_2) * 36525;
-      if (!JulianDay.fromJulianDay(t + JulianDay.J2000 + ShouXingUtil.ONE_THIRD - ShouXingUtil.dtT(t)).getSolarDay().isBefore(d)) {
+      if (!JulianDay.fromJulianDay(jd + t - ShouXingUtil.dtT(t)).getSolarDay().isBefore(d)) {
         break;
       }
       i++;
     }
     int[] r = {0, 90, 180, 270};
     double t = ShouXingUtil.msaLonT((n + i + r[index / 2] / 360D) * ShouXingUtil.PI_2) * 36525;
-    return JulianDay.fromJulianDay(t + JulianDay.J2000 + ShouXingUtil.ONE_THIRD - ShouXingUtil.dtT(t)).getSolarTime();
+    return JulianDay.fromJulianDay(jd + t - ShouXingUtil.dtT(t)).getSolarTime();
   }
 
   /**
