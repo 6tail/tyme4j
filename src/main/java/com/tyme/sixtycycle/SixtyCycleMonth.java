@@ -124,7 +124,7 @@ public class SixtyCycleMonth extends AbstractTyme {
    * @return 干支日
    */
   public SixtyCycleDay getFirstDay() {
-    return SixtyCycleDay.fromSolarDay(SolarTerm.fromIndex(year.getYear(), 3 + getIndexInYear() * 2).getJulianDay().getSolarDay());
+    return SixtyCycleDay.fromSolarDay(SolarTerm.fromIndex(year.getYear(), 3 + getIndexInYear() * 2).getSolarDay());
   }
 
   /**

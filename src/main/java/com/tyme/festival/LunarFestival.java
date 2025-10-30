@@ -67,7 +67,7 @@ public class LunarFestival extends AbstractTyme {
         return new LunarFestival(type, LunarDay.fromYmd(year, Integer.parseInt(data.substring(4, 6), 10), Integer.parseInt(data.substring(6), 10)), null, data);
       case TERM:
         SolarTerm solarTerm = SolarTerm.fromIndex(year, Integer.parseInt(data.substring(4), 10));
-        return new LunarFestival(type, solarTerm.getJulianDay().getSolarDay().getLunarDay(), solarTerm, data);
+        return new LunarFestival(type, solarTerm.getSolarDay().getLunarDay(), solarTerm, data);
       case EVE:
         return new LunarFestival(type, LunarDay.fromYmd(year + 1, 1, 1).next(-1), null, data);
       default:
@@ -84,7 +84,7 @@ public class LunarFestival extends AbstractTyme {
     while (matcher.find()) {
       String data = matcher.group();
       SolarTerm solarTerm = SolarTerm.fromIndex(year, Integer.parseInt(data.substring(4), 10));
-      LunarDay lunarDay = solarTerm.getJulianDay().getSolarDay().getLunarDay();
+      LunarDay lunarDay = solarTerm.getSolarDay().getLunarDay();
       if (lunarDay.getYear() == year && lunarDay.getMonth() == month && lunarDay.getDay() == day) {
         return new LunarFestival(FestivalType.TERM, lunarDay, solarTerm, data);
       }

@@ -2,10 +2,7 @@ package com.tyme.eightchar;
 
 import com.tyme.AbstractCulture;
 import com.tyme.culture.Duty;
-import com.tyme.sixtycycle.EarthBranch;
-import com.tyme.sixtycycle.HeavenStem;
-import com.tyme.sixtycycle.SixtyCycle;
-import com.tyme.sixtycycle.SixtyCycleDay;
+import com.tyme.sixtycycle.*;
 import com.tyme.solar.SolarDay;
 import com.tyme.solar.SolarTerm;
 import com.tyme.solar.SolarTime;
@@ -21,19 +18,9 @@ import java.util.List;
 public class EightChar extends AbstractCulture {
 
   /**
-   * 年柱
+   * 三柱
    */
-  protected SixtyCycle year;
-
-  /**
-   * 月柱
-   */
-  protected SixtyCycle month;
-
-  /**
-   * 日柱
-   */
-  protected SixtyCycle day;
+  protected ThreePillars threePillars;
 
   /**
    * 时柱
@@ -49,9 +36,7 @@ public class EightChar extends AbstractCulture {
    * @param hour  时柱
    */
   public EightChar(SixtyCycle year, SixtyCycle month, SixtyCycle day, SixtyCycle hour) {
-    this.year = year;
-    this.month = month;
-    this.day = day;
+    this.threePillars = new ThreePillars(year, month, day);
     this.hour = hour;
   }
 
@@ -73,7 +58,7 @@ public class EightChar extends AbstractCulture {
    * @return 年柱
    */
   public SixtyCycle getYear() {
-    return year;
+    return threePillars.getYear();
   }
 
   /**
@@ -82,7 +67,7 @@ public class EightChar extends AbstractCulture {
    * @return 月柱
    */
   public SixtyCycle getMonth() {
-    return month;
+    return threePillars.getMonth();
   }
 
   /**
@@ -91,7 +76,7 @@ public class EightChar extends AbstractCulture {
    * @return 日柱
    */
   public SixtyCycle getDay() {
-    return day;
+    return threePillars.getDay();
   }
 
   /**
@@ -109,7 +94,8 @@ public class EightChar extends AbstractCulture {
    * @return 胎元
    */
   public SixtyCycle getFetalOrigin() {
-    return SixtyCycle.fromName(month.getHeavenStem().next(1).getName() + month.getEarthBranch().next(3).getName());
+    SixtyCycle m = getMonth();
+    return SixtyCycle.fromName(m.getHeavenStem().next(1).getName() + m.getEarthBranch().next(3).getName());
   }
 
   /**
@@ -118,7 +104,8 @@ public class EightChar extends AbstractCulture {
    * @return 胎息
    */
   public SixtyCycle getFetalBreath() {
-    return SixtyCycle.fromName(day.getHeavenStem().next(5).getName() + EarthBranch.fromIndex(13 - day.getEarthBranch().getIndex()).getName());
+    SixtyCycle d = getDay();
+    return SixtyCycle.fromName(d.getHeavenStem().next(5).getName() + EarthBranch.fromIndex(13 - d.getEarthBranch().getIndex()).getName());
   }
 
   /**
@@ -127,7 +114,7 @@ public class EightChar extends AbstractCulture {
    * @return 命宫
    */
   public SixtyCycle getOwnSign() {
-    int m = month.getEarthBranch().getIndex() - 1;
+    int m = getMonth().getEarthBranch().getIndex() - 1;
     if (m < 1) {
       m += 12;
     }
@@ -137,7 +124,7 @@ public class EightChar extends AbstractCulture {
     }
     int offset = m + h;
     offset = (offset >= 14 ? 26 : 14) - offset;
-    return SixtyCycle.fromName(HeavenStem.fromIndex((year.getHeavenStem().getIndex() + 1) * 2 + offset - 1).getName() + EarthBranch.fromIndex(offset + 1).getName());
+    return SixtyCycle.fromName(HeavenStem.fromIndex((getYear().getHeavenStem().getIndex() + 1) * 2 + offset - 1).getName() + EarthBranch.fromIndex(offset + 1).getName());
   }
 
   /**
@@ -146,7 +133,7 @@ public class EightChar extends AbstractCulture {
    * @return 身宫
    */
   public SixtyCycle getBodySign() {
-    int offset = month.getEarthBranch().getIndex() - 1;
+    int offset = getMonth().getEarthBranch().getIndex() - 1;
     if (offset < 1) {
       offset += 12;
     }
@@ -154,7 +141,7 @@ public class EightChar extends AbstractCulture {
     if (offset > 12) {
       offset -= 12;
     }
-    return SixtyCycle.fromName(HeavenStem.fromIndex((year.getHeavenStem().getIndex() + 1) * 2 + offset - 1).getName() + EarthBranch.fromIndex(offset + 1).getName());
+    return SixtyCycle.fromName(HeavenStem.fromIndex((getYear().getHeavenStem().getIndex() + 1) * 2 + offset - 1).getName() + EarthBranch.fromIndex(offset + 1).getName());
   }
 
   /**
@@ -165,7 +152,7 @@ public class EightChar extends AbstractCulture {
    */
   @Deprecated
   public Duty getDuty() {
-    return Duty.fromIndex(day.getEarthBranch().getIndex() - month.getEarthBranch().getIndex());
+    return Duty.fromIndex(getDay().getEarthBranch().getIndex() - getYear().getEarthBranch().getIndex());
   }
 
   /**
@@ -177,6 +164,9 @@ public class EightChar extends AbstractCulture {
    */
   public List<SolarTime> getSolarTimes(int startYear, int endYear) {
     List<SolarTime> l = new ArrayList<>();
+    SixtyCycle year = getYear();
+    SixtyCycle month = getMonth();
+    SixtyCycle day = getDay();
     // 月地支距寅月的偏移值
     int m = month.getEarthBranch().next(-2).getIndex();
     // 月天干要一致
@@ -235,7 +225,7 @@ public class EightChar extends AbstractCulture {
   }
 
   public String getName() {
-    return String.format("%s %s %s %s", year, month, day, hour);
+    return String.format("%s %s", threePillars, hour);
   }
 
 }

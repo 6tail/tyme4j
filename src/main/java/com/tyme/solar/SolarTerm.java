@@ -19,7 +19,7 @@ public class SolarTerm extends LoopTyme {
   protected int year;
 
   /**
-   * 粗略的儒略日
+   * 儒略日（用于日历，只精确到日中午12:00）
    */
   protected double cursoryJulianDay;
 
@@ -78,12 +78,21 @@ public class SolarTerm extends LoopTyme {
   }
 
   /**
-   * 儒略日
+   * 儒略日（精确到秒）
    *
    * @return 儒略日
    */
   public JulianDay getJulianDay() {
     return JulianDay.fromJulianDay(ShouXingUtil.qiAccurate2(cursoryJulianDay) + JulianDay.J2000);
+  }
+
+  /**
+   * 公历日（用于日历）
+   *
+   * @return 公历日
+   */
+  public SolarDay getSolarDay() {
+    return JulianDay.fromJulianDay(cursoryJulianDay + JulianDay.J2000).getSolarDay();
   }
 
   /**
@@ -96,7 +105,7 @@ public class SolarTerm extends LoopTyme {
   }
 
   /**
-   * 粗略的儒略日
+   * 儒略日（用于日历，只精确到日中午12:00）
    *
    * @return 儒略日数
    */

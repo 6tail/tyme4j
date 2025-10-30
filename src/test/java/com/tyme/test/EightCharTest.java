@@ -799,4 +799,9 @@ public class EightCharTest {
     expected.add("2052年2月19日 16:00:00");
     Assert.assertEquals(expected, actual);
   }
+
+  @Test
+  public void test51() {
+    Assert.assertEquals("甲戌 癸酉 甲戌 甲戌", SolarTime.fromYmdHms(1034, 10, 2, 20, 0, 0).getLunarHour().getEightChar().toString());
+  }
 }

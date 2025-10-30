@@ -223,4 +223,24 @@ public class GodTest {
     Assert.assertEquals(Arrays.asList("天罡", "大时", "大败", "咸池", "天贼", "九坎", "九焦"), xiong);
   }
 
+  @Test
+  public void test10() {
+    List<God> gods = SolarDay.fromYmd(2025, 12, 15).getLunarDay().getGods();
+    List<String> ji = new ArrayList<>();
+    for (God god : gods) {
+      if ("吉".equals(god.getLuck().getName())) {
+        ji.add(god.getName());
+      }
+    }
+
+    List<String> xiong = new ArrayList<>();
+    for (God god : gods) {
+      if ("凶".equals(god.getLuck().getName())) {
+        xiong.add(god.getName());
+      }
+    }
+    Assert.assertEquals(Arrays.asList("阳德", "六仪", "续世", "解神", "司命"), ji);
+    Assert.assertEquals(Arrays.asList("月破", "大耗", "灾煞", "天火", "厌对", "招摇", "五虚", "血忌"), xiong);
+  }
+
 }
