@@ -1,6 +1,5 @@
 package com.tyme.solar;
 
-import com.tyme.AbstractTyme;
 import com.tyme.culture.Phase;
 import com.tyme.culture.phenology.Phenology;
 import com.tyme.jd.JulianDay;
@@ -8,33 +7,19 @@ import com.tyme.lunar.LunarDay;
 import com.tyme.lunar.LunarHour;
 import com.tyme.lunar.LunarMonth;
 import com.tyme.sixtycycle.SixtyCycleHour;
+import com.tyme.unit.SecondUnit;
 
 /**
  * 公历时刻
  *
  * @author 6tail
  */
-public class SolarTime extends AbstractTyme {
+public class SolarTime extends SecondUnit {
 
-  /**
-   * 公历日
-   */
-  protected SolarDay day;
-
-  /**
-   * 时
-   */
-  protected int hour;
-
-  /**
-   * 分
-   */
-  protected int minute;
-
-  /**
-   * 秒
-   */
-  protected int second;
+  public static void validate(int year, int month, int day, int hour, int minute, int second) {
+    SecondUnit.validate(hour, minute, second);
+    SolarDay.validate(year, month, day);
+  }
 
   /**
    * 初始化
@@ -47,16 +32,10 @@ public class SolarTime extends AbstractTyme {
    * @param second 秒
    */
   public SolarTime(int year, int month, int day, int hour, int minute, int second) {
-    if (hour < 0 || hour > 23) {
-      throw new IllegalArgumentException(String.format("illegal hour: %d", hour));
-    }
-    if (minute < 0 || minute > 59) {
-      throw new IllegalArgumentException(String.format("illegal minute: %d", minute));
-    }
-    if (second < 0 || second > 59) {
-      throw new IllegalArgumentException(String.format("illegal second: %d", second));
-    }
-    this.day = SolarDay.fromYmd(year, month, day);
+    validate(year, month, day, hour, minute, second);
+    this.year = year;
+    this.month = month;
+    this.day = day;
     this.hour = hour;
     this.minute = minute;
     this.second = second;
@@ -72,61 +51,7 @@ public class SolarTime extends AbstractTyme {
    * @return 公历日
    */
   public SolarDay getSolarDay() {
-    return day;
-  }
-
-  /**
-   * 年
-   *
-   * @return 年
-   */
-  public int getYear() {
-    return day.getYear();
-  }
-
-  /**
-   * 月
-   *
-   * @return 月
-   */
-  public int getMonth() {
-    return day.getMonth();
-  }
-
-  /**
-   * 日
-   *
-   * @return 日
-   */
-  public int getDay() {
-    return day.getDay();
-  }
-
-  /**
-   * 时
-   *
-   * @return 时
-   */
-  public int getHour() {
-    return hour;
-  }
-
-  /**
-   * 分
-   *
-   * @return 分
-   */
-  public int getMinute() {
-    return minute;
-  }
-
-  /**
-   * 秒
-   *
-   * @return 秒
-   */
-  public int getSecond() {
-    return second;
+    return SolarDay.fromYmd(year, month, day);
   }
 
   public String getName() {
@@ -135,7 +60,7 @@ public class SolarTime extends AbstractTyme {
 
   @Override
   public String toString() {
-    return String.format("%s %s", day, getName());
+    return String.format("%s %s", getSolarDay(), getName());
   }
 
   /**
@@ -145,8 +70,9 @@ public class SolarTime extends AbstractTyme {
    * @return true/false
    */
   public boolean isBefore(SolarTime target) {
-    if (!day.equals(target.getSolarDay())) {
-      return day.isBefore(target.getSolarDay());
+    SolarDay d = getSolarDay();
+    if (!d.equals(target.getSolarDay())) {
+      return d.isBefore(target.getSolarDay());
     }
     if (hour != target.getHour()) {
       return hour < target.getHour();
@@ -161,8 +87,9 @@ public class SolarTime extends AbstractTyme {
    * @return true/false
    */
   public boolean isAfter(SolarTime target) {
-    if (!day.equals(target.getSolarDay())) {
-      return day.isAfter(target.getSolarDay());
+    SolarDay d = getSolarDay();
+    if (!d.equals(target.getSolarDay())) {
+      return d.isAfter(target.getSolarDay());
     }
     if (hour != target.getHour()) {
       return hour > target.getHour();
@@ -176,7 +103,7 @@ public class SolarTime extends AbstractTyme {
    * @return 节气
    */
   public SolarTerm getTerm() {
-    SolarTerm term = day.getTerm();
+    SolarTerm term = getSolarDay().getTerm();
     if (isBefore(term.getJulianDay().getSolarTime())) {
       term = term.next(-1);
     }
@@ -189,7 +116,7 @@ public class SolarTime extends AbstractTyme {
    * @return 候
    */
   public Phenology getPhenology() {
-    Phenology p = day.getPhenology();
+    Phenology p = getSolarDay().getPhenology();
     if (isBefore(p.getJulianDay().getSolarTime())) {
       p = p.next(-1);
     }
@@ -202,7 +129,7 @@ public class SolarTime extends AbstractTyme {
    * @return 儒略日
    */
   public JulianDay getJulianDay() {
-    return JulianDay.fromYmdHms(getYear(), getMonth(), getDay(), hour, minute, second);
+    return JulianDay.fromYmdHms(year, month, day, hour, minute, second);
   }
 
   /**
@@ -212,7 +139,7 @@ public class SolarTime extends AbstractTyme {
    * @return 秒数
    */
   public int subtract(SolarTime target) {
-    int days = day.subtract(target.getSolarDay());
+    int days = getSolarDay().subtract(target.getSolarDay());
     int cs = hour * 3600 + minute * 60 + second;
     int ts = target.getHour() * 3600 + target.getMinute() * 60 + target.getSecond();
     int seconds = cs - ts;
@@ -232,7 +159,7 @@ public class SolarTime extends AbstractTyme {
    */
   public SolarTime next(int n) {
     if (n == 0) {
-      return SolarTime.fromYmdHms(getYear(), getMonth(), getDay(), hour, minute, second);
+      return SolarTime.fromYmdHms(year, month, day, hour, minute, second);
     }
     int ts = second + n;
     int tm = minute + ts / 60;
@@ -254,7 +181,7 @@ public class SolarTime extends AbstractTyme {
       td -= 1;
     }
 
-    SolarDay d = day.next(td);
+    SolarDay d = getSolarDay().next(td);
     return SolarTime.fromYmdHms(d.getYear(), d.getMonth(), d.getDay(), th, tm, ts);
   }
 
@@ -264,7 +191,7 @@ public class SolarTime extends AbstractTyme {
    * @return 农历时辰
    */
   public LunarHour getLunarHour() {
-    LunarDay d = day.getLunarDay();
+    LunarDay d = getSolarDay().getLunarDay();
     return LunarHour.fromYmdHms(d.getYear(), d.getMonth(), d.getDay(), hour, minute, second);
   }
 

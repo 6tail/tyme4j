@@ -1,7 +1,6 @@
 package com.tyme.lunar;
 
-import com.tyme.AbstractTyme;
-import com.tyme.culture.Week;
+import com.tyme.unit.WeekUnit;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,24 +10,17 @@ import java.util.List;
  *
  * @author 6tail
  */
-public class LunarWeek extends AbstractTyme {
+public class LunarWeek extends WeekUnit {
 
   public static final String[] NAMES = {"第一周", "第二周", "第三周", "第四周", "第五周", "第六周"};
 
-  /**
-   * 月
-   */
-  protected LunarMonth month;
-
-  /**
-   * 索引，0-5
-   */
-  protected int index;
-
-  /**
-   * 起始星期
-   */
-  protected Week start;
+  public static void validate(int year, int month, int index, int start) {
+    WeekUnit.validate(index, start);
+    LunarMonth m = LunarMonth.fromYm(year, month);
+    if (index >= m.getWeekCount(start)) {
+      throw new IllegalArgumentException(String.format("illegal lunar week index: %d in month: %s", index, m));
+    }
+  }
 
   /**
    * 初始化
@@ -39,19 +31,11 @@ public class LunarWeek extends AbstractTyme {
    * @param start 起始星期，1234560分别代表星期一至星期天
    */
   public LunarWeek(int year, int month, int index, int start) {
-    if (index < 0 || index > 5) {
-      throw new IllegalArgumentException(String.format("illegal lunar week index: %d", index));
-    }
-    if (start < 0 || start > 6) {
-      throw new IllegalArgumentException(String.format("illegal lunar week start: %d", start));
-    }
-    LunarMonth m = LunarMonth.fromYm(year, month);
-    if (index >= m.getWeekCount(start)) {
-      throw new IllegalArgumentException(String.format("illegal lunar week index: %d in month: %s", index, m));
-    }
-    this.month = m;
+    validate(year, month, index, start);
+    this.year = year;
+    this.month = month;
     this.index = index;
-    this.start = Week.fromIndex(start);
+    this.start = start;
   }
 
   public static LunarWeek fromYm(int year, int month, int index, int start) {
@@ -64,43 +48,7 @@ public class LunarWeek extends AbstractTyme {
    * @return 农历月
    */
   public LunarMonth getLunarMonth() {
-    return month;
-  }
-
-  /**
-   * 年
-   *
-   * @return 年
-   */
-  public int getYear() {
-    return month.getYear();
-  }
-
-  /**
-   * 月
-   *
-   * @return 月
-   */
-  public int getMonth() {
-    return month.getMonthWithLeap();
-  }
-
-  /**
-   * 索引
-   *
-   * @return 索引，0-5
-   */
-  public int getIndex() {
-    return index;
-  }
-
-  /**
-   * 起始星期
-   *
-   * @return 星期
-   */
-  public Week getStart() {
-    return start;
+    return LunarMonth.fromYm(year, month);
   }
 
   public String getName() {
@@ -109,36 +57,35 @@ public class LunarWeek extends AbstractTyme {
 
   @Override
   public String toString() {
-    return month + getName();
+    return getLunarMonth() + getName();
   }
 
   public LunarWeek next(int n) {
-    int startIndex = start.getIndex();
     if (n == 0) {
-      return fromYm(getYear(), getMonth(), index, startIndex);
+      return fromYm(getYear(), getMonth(), index, start);
     }
     int d = index + n;
-    LunarMonth m = month;
+    LunarMonth m = getLunarMonth();
     if (n > 0) {
-      int weekCount = m.getWeekCount(startIndex);
+      int weekCount = m.getWeekCount(start);
       while (d >= weekCount) {
         d -= weekCount;
         m = m.next(1);
-        if (!LunarDay.fromYmd(m.getYear(), m.getMonthWithLeap(), 1).getWeek().equals(start)) {
+        if (m.getFirstDay().getWeek().getIndex() != start) {
           d += 1;
         }
-        weekCount = m.getWeekCount(startIndex);
+        weekCount = m.getWeekCount(start);
       }
     } else {
       while (d < 0) {
-        if (!LunarDay.fromYmd(m.getYear(), m.getMonthWithLeap(), 1).getWeek().equals(start)) {
+        if (m.getFirstDay().getWeek().getIndex() != start) {
           d -= 1;
         }
         m = m.next(-1);
-        d += m.getWeekCount(startIndex);
+        d += m.getWeekCount(start);
       }
     }
-    return fromYm(m.getYear(), m.getMonthWithLeap(), d, startIndex);
+    return fromYm(m.getYear(), m.getMonthWithLeap(), d, start);
   }
 
   /**
@@ -148,7 +95,7 @@ public class LunarWeek extends AbstractTyme {
    */
   public LunarDay getFirstDay() {
     LunarDay firstDay = LunarDay.fromYmd(getYear(), getMonth(), 1);
-    return firstDay.next(index * 7 - indexOf(firstDay.getWeek().getIndex() - start.getIndex(), 7));
+    return firstDay.next(index * 7 - indexOf(firstDay.getWeek().getIndex() - start, 7));
   }
 
   /**

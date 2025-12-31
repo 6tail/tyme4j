@@ -53,7 +53,7 @@ public class SolarFestival extends AbstractTyme {
 
   public static SolarFestival fromIndex(int year, int index) {
     if (index < 0 || index >= NAMES.length) {
-      throw new IllegalArgumentException(String.format("illegal index: %d", index));
+      return null;
     }
     Matcher matcher = Pattern.compile(String.format("@%02d\\d+", index)).matcher(DATA);
     if (!matcher.find()) {

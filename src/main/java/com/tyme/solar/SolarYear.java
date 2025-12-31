@@ -1,7 +1,7 @@
 package com.tyme.solar;
 
-import com.tyme.AbstractTyme;
 import com.tyme.rabbyung.RabByungYear;
+import com.tyme.unit.YearUnit;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,17 +11,16 @@ import java.util.List;
  *
  * @author 6tail
  */
-public class SolarYear extends AbstractTyme {
+public class SolarYear extends YearUnit {
 
-  /**
-   * 年
-   */
-  protected int year;
+  public static void validate(int year) {
+      if (year < 1 || year > 9999) {
+          throw new IllegalArgumentException(String.format("illegal solar year: %d", year));
+      }
+  }
 
   public SolarYear(int year) {
-    if (year < 1 || year > 9999) {
-      throw new IllegalArgumentException(String.format("illegal solar year: %d", year));
-    }
+    validate(year);
     this.year = year;
   }
 
@@ -33,15 +32,6 @@ public class SolarYear extends AbstractTyme {
    */
   public static SolarYear fromYear(int year) {
     return new SolarYear(year);
-  }
-
-  /**
-   * 年
-   *
-   * @return 年
-   */
-  public int getYear() {
-    return year;
   }
 
   /**

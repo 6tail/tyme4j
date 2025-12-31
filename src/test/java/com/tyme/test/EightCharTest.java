@@ -804,4 +804,15 @@ public class EightCharTest {
   public void test51() {
     Assert.assertEquals("甲戌 癸酉 甲戌 甲戌", SolarTime.fromYmdHms(1034, 10, 2, 20, 0, 0).getLunarHour().getEightChar().toString());
   }
+
+  @Test
+  public void test52() {
+    Assert.assertEquals("辛酉 丙申 丙戌 戊子", SolarTime.fromYmdHms(1981, 9, 5, 0, 0, 0).getLunarHour().getEightChar().toString());
+  }
+
+  @Test
+  public void test54() {
+    Assert.assertEquals("戊寅 癸亥 庚申 甲申", ChildLimit.fromSolarTime(SolarTime.fromYmdHms(198, 11, 26, 15, 13, 59), Gender.MAN).getEightChar().toString());
+    Assert.assertEquals("庚申 己丑 甲辰 壬申", ChildLimit.fromSolarTime(SolarTime.fromYmdHms(1981, 1, 26, 15, 13, 59), Gender.MAN).getEightChar().toString());
+  }
 }

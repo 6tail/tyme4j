@@ -1,6 +1,5 @@
 package com.tyme.lunar;
 
-import com.tyme.AbstractTyme;
 import com.tyme.culture.*;
 import com.tyme.culture.fetus.FetusDay;
 import com.tyme.culture.ren.MinorRen;
@@ -12,6 +11,7 @@ import com.tyme.festival.LunarFestival;
 import com.tyme.sixtycycle.*;
 import com.tyme.solar.SolarDay;
 import com.tyme.solar.SolarTerm;
+import com.tyme.unit.DayUnit;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,29 +21,19 @@ import java.util.List;
  *
  * @author 6tail
  */
-public class LunarDay extends AbstractTyme {
+public class LunarDay extends DayUnit {
 
   public static final String[] NAMES = {"初一", "初二", "初三", "初四", "初五", "初六", "初七", "初八", "初九", "初十", "十一", "十二", "十三", "十四", "十五", "十六", "十七", "十八", "十九", "二十", "廿一", "廿二", "廿三", "廿四", "廿五", "廿六", "廿七", "廿八", "廿九", "三十"};
 
-  /**
-   * 农历月
-   */
-  protected LunarMonth month;
-
-  /**
-   * 日
-   */
-  protected int day;
-
-  /**
-   * 公历日（第一次使用时才会初始化）
-   */
-  protected SolarDay solarDay;
-
-  /**
-   * 干支日（第一次使用时才会初始化）
-   */
-  protected SixtyCycleDay sixtyCycleDay;
+  public static void validate(int year, int month, int day) {
+    if (day < 1) {
+      throw new IllegalArgumentException(String.format("illegal lunar day %d", day));
+    }
+    LunarMonth m = LunarMonth.fromYm(year, month);
+    if (day > m.getDayCount()) {
+      throw new IllegalArgumentException(String.format("illegal day %d in %s", day, m));
+    }
+  }
 
   /**
    * 初始化
@@ -53,11 +43,9 @@ public class LunarDay extends AbstractTyme {
    * @param day   农历日
    */
   public LunarDay(int year, int month, int day) {
-    LunarMonth m = LunarMonth.fromYm(year, month);
-    if (day < 1 || day > m.getDayCount()) {
-      throw new IllegalArgumentException(String.format("illegal day %d in %s", day, m));
-    }
-    this.month = m;
+    validate(year, month, day);
+    this.year = year;
+    this.month = month;
     this.day = day;
   }
 
@@ -78,34 +66,7 @@ public class LunarDay extends AbstractTyme {
    * @return 农历月
    */
   public LunarMonth getLunarMonth() {
-    return month;
-  }
-
-  /**
-   * 年
-   *
-   * @return 年
-   */
-  public int getYear() {
-    return month.getYear();
-  }
-
-  /**
-   * 月
-   *
-   * @return 月
-   */
-  public int getMonth() {
-    return month.getMonthWithLeap();
-  }
-
-  /**
-   * 日
-   *
-   * @return 日
-   */
-  public int getDay() {
-    return day;
+    return LunarMonth.fromYm(year, month);
   }
 
   public String getName() {
@@ -114,7 +75,7 @@ public class LunarDay extends AbstractTyme {
 
   @Override
   public String toString() {
-    return month + getName();
+    return getLunarMonth() + getName();
   }
 
   public LunarDay next(int n) {
@@ -128,15 +89,11 @@ public class LunarDay extends AbstractTyme {
    * @return true/false
    */
   public boolean isBefore(LunarDay target) {
-    int aYear = getYear();
-    int bYear = target.getYear();
-    if (aYear != bYear) {
-      return aYear < bYear;
+    if (year != target.getYear()) {
+      return year < target.getYear();
     }
-    int aMonth = getMonth();
-    int bMonth = target.getMonth();
-    if (aMonth != bMonth) {
-      return Math.abs(aMonth) < Math.abs(bMonth);
+    if (month != target.getMonth()) {
+      return Math.abs(month) < Math.abs(target.getMonth());
     }
     return day < target.getDay();
   }
@@ -148,15 +105,11 @@ public class LunarDay extends AbstractTyme {
    * @return true/false
    */
   public boolean isAfter(LunarDay target) {
-    int aYear = getYear();
-    int bYear = target.getYear();
-    if (aYear != bYear) {
-      return aYear > bYear;
+    if (year != target.getYear()) {
+      return year > target.getYear();
     }
-    int aMonth = getMonth();
-    int bMonth = target.getMonth();
-    if (aMonth != bMonth) {
-      return Math.abs(aMonth) >= Math.abs(bMonth);
+    if (month != target.getMonth()) {
+      return Math.abs(month) >= Math.abs(target.getMonth());
     }
     return day > target.getDay();
   }
@@ -198,7 +151,7 @@ public class LunarDay extends AbstractTyme {
    * @return 干支
    */
   public SixtyCycle getSixtyCycle() {
-    int offset = (int) month.getFirstJulianDay().next(day - 12).getDay();
+    int offset = (int) getLunarMonth().getFirstJulianDay().next(day - 12).getDay();
     return SixtyCycle.fromName(HeavenStem.fromIndex(offset).getName() + EarthBranch.fromIndex(offset).getName());
   }
 
@@ -259,7 +212,7 @@ public class LunarDay extends AbstractTyme {
    */
   public Direction getJupiterDirection() {
     int index = getSixtyCycle().getIndex();
-    return index % 12 < 6 ? Element.fromIndex(index / 12).getDirection() : month.getLunarYear().getJupiterDirection();
+    return index % 12 < 6 ? Element.fromIndex(index / 12).getDirection() : LunarYear.fromYear(year).getJupiterDirection();
   }
 
   /**
@@ -278,7 +231,7 @@ public class LunarDay extends AbstractTyme {
    */
   public PhaseDay getPhaseDay() {
     SolarDay today = getSolarDay();
-    LunarMonth m = month.next(1);
+    LunarMonth m = getLunarMonth().next(1);
     Phase p = Phase.fromIndex(m.getYear(), m.getMonthWithLeap(), 0);
     SolarDay d = p.getSolarDay();
     while (d.isAfter(today)) {
@@ -303,7 +256,7 @@ public class LunarDay extends AbstractTyme {
    * @return 六曜
    */
   public SixStar getSixStar() {
-    return SixStar.fromIndex((month.getMonth() + day - 2) % 6);
+    return SixStar.fromIndex((Math.abs(month) + day - 2) % 6);
   }
 
   /**
@@ -312,10 +265,7 @@ public class LunarDay extends AbstractTyme {
    * @return 公历日
    */
   public SolarDay getSolarDay() {
-    if (null == solarDay) {
-      solarDay = month.getFirstJulianDay().next(day - 1).getSolarDay();
-    }
-    return solarDay;
+    return getLunarMonth().getFirstJulianDay().next(day - 1).getSolarDay();
   }
 
   /**
@@ -324,10 +274,7 @@ public class LunarDay extends AbstractTyme {
    * @return 干支日
    */
   public SixtyCycleDay getSixtyCycleDay() {
-    if (null == sixtyCycleDay) {
-      sixtyCycleDay = getSolarDay().getSixtyCycleDay();
-    }
-    return sixtyCycleDay;
+    return getSolarDay().getSixtyCycleDay();
   }
 
   /**
@@ -345,7 +292,7 @@ public class LunarDay extends AbstractTyme {
    * @return 农历传统节日
    */
   public LunarFestival getFestival() {
-    return LunarFestival.fromYmd(getYear(), getMonth(), day);
+    return LunarFestival.fromYmd(year, month, day);
   }
 
   /**
@@ -355,11 +302,9 @@ public class LunarDay extends AbstractTyme {
    */
   public List<LunarHour> getHours() {
     List<LunarHour> l = new ArrayList<>();
-    int y = getYear();
-    int m = getMonth();
-    l.add(LunarHour.fromYmdHms(y, m, day, 0, 0, 0));
+    l.add(LunarHour.fromYmdHms(year, month, day, 0, 0, 0));
     for (int i = 0; i < 24; i += 2) {
-      l.add(LunarHour.fromYmdHms(y, m, day, i + 1, 0, 0));
+      l.add(LunarHour.fromYmdHms(year, month, day, i + 1, 0, 0));
     }
     return l;
   }

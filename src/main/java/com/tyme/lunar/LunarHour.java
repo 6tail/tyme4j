@@ -1,6 +1,5 @@
 package com.tyme.lunar;
 
-import com.tyme.AbstractTyme;
 import com.tyme.culture.Taboo;
 import com.tyme.culture.ren.MinorRen;
 import com.tyme.culture.star.nine.NineStar;
@@ -15,6 +14,7 @@ import com.tyme.sixtycycle.SixtyCycleHour;
 import com.tyme.solar.SolarDay;
 import com.tyme.solar.SolarTerm;
 import com.tyme.solar.SolarTime;
+import com.tyme.unit.SecondUnit;
 
 import java.util.List;
 
@@ -23,42 +23,17 @@ import java.util.List;
  *
  * @author 6tail
  */
-public class LunarHour extends AbstractTyme {
+public class LunarHour extends SecondUnit {
 
   /**
    * 八字计算接口
    */
   public static EightCharProvider provider = new DefaultEightCharProvider();
 
-  /**
-   * 农历日
-   */
-  protected LunarDay day;
-
-  /**
-   * 时
-   */
-  protected int hour;
-
-  /**
-   * 分
-   */
-  protected int minute;
-
-  /**
-   * 秒
-   */
-  protected int second;
-
-  /**
-   * 公历时刻（第一次使用时才会初始化）
-   */
-  protected SolarTime solarTime;
-
-  /**
-   * 干支时辰（第一次使用时才会初始化）
-   */
-  protected SixtyCycleHour sixtyCycleHour;
+  public static void validate(int year, int month, int day, int hour, int minute, int second) {
+    SecondUnit.validate(hour, minute, second);
+    LunarDay.validate(year, month, day);
+  }
 
   /**
    * 初始化
@@ -71,16 +46,9 @@ public class LunarHour extends AbstractTyme {
    * @param second 秒
    */
   public LunarHour(int year, int month, int day, int hour, int minute, int second) {
-    if (hour < 0 || hour > 23) {
-      throw new IllegalArgumentException(String.format("illegal hour: %d", hour));
-    }
-    if (minute < 0 || minute > 59) {
-      throw new IllegalArgumentException(String.format("illegal minute: %d", minute));
-    }
-    if (second < 0 || second > 59) {
-      throw new IllegalArgumentException(String.format("illegal second: %d", second));
-    }
-    this.day = LunarDay.fromYmd(year, month, day);
+    this.year = year;
+    this.month = month;
+    this.day = day;
     this.hour = hour;
     this.minute = minute;
     this.second = second;
@@ -106,61 +74,7 @@ public class LunarHour extends AbstractTyme {
    * @return 农历日
    */
   public LunarDay getLunarDay() {
-    return day;
-  }
-
-  /**
-   * 年
-   *
-   * @return 年
-   */
-  public int getYear() {
-    return day.getYear();
-  }
-
-  /**
-   * 月
-   *
-   * @return 月
-   */
-  public int getMonth() {
-    return day.getMonth();
-  }
-
-  /**
-   * 日
-   *
-   * @return 日
-   */
-  public int getDay() {
-    return day.getDay();
-  }
-
-  /**
-   * 时
-   *
-   * @return 时
-   */
-  public int getHour() {
-    return hour;
-  }
-
-  /**
-   * 分
-   *
-   * @return 分
-   */
-  public int getMinute() {
-    return minute;
-  }
-
-  /**
-   * 秒
-   *
-   * @return 秒
-   */
-  public int getSecond() {
-    return second;
+    return LunarDay.fromYmd(year, month, day);
   }
 
   public String getName() {
@@ -169,7 +83,7 @@ public class LunarHour extends AbstractTyme {
 
   @Override
   public String toString() {
-    return day + getSixtyCycle().getName() + "时";
+    return getLunarDay() + getSixtyCycle().getName() + "时";
   }
 
   /**
@@ -183,7 +97,7 @@ public class LunarHour extends AbstractTyme {
 
   public LunarHour next(int n) {
     if (n == 0) {
-      return fromYmdHms(getYear(), getMonth(), getDay(), hour, minute, second);
+      return fromYmdHms(year, month, day, hour, minute, second);
     }
     int h = hour + n * 2;
     int diff = h < 0 ? -1 : 1;
@@ -194,7 +108,7 @@ public class LunarHour extends AbstractTyme {
       hour += 24;
       days--;
     }
-    LunarDay d = day.next(days);
+    LunarDay d = getLunarDay().next(days);
     return fromYmdHms(d.getYear(), d.getMonth(), d.getDay(), hour, minute, second);
   }
 
@@ -205,8 +119,9 @@ public class LunarHour extends AbstractTyme {
    * @return true/false
    */
   public boolean isBefore(LunarHour target) {
-    if (!day.equals(target.getLunarDay())) {
-      return day.isBefore(target.getLunarDay());
+    LunarDay d = getLunarDay();
+    if (!d.equals(target.getLunarDay())) {
+      return d.isBefore(target.getLunarDay());
     }
     if (hour != target.getHour()) {
       return hour < target.getHour();
@@ -221,8 +136,9 @@ public class LunarHour extends AbstractTyme {
    * @return true/false
    */
   public boolean isAfter(LunarHour target) {
-    if (!day.equals(target.getLunarDay())) {
-      return day.isAfter(target.getLunarDay());
+    LunarDay d = getLunarDay();
+    if (!d.equals(target.getLunarDay())) {
+      return d.isAfter(target.getLunarDay());
     }
     if (hour != target.getHour()) {
       return hour > target.getHour();
@@ -270,7 +186,7 @@ public class LunarHour extends AbstractTyme {
    */
   public SixtyCycle getSixtyCycle() {
     int earthBranchIndex = getIndexInDay() % 12;
-    SixtyCycle d = day.getSixtyCycle();
+    SixtyCycle d = getLunarDay().getSixtyCycle();
     if (hour >= 23) {
       d = d.next(1);
     }
@@ -292,10 +208,11 @@ public class LunarHour extends AbstractTyme {
    * @return 九星
    */
   public NineStar getNineStar() {
-    SolarDay solar = day.getSolarDay();
+    LunarDay d = getLunarDay();
+    SolarDay solar = d.getSolarDay();
     SolarTerm dongZhi = SolarTerm.fromIndex(solar.getYear(), 0);
     int earthBranchIndex = getIndexInDay() % 12;
-    int index = new int[]{8, 5, 2}[day.getSixtyCycle().getEarthBranch().getIndex() % 3];
+    int index = new int[]{8, 5, 2}[d.getSixtyCycle().getEarthBranch().getIndex() % 3];
     if (!solar.isBefore(dongZhi.getJulianDay().getSolarDay()) && solar.isBefore(dongZhi.next(12).getJulianDay().getSolarDay())) {
       index = 8 + earthBranchIndex - index;
     } else {
@@ -310,11 +227,8 @@ public class LunarHour extends AbstractTyme {
    * @return 公历时刻
    */
   public SolarTime getSolarTime() {
-    if (null == solarTime) {
-      SolarDay d = day.getSolarDay();
-      solarTime = SolarTime.fromYmdHms(d.getYear(), d.getMonth(), d.getDay(), hour, minute, second);
-    }
-    return solarTime;
+    SolarDay d = getLunarDay().getSolarDay();
+    return SolarTime.fromYmdHms(d.getYear(), d.getMonth(), d.getDay(), hour, minute, second);
   }
 
   /**
@@ -332,10 +246,7 @@ public class LunarHour extends AbstractTyme {
    * @return 干支时辰
    */
   public SixtyCycleHour getSixtyCycleHour() {
-    if (null == sixtyCycleHour) {
-      sixtyCycleHour = getSolarTime().getSixtyCycleHour();
-    }
-    return sixtyCycleHour;
+    return getSolarTime().getSixtyCycleHour();
   }
 
   /**

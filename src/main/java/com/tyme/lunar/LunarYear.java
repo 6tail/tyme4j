@@ -1,11 +1,11 @@
 package com.tyme.lunar;
 
-import com.tyme.AbstractTyme;
 import com.tyme.culture.Direction;
 import com.tyme.culture.KitchenGodSteed;
 import com.tyme.culture.Twenty;
 import com.tyme.culture.star.nine.NineStar;
 import com.tyme.sixtycycle.SixtyCycle;
+import com.tyme.unit.YearUnit;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,12 +15,7 @@ import java.util.List;
  *
  * @author 6tail
  */
-public class LunarYear extends AbstractTyme {
-
-  /**
-   * 年
-   */
-  protected int year;
+public class LunarYear extends YearUnit {
 
   /**
    * 缓存{闰月:年}
@@ -62,10 +57,14 @@ public class LunarYear extends AbstractTyme {
     }
   }
 
-  public LunarYear(int year) {
+  public static void validate(int year) {
     if (year < -1 || year > 9999) {
       throw new IllegalArgumentException(String.format("illegal lunar year: %d", year));
     }
+  }
+
+  public LunarYear(int year) {
+    validate(year);
     this.year = year;
   }
 
@@ -77,15 +76,6 @@ public class LunarYear extends AbstractTyme {
    */
   public static LunarYear fromYear(int year) {
     return new LunarYear(year);
-  }
-
-  /**
-   * 年
-   *
-   * @return 年
-   */
-  public int getYear() {
-    return year;
   }
 
   /**

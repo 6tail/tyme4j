@@ -1,6 +1,6 @@
 package com.tyme.solar;
 
-import com.tyme.AbstractTyme;
+import com.tyme.unit.MonthUnit;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.List;
  *
  * @author 6tail
  */
-public class SolarMonth extends AbstractTyme {
+public class SolarMonth extends MonthUnit {
 
   public static final String[] NAMES = {"1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"};
 
@@ -19,15 +19,12 @@ public class SolarMonth extends AbstractTyme {
    */
   public static final int[] DAYS = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
-  /**
-   * 年
-   */
-  protected SolarYear year;
-
-  /**
-   * 月
-   */
-  protected int month;
+  public static void validate(int year, int month) {
+    if (month < 1 || month > 12) {
+      throw new IllegalArgumentException(String.format("illegal solar month: %d", month));
+    }
+    SolarYear.validate(year);
+  }
 
   /**
    * 初始化
@@ -36,10 +33,8 @@ public class SolarMonth extends AbstractTyme {
    * @param month 月
    */
   public SolarMonth(int year, int month) {
-    if (month < 1 || month > 12) {
-      throw new IllegalArgumentException(String.format("illegal solar month: %d", month));
-    }
-    this.year = SolarYear.fromYear(year);
+    validate(year, month);
+    this.year = year;
     this.month = month;
   }
 
@@ -53,25 +48,7 @@ public class SolarMonth extends AbstractTyme {
    * @return 公历年
    */
   public SolarYear getSolarYear() {
-    return year;
-  }
-
-  /**
-   * 年
-   *
-   * @return 年
-   */
-  public int getYear() {
-    return year.getYear();
-  }
-
-  /**
-   * 月
-   *
-   * @return 月
-   */
-  public int getMonth() {
-    return month;
+    return SolarYear.fromYear(year);
   }
 
   /**
@@ -80,12 +57,12 @@ public class SolarMonth extends AbstractTyme {
    * @return 天数
    */
   public int getDayCount() {
-    if (1582 == getYear() && 10 == month) {
+    if (1582 == year && 10 == month) {
       return 21;
     }
     int d = DAYS[getIndexInYear()];
     //公历闰年2月多一天
-    if (2 == month && year.isLeap()) {
+    if (2 == month && getSolarYear().isLeap()) {
       d++;
     }
     return d;
@@ -106,7 +83,7 @@ public class SolarMonth extends AbstractTyme {
    * @return 公历季度
    */
   public SolarSeason getSeason() {
-    return SolarSeason.fromIndex(getYear(), getIndexInYear() / 3);
+    return SolarSeason.fromIndex(year, getIndexInYear() / 3);
   }
 
   /**
@@ -116,7 +93,7 @@ public class SolarMonth extends AbstractTyme {
    * @return 周数
    */
   public int getWeekCount(int start) {
-    return (int) Math.ceil((indexOf(SolarDay.fromYmd(getYear(), month, 1).getWeek().getIndex() - start, 7) + getDayCount()) / 7D);
+    return (int) Math.ceil((indexOf(SolarDay.fromYmd(year, month, 1).getWeek().getIndex() - start, 7) + getDayCount()) / 7D);
   }
 
   public String getName() {
@@ -125,12 +102,12 @@ public class SolarMonth extends AbstractTyme {
 
   @Override
   public String toString() {
-    return year + getName();
+    return getSolarYear() + getName();
   }
 
   public SolarMonth next(int n) {
     int i = month - 1 + n;
-    return fromYm((getYear() * 12 + i) / 12, indexOf(i, 12) + 1);
+    return fromYm((year * 12 + i) / 12, indexOf(i, 12) + 1);
   }
 
   /**
@@ -141,10 +118,9 @@ public class SolarMonth extends AbstractTyme {
    */
   public List<SolarWeek> getWeeks(int start) {
     int size = getWeekCount(start);
-    int y = getYear();
     List<SolarWeek> l = new ArrayList<>(size);
     for (int i = 0; i < size; i++) {
-      l.add(SolarWeek.fromYm(y, month, i, start));
+      l.add(SolarWeek.fromYm(year, month, i, start));
     }
     return l;
   }
@@ -156,11 +132,19 @@ public class SolarMonth extends AbstractTyme {
    */
   public List<SolarDay> getDays() {
     int size = getDayCount();
-    int y = getYear();
     List<SolarDay> l = new ArrayList<>(size);
     for (int i = 1; i <= size; i++) {
-      l.add(SolarDay.fromYmd(y, month, i));
+      l.add(SolarDay.fromYmd(year, month, i));
     }
     return l;
+  }
+
+  /**
+   * 本月第1天
+   *
+   * @return 公历日
+   */
+  public SolarDay getFirstDay() {
+    return SolarDay.fromYmd(year, month, 1);
   }
 }

@@ -1,6 +1,6 @@
 package com.tyme.solar;
 
-import com.tyme.AbstractTyme;
+import com.tyme.unit.YearUnit;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,19 +10,21 @@ import java.util.List;
  *
  * @author 6tail
  */
-public class SolarSeason extends AbstractTyme {
+public class SolarSeason extends YearUnit {
 
   public static final String[] NAMES = {"一季度", "二季度", "三季度", "四季度"};
-
-  /**
-   * 年
-   */
-  protected SolarYear year;
 
   /**
    * 索引，0-3
    */
   protected int index;
+
+  public static void validate(int year, int index) {
+    if (index < 0 || index > 3) {
+      throw new IllegalArgumentException(String.format("illegal solar season index: %d", index));
+    }
+    SolarYear.validate(year);
+  }
 
   /**
    * 初始化
@@ -31,10 +33,8 @@ public class SolarSeason extends AbstractTyme {
    * @param index 索引，0-3
    */
   public SolarSeason(int year, int index) {
-    if (index < 0 || index > 3) {
-      throw new IllegalArgumentException(String.format("illegal solar season index: %d", index));
-    }
-    this.year = SolarYear.fromYear(year);
+    validate(year, index);
+    this.year = year;
     this.index = index;
   }
 
@@ -48,16 +48,7 @@ public class SolarSeason extends AbstractTyme {
    * @return 公历年
    */
   public SolarYear getSolarYear() {
-    return year;
-  }
-
-  /**
-   * 年
-   *
-   * @return 年
-   */
-  public int getYear() {
-    return year.getYear();
+    return SolarYear.fromYear(year);
   }
 
   /**
@@ -75,12 +66,12 @@ public class SolarSeason extends AbstractTyme {
 
   @Override
   public String toString() {
-    return year + getName();
+    return getSolarYear() + getName();
   }
 
   public SolarSeason next(int n) {
     int i = index + n;
-    return fromIndex((getYear() * 4 + i) / 4, indexOf(i, 4));
+    return fromIndex((year * 4 + i) / 4, indexOf(i, 4));
   }
 
   /**
@@ -90,9 +81,8 @@ public class SolarSeason extends AbstractTyme {
    */
   public List<SolarMonth> getMonths() {
     List<SolarMonth> l = new ArrayList<>(3);
-    int y = getYear();
     for (int i = 1; i < 4; i++) {
-      l.add(SolarMonth.fromYm(y, index * 3 + i));
+      l.add(SolarMonth.fromYm(year, index * 3 + i));
     }
     return l;
   }

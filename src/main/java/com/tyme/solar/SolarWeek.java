@@ -1,7 +1,6 @@
 package com.tyme.solar;
 
-import com.tyme.AbstractTyme;
-import com.tyme.culture.Week;
+import com.tyme.unit.WeekUnit;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,24 +10,17 @@ import java.util.List;
  *
  * @author 6tail
  */
-public class SolarWeek extends AbstractTyme {
+public class SolarWeek extends WeekUnit {
 
   public static final String[] NAMES = {"第一周", "第二周", "第三周", "第四周", "第五周", "第六周"};
 
-  /**
-   * 公历月
-   */
-  protected SolarMonth month;
-
-  /**
-   * 索引，0-5
-   */
-  protected int index;
-
-  /**
-   * 起始星期
-   */
-  protected Week start;
+  public static void validate(int year, int month, int index, int start) {
+    WeekUnit.validate(index, start);
+    SolarMonth m = SolarMonth.fromYm(year, month);
+    if (index >= m.getWeekCount(start)) {
+      throw new IllegalArgumentException(String.format("illegal solar week index: %d in month: %s", index, m));
+    }
+  }
 
   /**
    * 初始化
@@ -39,19 +31,11 @@ public class SolarWeek extends AbstractTyme {
    * @param start 起始星期，1234560分别代表星期一至星期天
    */
   public SolarWeek(int year, int month, int index, int start) {
-    if (index < 0 || index > 5) {
-      throw new IllegalArgumentException(String.format("illegal solar week index: %d", index));
-    }
-    if (start < 0 || start > 6) {
-      throw new IllegalArgumentException(String.format("illegal solar week start: %d", start));
-    }
-    SolarMonth m = SolarMonth.fromYm(year, month);
-    if (index >= m.getWeekCount(start)) {
-      throw new IllegalArgumentException(String.format("illegal solar week index: %d in month: %s", index, m));
-    }
-    this.month = m;
+    validate(year, month, index, start);
+    this.year = year;
+    this.month = month;
     this.index = index;
-    this.start = Week.fromIndex(start);
+    this.start = start;
   }
 
   public static SolarWeek fromYm(int year, int month, int index, int start) {
@@ -64,34 +48,7 @@ public class SolarWeek extends AbstractTyme {
    * @return 公历月
    */
   public SolarMonth getSolarMonth() {
-    return month;
-  }
-
-  /**
-   * 年
-   *
-   * @return 年
-   */
-  public int getYear() {
-    return month.getYear();
-  }
-
-  /**
-   * 月
-   *
-   * @return 月
-   */
-  public int getMonth() {
-    return month.getMonth();
-  }
-
-  /**
-   * 索引
-   *
-   * @return 索引，0-5
-   */
-  public int getIndex() {
-    return index;
+    return SolarMonth.fromYm(year, month);
   }
 
   /**
@@ -103,21 +60,12 @@ public class SolarWeek extends AbstractTyme {
     int i = 0;
     SolarDay firstDay = getFirstDay();
     // 今年第1周
-    SolarWeek w = SolarWeek.fromYm(getYear(), 1, 0, start.getIndex());
+    SolarWeek w = SolarWeek.fromYm(year, 1, 0, start);
     while (!w.getFirstDay().equals(firstDay)) {
       w = w.next(1);
       i++;
     }
     return i;
-  }
-
-  /**
-   * 起始星期
-   *
-   * @return 星期
-   */
-  public Week getStart() {
-    return start;
   }
 
   public String getName() {
@@ -126,35 +74,34 @@ public class SolarWeek extends AbstractTyme {
 
   @Override
   public String toString() {
-    return month + getName();
+    return getSolarMonth() + getName();
   }
 
   public SolarWeek next(int n) {
-    int startIndex = start.getIndex();
     int d = index;
-    SolarMonth m = month;
+    SolarMonth m = getSolarMonth();
     if (n > 0) {
       d += n;
-      int weekCount = m.getWeekCount(startIndex);
+      int weekCount = m.getWeekCount(start);
       while (d >= weekCount) {
         d -= weekCount;
         m = m.next(1);
-        if (!SolarDay.fromYmd(m.getYear(), m.getMonth(), 1).getWeek().equals(start)) {
+        if (m.getFirstDay().getWeek().getIndex() != start) {
           d += 1;
         }
-        weekCount = m.getWeekCount(startIndex);
+        weekCount = m.getWeekCount(start);
       }
     } else if (n < 0) {
       d += n;
       while (d < 0) {
-        if (!SolarDay.fromYmd(m.getYear(), m.getMonth(), 1).getWeek().equals(start)) {
+        if (m.getFirstDay().getWeek().getIndex() != start) {
           d -= 1;
         }
         m = m.next(-1);
-        d += m.getWeekCount(startIndex);
+        d += m.getWeekCount(start);
       }
     }
-    return fromYm(m.getYear(), m.getMonth(), d, startIndex);
+    return fromYm(m.getYear(), m.getMonth(), d, start);
   }
 
   /**
@@ -164,7 +111,7 @@ public class SolarWeek extends AbstractTyme {
    */
   public SolarDay getFirstDay() {
     SolarDay firstDay = SolarDay.fromYmd(getYear(), getMonth(), 1);
-    return firstDay.next(index * 7 - indexOf(firstDay.getWeek().getIndex() - start.getIndex(), 7));
+    return firstDay.next(index * 7 - indexOf(firstDay.getWeek().getIndex() - start, 7));
   }
 
   /**

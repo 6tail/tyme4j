@@ -1,6 +1,6 @@
 package com.tyme.solar;
 
-import com.tyme.AbstractTyme;
+import com.tyme.unit.YearUnit;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,19 +10,21 @@ import java.util.List;
  *
  * @author 6tail
  */
-public class SolarHalfYear extends AbstractTyme {
+public class SolarHalfYear extends YearUnit {
 
   public static final String[] NAMES = {"上半年", "下半年"};
-
-  /**
-   * 年
-   */
-  protected SolarYear year;
 
   /**
    * 索引，0-1
    */
   protected int index;
+
+  public static void validate(int year, int index) {
+    if (index < 0 || index > 1) {
+      throw new IllegalArgumentException(String.format("illegal solar half year index: %d", index));
+    }
+    SolarYear.validate(year);
+  }
 
   /**
    * 初始化
@@ -31,10 +33,8 @@ public class SolarHalfYear extends AbstractTyme {
    * @param index 索引，0-1
    */
   public SolarHalfYear(int year, int index) {
-    if (index < 0 || index > 1) {
-      throw new IllegalArgumentException(String.format("illegal solar half year index: %d", index));
-    }
-    this.year = SolarYear.fromYear(year);
+    validate(year, index);
+    this.year = year;
     this.index = index;
   }
 
@@ -48,16 +48,7 @@ public class SolarHalfYear extends AbstractTyme {
    * @return 公历年
    */
   public SolarYear getSolarYear() {
-    return year;
-  }
-
-  /**
-   * 年
-   *
-   * @return 年
-   */
-  public int getYear() {
-    return year.getYear();
+    return SolarYear.fromYear(year);
   }
 
   /**
@@ -75,12 +66,12 @@ public class SolarHalfYear extends AbstractTyme {
 
   @Override
   public String toString() {
-    return year + getName();
+    return getSolarYear() + getName();
   }
 
   public SolarHalfYear next(int n) {
     int i = index + n;
-    return fromIndex((getYear() * 2 + i) / 2, indexOf(i, 2));
+    return fromIndex((year * 2 + i) / 2, indexOf(i, 2));
   }
 
   /**
@@ -90,9 +81,8 @@ public class SolarHalfYear extends AbstractTyme {
    */
   public List<SolarMonth> getMonths() {
     List<SolarMonth> l = new ArrayList<>(6);
-    int y = getYear();
     for (int i = 1; i < 7; i++) {
-      l.add(SolarMonth.fromYm(y, index * 6 + i));
+      l.add(SolarMonth.fromYm(year, index * 6 + i));
     }
     return l;
   }
@@ -104,9 +94,8 @@ public class SolarHalfYear extends AbstractTyme {
    */
   public List<SolarSeason> getSeasons() {
     List<SolarSeason> l = new ArrayList<>(2);
-    int y = getYear();
     for (int i = 0; i < 2; i++) {
-      l.add(SolarSeason.fromIndex(y, index * 2 + i));
+      l.add(SolarSeason.fromIndex(year, index * 2 + i));
     }
     return l;
   }
