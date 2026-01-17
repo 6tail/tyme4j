@@ -152,7 +152,7 @@ public class SolarDay extends DayUnit {
       y += 1;
       i = 0;
     }
-    SolarTerm term = SolarTerm.fromIndex(y, i);
+    SolarTerm term = SolarTerm.fromIndex(y, i + 1);
     SolarDay day = term.getSolarDay();
     while (isBefore(day)) {
       term = term.next(-1);

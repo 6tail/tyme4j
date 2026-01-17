@@ -6,7 +6,7 @@
 
     <groupId>cn.6tail</groupId>
     <artifactId>tyme4j</artifactId>
-    <version>1.4.1</version>
+    <version>1.4.2</version>
     <packaging>jar</packaging>
 
     <name>${project.artifactId}</name>
@@ -46,7 +46,7 @@
         <maven-javadoc-plugin-version>2.9</maven-javadoc-plugin-version>
         <maven-source-plugin-version>2.4</maven-source-plugin-version>
         <maven-release-plugin-version>2.2.2</maven-release-plugin-version>
-        <maven-gpg-plugin-version>1.6</maven-gpg-plugin-version>
+        <maven-gpg-plugin-version>3.1.0</maven-gpg-plugin-version>
         <maven-deploy-plugin-version>3.1.2</maven-deploy-plugin-version>
         <maven-assembly-plugin-version>2.2-beta-5</maven-assembly-plugin-version>
         <central-publishing-maven-plugin-version>0.7.0</central-publishing-maven-plugin-version>

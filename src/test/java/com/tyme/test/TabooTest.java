@@ -157,4 +157,14 @@ public class TabooTest {
     Assert.assertEquals(Arrays.asList("裁衣", "经络", "伐木", "开柱眼", "拆卸", "修造", "动土", "上梁", "合脊", "合寿木", "入殓", "除服", "成服", "移柩", "破土", "安葬", "启钻", "修坟", "立碑"), taboos);
   }
 
+  @Test
+  public void test14() {
+    List<String> taboos = new ArrayList<>();
+    for (Taboo t : SolarDay.fromYmd(2026, 1, 6).getLunarDay().getAvoids()) {
+      taboos.add(t.getName());
+    }
+
+    Assert.assertEquals(Collections.emptyList(), taboos);
+  }
+
 }

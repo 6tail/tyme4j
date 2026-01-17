@@ -99,4 +99,9 @@ public class SolarTermTest {
     Assert.assertEquals("1034年10月3日 06:02:28", SolarTerm.fromName(1034, "寒露").getJulianDay().getSolarTime().toString());
   }
 
+  @Test
+  public void test7() {
+    Assert.assertEquals("立春", SolarDay.fromYmd(1150, 1, 30).getTerm().toString());
+  }
+
 }

@@ -6,9 +6,6 @@ import com.tyme.culture.fetus.FetusDay;
 import com.tyme.culture.star.nine.NineStar;
 import com.tyme.culture.star.twelve.TwelveStar;
 import com.tyme.culture.star.twentyeight.TwentyEightStar;
-import com.tyme.lunar.LunarDay;
-import com.tyme.lunar.LunarMonth;
-import com.tyme.lunar.LunarYear;
 import com.tyme.solar.SolarDay;
 import com.tyme.solar.SolarTerm;
 import com.tyme.solar.SolarTime;
@@ -50,27 +47,12 @@ public class SixtyCycleDay extends AbstractTyme {
    * @param solarDay 公历日
    */
   public SixtyCycleDay(SolarDay solarDay) {
-    int solarYear = solarDay.getYear();
-    SolarDay springSolarDay = SolarTerm.fromIndex(solarYear, 3).getSolarDay();
-    LunarDay lunarDay = solarDay.getLunarDay();
-    LunarYear lunarYear = lunarDay.getLunarMonth().getLunarYear();
-    if (lunarYear.getYear() == solarYear) {
-      if (solarDay.isBefore(springSolarDay)) {
-        lunarYear = lunarYear.next(-1);
-      }
-    } else if (lunarYear.getYear() < solarYear) {
-      if (!solarDay.isBefore(springSolarDay)) {
-        lunarYear = lunarYear.next(1);
-      }
-    }
     SolarTerm term = solarDay.getTerm();
-    int index = term.getIndex() - 3;
-    if (index < 0 && term.getSolarDay().isAfter(springSolarDay)) {
-      index += 24;
-    }
+    int index = term.getIndex();
+    int offset = index < 3 ? (index == 0 ? -2 : -1) : ((index - 3) / 2);
     this.solarDay = solarDay;
-    this.month = new SixtyCycleMonth(SixtyCycleYear.fromYear(lunarYear.getYear()), LunarMonth.fromYm(solarYear, 1).getSixtyCycle().next((int) Math.floor(index * 0.5)));
-    this.day = lunarDay.getSixtyCycle();
+    this.month = SixtyCycleYear.fromYear(term.getYear()).getFirstMonth().next(offset);
+    this.day = SixtyCycle.fromIndex(solarDay.subtract(SolarDay.fromYmd(2000, 1, 7)));
   }
 
   public static SixtyCycleDay fromSolarDay(SolarDay solarDay) {

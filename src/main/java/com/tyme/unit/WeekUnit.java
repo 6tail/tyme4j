@@ -3,7 +3,7 @@ package com.tyme.unit;
 import com.tyme.culture.Week;
 
 /**
- * 日
+ * 周
  *
  * @author 6tail
  */
