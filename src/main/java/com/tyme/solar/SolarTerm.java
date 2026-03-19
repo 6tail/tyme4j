@@ -113,4 +113,23 @@ public class SolarTerm extends LoopTyme {
     return cursoryJulianDay;
   }
 
+  /**
+   * 计算上一个节气的名称
+   * @return 返回上一个节气的名称
+   */
+  public String getLastTermName() {
+    int i = index - 1;
+    if (i < 0)
+      i = i + getSize();
+    return NAMES[i];
+  }
+
+  /**
+   * 计算下一个节气的名称
+   * @return 返回下一个节气的名称
+   */
+  public String getNextTermName() {
+    int i = (index + 1) % getSize();
+    return NAMES[i];
+  }
 }
