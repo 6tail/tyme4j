@@ -5,6 +5,7 @@ package com.tyme.enums;
  *
  * @author 6tail
  */
+@Deprecated
 public enum FestivalType {
   DAY(0, "日期"),
   TERM(1, "节气"),

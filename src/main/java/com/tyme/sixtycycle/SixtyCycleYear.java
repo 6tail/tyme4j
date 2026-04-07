@@ -22,7 +22,7 @@ public class SixtyCycleYear extends AbstractTyme {
 
   public SixtyCycleYear(int year) {
     if (year < -1 || year > 9999) {
-      throw new IllegalArgumentException(String.format("illegal sixty cycle year: %d", year));
+      throw new IllegalArgumentException("illegal sixty cycle year: " + year);
     }
     this.year = year;
   }
@@ -56,7 +56,7 @@ public class SixtyCycleYear extends AbstractTyme {
   }
 
   public String getName() {
-    return String.format("%s年", getSixtyCycle());
+    return getSixtyCycle() + "年";
   }
 
   /**

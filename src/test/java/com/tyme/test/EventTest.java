@@ -21,15 +21,15 @@ public class EventTest {
   @Before
   public void init() {
     // 公历现代节日
-    // EventManager.DATA = "@0VV__0Ux公历现代节日:元旦@0Xc__0Ux公历现代节日:三八妇女节@0Xg__0_Q公历现代节日:植树节@0ZV__0Ux公历现代节日:五一劳动节@0ZY__0Ux公历现代节日:五四青年节@0aV__0Ux公历现代节日:六一儿童节@0bV__0Uo公历现代节日:建党节@0cV__0Ug公历现代节日:八一建军节@0de__0_V公历现代节日:教师节@0eV__0Ux公历现代节日:国庆节";
+    // EventManager.DATA = "@0VV__0Ux公历现代节日:元旦@0Xc__0Ux公历现代节日:妇女节@0Xg__0_Q公历现代节日:植树节@0ZV__0Ux公历现代节日:劳动节@0ZY__0Ux公历现代节日:青年节@0aV__0Ux公历现代节日:儿童节@0bV__0Uo公历现代节日:建党节@0cV__0Ug公历现代节日:建军节@0de__0_V公历现代节日:教师节@0eV__0Ux公历现代节日:国庆节";
     EventManager.update("公历现代节日:元旦", Event.builder().solarDay(1, 1, 0).startYear(1950).build());
-    EventManager.update("公历现代节日:三八妇女节", Event.builder().solarDay(3, 8, 0).startYear(1950).build());
+    EventManager.update("公历现代节日:妇女节", Event.builder().solarDay(3, 8, 0).startYear(1950).build());
     EventManager.update("公历现代节日:植树节", Event.builder().solarDay(3, 12, 0).startYear(1979).build());
-    EventManager.update("公历现代节日:五一劳动节", Event.builder().solarDay(5, 1, 0).startYear(1950).build());
-    EventManager.update("公历现代节日:五四青年节", Event.builder().solarDay(5, 4, 0).startYear(1950).build());
-    EventManager.update("公历现代节日:六一儿童节", Event.builder().solarDay(6, 1, 0).startYear(1950).build());
+    EventManager.update("公历现代节日:劳动节", Event.builder().solarDay(5, 1, 0).startYear(1950).build());
+    EventManager.update("公历现代节日:青年节", Event.builder().solarDay(5, 4, 0).startYear(1950).build());
+    EventManager.update("公历现代节日:儿童节", Event.builder().solarDay(6, 1, 0).startYear(1950).build());
     EventManager.update("公历现代节日:建党节", Event.builder().solarDay(7, 1, 0).startYear(1941).build());
-    EventManager.update("公历现代节日:八一建军节", Event.builder().solarDay(8, 1, 0).startYear(1933).build());
+    EventManager.update("公历现代节日:建军节", Event.builder().solarDay(8, 1, 0).startYear(1933).build());
     EventManager.update("公历现代节日:教师节", Event.builder().solarDay(9, 10, 0).startYear(1985).build());
     EventManager.update("公历现代节日:国庆节", Event.builder().solarDay(10, 1, 0).startYear(1950).build());
 

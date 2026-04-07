@@ -25,11 +25,7 @@ public abstract class AbstractCulture implements Culture {
    * @return 索引，从0开始
    */
   protected int indexOf(int index, int size) {
-    int i = index % size;
-    if (i < 0) {
-      i += size;
-    }
-    return i;
+    return Math.floorMod(index, size);
   }
 
 }

@@ -78,7 +78,7 @@ public abstract class LoopTyme extends AbstractTyme {
         return i;
       }
     }
-    throw new IllegalArgumentException(String.format("illegal name: %s", name));
+    throw new IllegalArgumentException("illegal name: " + name);
   }
 
   /**

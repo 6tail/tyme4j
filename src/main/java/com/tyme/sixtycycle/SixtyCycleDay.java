@@ -105,12 +105,12 @@ public class SixtyCycleDay extends AbstractTyme {
   }
 
   public String getName() {
-    return String.format("%s日", day);
+    return day + "日";
   }
 
   @Override
   public String toString() {
-    return String.format("%s%s", month, getName());
+    return month + getName();
   }
 
   /**
@@ -137,20 +137,7 @@ public class SixtyCycleDay extends AbstractTyme {
    * @return 九星
    */
   public NineStar getNineStar() {
-    int y = solarDay.getYear();
-    SolarDay winterSolstice = SolarTerm.fromIndex(y, 0).getSolarDay();
-    SolarDay summerSolstice = SolarTerm.fromIndex(y, 12).getSolarDay();
-    SolarDay nextWinterSolstice = SolarTerm.fromIndex(y + 1, 0).getSolarDay();
-    SolarDay w = winterSolstice.next(winterSolstice.getLunarDay().getSixtyCycle().stepsCloseTo(0));
-    SolarDay s = summerSolstice.next(summerSolstice.getLunarDay().getSixtyCycle().stepsCloseTo(0));
-    SolarDay n = nextWinterSolstice.next(nextWinterSolstice.getLunarDay().getSixtyCycle().stepsCloseTo(0));
-    if (solarDay.isBefore(w)) {
-      return NineStar.fromIndex(w.subtract(solarDay) - 1);
-    }
-    if (solarDay.isBefore(s)) {
-      return NineStar.fromIndex(solarDay.subtract(w));
-    }
-    return NineStar.fromIndex(solarDay.isBefore(n) ? n.subtract(solarDay) - 1 : solarDay.subtract(n));
+    return solarDay.getNineStar();
   }
 
   /**

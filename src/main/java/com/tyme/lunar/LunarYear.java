@@ -59,7 +59,7 @@ public class LunarYear extends YearUnit {
 
   public static void validate(int year) {
     if (year < -1 || year > 9999) {
-      throw new IllegalArgumentException(String.format("illegal lunar year: %d", year));
+      throw new IllegalArgumentException("illegal lunar year: " + year);
     }
   }
 

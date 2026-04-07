@@ -40,7 +40,7 @@ public class KitchenGodSteed extends AbstractCulture {
    * @return 几鼠偷粮
    */
   public String getMouse() {
-    return String.format("%s鼠偷粮", byEarthBranch(0));
+    return byEarthBranch(0) + "鼠偷粮";
   }
 
   /**
@@ -58,7 +58,7 @@ public class KitchenGodSteed extends AbstractCulture {
    * @return 几牛耕田
    */
   public String getCattle() {
-    return String.format("%s牛耕田", byEarthBranch(1));
+    return byEarthBranch(1) + "牛耕田";
   }
 
   /**
@@ -76,7 +76,7 @@ public class KitchenGodSteed extends AbstractCulture {
    * @return 几龙治水
    */
   public String getDragon() {
-    return String.format("%s龙治水", byEarthBranch(4));
+    return byEarthBranch(4) + "龙治水";
   }
 
   /**
@@ -85,7 +85,7 @@ public class KitchenGodSteed extends AbstractCulture {
    * @return 几马驮谷
    */
   public String getHorse() {
-    return String.format("%s马驮谷", byEarthBranch(6));
+    return byEarthBranch(6) + "马驮谷";
   }
 
   /**
@@ -94,7 +94,7 @@ public class KitchenGodSteed extends AbstractCulture {
    * @return 几鸡抢米
    */
   public String getChicken() {
-    return String.format("%s鸡抢米", byEarthBranch(9));
+    return byEarthBranch(9) + "鸡抢米";
   }
 
   /**
@@ -103,7 +103,7 @@ public class KitchenGodSteed extends AbstractCulture {
    * @return 几姑看蚕
    */
   public String getSilkworm() {
-    return String.format("%s姑看蚕", byEarthBranch(9));
+    return byEarthBranch(9) + "姑看蚕";
   }
 
   /**
@@ -112,7 +112,7 @@ public class KitchenGodSteed extends AbstractCulture {
    * @return 几屠共猪
    */
   public String getPig() {
-    return String.format("%s屠共猪", byEarthBranch(11));
+    return byEarthBranch(11) + "屠共猪";
   }
 
   /**
@@ -130,7 +130,7 @@ public class KitchenGodSteed extends AbstractCulture {
    * @return 几人分饼
    */
   public String getCake() {
-    return String.format("%s人分饼", byHeavenStem(2));
+    return byHeavenStem(2) + "人分饼";
   }
 
   /**
@@ -139,7 +139,7 @@ public class KitchenGodSteed extends AbstractCulture {
    * @return 几日得金
    */
   public String getGold() {
-    return String.format("%s日得金", byHeavenStem(7));
+    return byHeavenStem(7) + "日得金";
   }
 
   /**

@@ -12,8 +12,6 @@ import java.util.List;
  */
 public class LunarWeek extends WeekUnit {
 
-  public static final String[] NAMES = {"第一周", "第二周", "第三周", "第四周", "第五周", "第六周"};
-
   public static void validate(int year, int month, int index, int start) {
     WeekUnit.validate(index, start);
     LunarMonth m = LunarMonth.fromYm(year, month);

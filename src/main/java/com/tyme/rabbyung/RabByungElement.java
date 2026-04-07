@@ -9,12 +9,14 @@ import com.tyme.culture.Element;
  */
 public class RabByungElement extends Element {
 
+  public static final String[] NAMES = {"木", "火", "土", "铁", "水"};
+
   public RabByungElement(int index) {
-    super(index);
+    super(NAMES, index);
   }
 
   public RabByungElement(String name) {
-    super(name.replace("铁", "金"));
+    super(NAMES, name);
   }
 
   public static RabByungElement fromIndex(int index) {
@@ -63,10 +65,5 @@ public class RabByungElement extends Element {
    */
   public RabByungElement getRestrained() {
     return next(-2);
-  }
-
-  @Override
-  public String getName() {
-    return super.getName().replace("金", "铁");
   }
 }

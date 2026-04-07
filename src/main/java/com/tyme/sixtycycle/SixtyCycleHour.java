@@ -128,12 +128,12 @@ public class SixtyCycleHour extends AbstractTyme {
   }
 
   public String getName() {
-    return String.format("%s时", hour);
+    return hour + "时";
   }
 
   @Override
   public String toString() {
-    return String.format("%s%s", day, getName());
+    return day + getName();
   }
 
   /**

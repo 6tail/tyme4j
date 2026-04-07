@@ -13,6 +13,11 @@ public class NineStar extends LoopTyme {
 
   public static final String[] NAMES = {"一", "二", "三", "四", "五", "六", "七", "八", "九"};
 
+  /**
+   * 颜色
+   */
+  public static final String[] COLORS = {"白", "黑", "碧", "绿", "黄", "白", "赤", "白", "紫"};
+
   public NineStar(int index) {
     super(NAMES, index);
   }
@@ -39,7 +44,7 @@ public class NineStar extends LoopTyme {
    * @return 颜色
    */
   public String getColor() {
-    return new String[]{"白", "黑", "碧", "绿", "黄", "白", "赤", "白", "紫"}[index];
+    return COLORS[index];
   }
 
   /**
@@ -48,7 +53,7 @@ public class NineStar extends LoopTyme {
    * @return 五行
    */
   public Element getElement() {
-    return Element.fromIndex(new int[]{4, 2, 0, 0, 2, 3, 3, 2, 1}[index]);
+    return getDirection().getElement();
   }
 
   /**

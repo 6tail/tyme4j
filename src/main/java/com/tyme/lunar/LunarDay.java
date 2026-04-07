@@ -8,9 +8,10 @@ import com.tyme.culture.star.six.SixStar;
 import com.tyme.culture.star.twelve.TwelveStar;
 import com.tyme.culture.star.twentyeight.TwentyEightStar;
 import com.tyme.festival.LunarFestival;
-import com.tyme.sixtycycle.*;
+import com.tyme.sixtycycle.SixtyCycle;
+import com.tyme.sixtycycle.SixtyCycleDay;
+import com.tyme.sixtycycle.ThreePillars;
 import com.tyme.solar.SolarDay;
-import com.tyme.solar.SolarTerm;
 import com.tyme.unit.DayUnit;
 
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ public class LunarDay extends DayUnit {
 
   public static void validate(int year, int month, int day) {
     if (day < 1) {
-      throw new IllegalArgumentException(String.format("illegal lunar day %d", day));
+      throw new IllegalArgumentException("illegal lunar day: " + day);
     }
     LunarMonth m = LunarMonth.fromYm(year, month);
     if (day > m.getDayCount()) {
@@ -164,7 +165,7 @@ public class LunarDay extends DayUnit {
    * 建除十二值神
    *
    * @return 建除十二值神
-   * @see SixtyCycleDay
+   * @see SixtyCycleDay#getDuty()
    */
   public Duty getDuty() {
     return getSixtyCycleDay().getDuty();
@@ -174,7 +175,7 @@ public class LunarDay extends DayUnit {
    * 黄道黑道十二神
    *
    * @return 黄道黑道十二神
-   * @see SixtyCycleDay
+   * @see SixtyCycleDay#getTwelveStar()
    */
   public TwelveStar getTwelveStar() {
     return getSixtyCycleDay().getTwelveStar();
@@ -186,27 +187,7 @@ public class LunarDay extends DayUnit {
    * @return 九星
    */
   public NineStar getNineStar() {
-    SolarDay d = getSolarDay();
-    int y = d.getYear();
-    SolarDay winterSolstice = SolarTerm.fromIndex(y, 0).getSolarDay();
-    SolarDay summerSolstice = SolarTerm.fromIndex(y, 12).getSolarDay();
-    SolarDay nextWinterSolstice = SolarTerm.fromIndex(y + 1, 0).getSolarDay();
-    // 距冬至最近的甲子日
-    SolarDay w = winterSolstice.next(winterSolstice.getLunarDay().getSixtyCycle().stepsCloseTo(0));
-    // 距夏至最近的甲子日
-    SolarDay s = summerSolstice.next(summerSolstice.getLunarDay().getSixtyCycle().stepsCloseTo(0));
-    // 距下个冬至最近的甲子日
-    SolarDay n = nextWinterSolstice.next(nextWinterSolstice.getLunarDay().getSixtyCycle().stepsCloseTo(0));
-    // 43210012345678876543210012345
-    //      w        s        n
-    //     冬至     夏至      冬至
-    if (d.isBefore(w)) {
-      return NineStar.fromIndex(w.subtract(d) - 1);
-    }
-    if (d.isBefore(s)) {
-      return NineStar.fromIndex(d.subtract(w));
-    }
-    return NineStar.fromIndex(d.isBefore(n) ? n.subtract(d) - 1 : d.subtract(n));
+    return getSolarDay().getNineStar();
   }
 
   /**

@@ -19,27 +19,31 @@ public class EventBuilder {
    */
   protected char[] data = {'@', '_', '_', '_', '_', '_', '0', '0', '0'};
 
+  /**
+   * 事件名称
+   *
+   * @param name 名称
+   * @return 事件构造器
+   */
   public EventBuilder name(String name) {
     this.name = name;
     return this;
   }
 
-  /**
-   * 编码事件类型
-   *
-   * @param type 事件类型
-   * @return 编码
-   */
-  public static char encodeType(EventType type) {
-    return EventManager.CHARS.charAt(type.getCode());
+  protected char getChar(int index) {
+    return EventManager.CHARS.charAt(index);
+  }
+
+  protected EventBuilder setValue(int index, int n) {
+    data[index] = getChar(31 + n);
+    return this;
   }
 
   protected EventBuilder content(EventType type, int a, int b, int c) {
-    data[1] = encodeType(type);
-    data[2] = EventManager.CHARS.charAt(31 + a);
-    data[3] = EventManager.CHARS.charAt(31 + b);
-    data[4] = EventManager.CHARS.charAt(31 + c);
-    return this;
+    data[1] = getChar(type.getCode());
+    setValue(2, a);
+    setValue(3, b);
+    return setValue(4, c);
   }
 
   /**
@@ -123,7 +127,7 @@ public class EventBuilder {
     int size = EventManager.CHARS.length();
     int n = year;
     for (int i = 0; i < 3; i++) {
-      data[8 - i] = EventManager.CHARS.charAt(n % size);
+      data[8 - i] = getChar(n % size);
       n /= size;
     }
     return this;
@@ -136,8 +140,7 @@ public class EventBuilder {
    * @return 事件构造器
    */
   public EventBuilder offset(int days) {
-    data[5] = EventManager.CHARS.charAt(31 + days);
-    return this;
+    return setValue(5, days);
   }
 
   /**

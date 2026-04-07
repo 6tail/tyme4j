@@ -19,6 +19,14 @@ public class Element extends LoopTyme {
     super(NAMES, name);
   }
 
+  protected Element(String[] names, int index) {
+    super(names, index);
+  }
+
+  protected Element(String[] names, String name) {
+    super(names, name);
+  }
+
   public static Element fromIndex(int index) {
     return new Element(index);
   }

@@ -28,7 +28,7 @@ public class LunarMonth extends MonthUnit {
 
   public static void validate(int year, int month) {
     if (month == 0 || month > 12 || month < -12) {
-      throw new IllegalArgumentException(String.format("illegal lunar month: %d", month));
+      throw new IllegalArgumentException("illegal lunar month: " + month);
     }
     // 闰月检查
     if (month < 0 && -month != LunarYear.fromYear(year).getLeapMonth()) {

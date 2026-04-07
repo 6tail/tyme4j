@@ -1,5 +1,6 @@
 package com.tyme.rabbyung;
 
+import com.tyme.lunar.LunarMonth;
 import com.tyme.unit.MonthUnit;
 
 import java.util.ArrayList;
@@ -13,7 +14,6 @@ import java.util.Map;
  * @author 6tail
  */
 public class RabByungMonth extends MonthUnit {
-  public static final String[] NAMES = {"正月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"};
   public static final String[] ALIAS = {"神变月", "苦行月", "具香月", "萨嘎月", "作净月", "明净月", "具醉月", "具贤月", "天降月", "持众月", "庄严月", "满意月"};
 
   /**
@@ -45,7 +45,7 @@ public class RabByungMonth extends MonthUnit {
 
   public static void validate(int year, int month) {
     if (month == 0 || month > 12 || month < -12) {
-      throw new IllegalArgumentException(String.format("illegal rab-byung month: %d", month));
+      throw new IllegalArgumentException("illegal rab-byung month: " + month);
     }
     if (year < 1950 || year > 2050) {
       throw new IllegalArgumentException(String.format("rab-byung year %d must between 1950 and 2050", year));
@@ -135,7 +135,7 @@ public class RabByungMonth extends MonthUnit {
    * @return 名称
    */
   public String getName() {
-    return (leap ? "闰" : "") + NAMES[month - 1];
+    return (leap ? "闰" : "") + LunarMonth.NAMES[month - 1];
   }
 
   /**

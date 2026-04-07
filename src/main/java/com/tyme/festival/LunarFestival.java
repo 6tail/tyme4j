@@ -1,104 +1,54 @@
 package com.tyme.festival;
 
-import com.tyme.AbstractTyme;
+import com.tyme.enums.EventType;
 import com.tyme.enums.FestivalType;
+import com.tyme.event.Event;
+import com.tyme.event.EventManager;
 import com.tyme.lunar.LunarDay;
 import com.tyme.solar.SolarDay;
 import com.tyme.solar.SolarTerm;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * 农历传统节日（依据国家标准《农历的编算和颁行》GB/T 33661-2017）
  *
  * @author 6tail
  */
-public class LunarFestival extends AbstractTyme {
+public class LunarFestival extends AbstractFestival {
 
   public static final String[] NAMES = {"春节", "元宵节", "龙头节", "上巳节", "清明节", "端午节", "七夕节", "中元节", "中秋节", "重阳节", "冬至节", "腊八节", "除夕"};
 
-  public static String DATA = "@0000101@0100115@0200202@0300303@04107@0500505@0600707@0700715@0800815@0900909@10124@1101208@122";
-
   /**
-   * 类型
+   * 数据
+   *
+   * @see EventManager#DATA
    */
-  protected FestivalType type;
+  public static String DATA = "2VV__0002Vj__0002WW__0002XX__0003b___0002ZZ__0002bb__0002bj__0002cj__0002dd__0003s___0002gc__0002hV_U000";
 
-  /**
-   * 索引
-   */
-  protected int index;
-
-  /**
-   * 农历日
-   */
-  protected LunarDay day;
-
-  /**
-   * 节气
-   */
-  protected SolarTerm solarTerm;
-
-  /**
-   * 名称
-   */
-  protected String name;
-
-  public LunarFestival(FestivalType type, LunarDay day, SolarTerm solarTerm, String data) {
-    this.type = type;
-    this.day = day;
-    this.solarTerm = solarTerm;
-    index = Integer.parseInt(data.substring(1, 3), 10);
-    name = NAMES[index];
+  public LunarFestival(FestivalType type, int index, Event event, SolarDay day) {
+    super(type, index, event, day);
   }
 
   public static LunarFestival fromIndex(int year, int index) {
     if (index < 0 || index >= NAMES.length) {
       return null;
     }
-    Matcher matcher = Pattern.compile(String.format("@%02d\\d+", index)).matcher(DATA);
-    if (!matcher.find()) {
+    int start = index * 8;
+    Event e = new Event(NAMES[index], "@" + DATA.substring(start, start + 8));
+    SolarDay d = e.getSolarDay(year);
+    if (null == d) {
       return null;
     }
-    String data = matcher.group();
-    FestivalType type = FestivalType.fromCode(data.charAt(3) - '0');
-    switch (type) {
-      case DAY:
-        return new LunarFestival(type, LunarDay.fromYmd(year, Integer.parseInt(data.substring(4, 6), 10), Integer.parseInt(data.substring(6), 10)), null, data);
-      case TERM:
-        SolarTerm solarTerm = SolarTerm.fromIndex(year, Integer.parseInt(data.substring(4), 10));
-        return new LunarFestival(type, solarTerm.getSolarDay().getLunarDay(), solarTerm, data);
-      case EVE:
-        return new LunarFestival(type, LunarDay.fromYmd(year + 1, 1, 1).next(-1), null, data);
-      default:
-        return null;
-    }
+    return new LunarFestival(e.getType() == EventType.TERM_DAY ? FestivalType.TERM : FestivalType.DAY, index, e, d);
   }
 
   public static LunarFestival fromYmd(int year, int month, int day) {
-    Matcher matcher = Pattern.compile(String.format("@\\d{2}0%02d%02d", month, day)).matcher(DATA);
-    if (matcher.find()) {
-      return new LunarFestival(FestivalType.DAY, LunarDay.fromYmd(year, month, day), null, matcher.group());
-    }
-    LunarDay lunarDay = LunarDay.fromYmd(year, month, day);
-    SolarDay solarDay = lunarDay.getSolarDay();
-    matcher = Pattern.compile("@\\d{2}1\\d{2}").matcher(DATA);
-    while (matcher.find()) {
-      String data = matcher.group();
-      SolarTerm term = SolarTerm.fromIndex(year, Integer.parseInt(data.substring(4), 10));
-      SolarDay termDay = term.getSolarDay();
-      if (termDay.getYear() == solarDay.getYear() && termDay.getMonth() == solarDay.getMonth() && termDay.getDay() == solarDay.getDay()) {
-        return new LunarFestival(FestivalType.TERM, lunarDay, term, data);
-      }
-    }
-    if (Math.abs(month) == 12 && day > 28) {
-      matcher = Pattern.compile("@\\d{2}2").matcher(DATA);
-      if (!matcher.find()) {
-        return null;
-      }
-      if (lunarDay.next(1).getYear() != year) {
-        return new LunarFestival(FestivalType.EVE, lunarDay, null, matcher.group());
+    for (int i = 0, j = NAMES.length; i < j; i++) {
+      LunarFestival f = fromIndex(year, i);
+      if (null != f) {
+        LunarDay d = f.getDay();
+        if (null != d && d.getYear() == year && d.getMonth() == month && d.getDay() == day) {
+          return f;
+        }
       }
     }
     return null;
@@ -111,30 +61,12 @@ public class LunarFestival extends AbstractTyme {
   }
 
   /**
-   * 类型
-   *
-   * @return 节日类型
-   */
-  public FestivalType getType() {
-    return type;
-  }
-
-  /**
-   * 索引
-   *
-   * @return 索引
-   */
-  public int getIndex() {
-    return index;
-  }
-
-  /**
    * 农历日
    *
    * @return 农历日
    */
   public LunarDay getDay() {
-    return day;
+    return getSolarDay().getLunarDay();
   }
 
   /**
@@ -143,16 +75,11 @@ public class LunarFestival extends AbstractTyme {
    * @return 节气
    */
   public SolarTerm getSolarTerm() {
-    return solarTerm;
-  }
-
-  public String getName() {
-    return name;
+    return getSolarDay().getTerm();
   }
 
   @Override
   public String toString() {
-    return String.format("%s %s", day, name);
+    return String.format("%s %s", getDay(), getName());
   }
-
 }

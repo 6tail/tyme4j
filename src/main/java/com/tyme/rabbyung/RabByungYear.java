@@ -32,19 +32,19 @@ public class RabByungYear extends AbstractTyme {
 
   public static void validate(int year) {
     if (year < 1027 || year > 9999) {
-      throw new IllegalArgumentException(String.format("illegal rab-byung year: %d", year));
+      throw new IllegalArgumentException("illegal rab-byung year: " + year);
     }
   }
 
   public RabByungYear(int rabByungIndex, int elementIndex, int zodiacIndex) {
     if (rabByungIndex < 0 || rabByungIndex > 150) {
-      throw new IllegalArgumentException(String.format("illegal rab-byung index: %d", rabByungIndex));
+      throw new IllegalArgumentException("illegal rab-byung index: " + rabByungIndex);
     }
     if (elementIndex < 0 || elementIndex >= RabByungElement.NAMES.length) {
-      throw new IllegalArgumentException(String.format("illegal element index: %d", elementIndex));
+      throw new IllegalArgumentException("illegal element index: " + elementIndex);
     }
     if (zodiacIndex < 0 || zodiacIndex >= Zodiac.NAMES.length) {
-      throw new IllegalArgumentException(String.format("illegal zodiac index: %d", zodiacIndex));
+      throw new IllegalArgumentException("illegal zodiac index: " + zodiacIndex);
     }
     this.rabByungIndex = rabByungIndex;
     this.elementIndex = elementIndex;

@@ -15,7 +15,7 @@ public class SolarYear extends YearUnit {
 
   public static void validate(int year) {
       if (year < 1 || year > 9999) {
-          throw new IllegalArgumentException(String.format("illegal solar year: %d", year));
+          throw new IllegalArgumentException("illegal solar year: " + year);
       }
   }
 
@@ -59,7 +59,7 @@ public class SolarYear extends YearUnit {
   }
 
   public String getName() {
-    return String.format("%d年", year);
+    return year + "年";
   }
 
   public SolarYear next(int n) {

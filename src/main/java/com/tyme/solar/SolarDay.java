@@ -12,6 +12,7 @@ import com.tyme.culture.phenology.Phenology;
 import com.tyme.culture.phenology.PhenologyDay;
 import com.tyme.culture.plumrain.PlumRain;
 import com.tyme.culture.plumrain.PlumRainDay;
+import com.tyme.culture.star.nine.NineStar;
 import com.tyme.enums.HideHeavenStemType;
 import com.tyme.event.Event;
 import com.tyme.festival.SolarFestival;
@@ -393,5 +394,32 @@ public class SolarDay extends DayUnit {
    */
   public Phase getPhase() {
     return getPhaseDay().getPhase();
+  }
+
+  /**
+   * 九星（在冬至前后找到最近的甲子日为一白，往后二黑依次顺推；在夏至前后找到最近的甲子日为九紫，往后八白依次逆推。）
+   *
+   * @return 九星
+   */
+  public NineStar getNineStar() {
+    SolarDay winterSolstice = SolarTerm.fromIndex(year, 0).getSolarDay();
+    SolarDay summerSolstice = SolarTerm.fromIndex(year, 12).getSolarDay();
+    SolarDay nextWinterSolstice = SolarTerm.fromIndex(year + 1, 0).getSolarDay();
+    // 距冬至最近的甲子日
+    SolarDay w = winterSolstice.next(winterSolstice.getLunarDay().getSixtyCycle().stepsCloseTo(0));
+    // 距夏至最近的甲子日
+    SolarDay s = summerSolstice.next(summerSolstice.getLunarDay().getSixtyCycle().stepsCloseTo(0));
+    // 距下个冬至最近的甲子日
+    SolarDay n = nextWinterSolstice.next(nextWinterSolstice.getLunarDay().getSixtyCycle().stepsCloseTo(0));
+    // 43210012345678876543210012345
+    //      w        s        n
+    //     冬至     夏至      冬至
+    if (isBefore(w)) {
+      return NineStar.fromIndex(w.subtract(this) - 1);
+    }
+    if (isBefore(s)) {
+      return NineStar.fromIndex(subtract(w));
+    }
+    return NineStar.fromIndex(isBefore(n) ? n.subtract(this) - 1 : subtract(n));
   }
 }

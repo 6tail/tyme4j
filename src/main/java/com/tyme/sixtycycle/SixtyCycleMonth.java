@@ -74,12 +74,12 @@ public class SixtyCycleMonth extends AbstractTyme {
   }
 
   public String getName() {
-    return String.format("%s月", month);
+    return month + "月";
   }
 
   @Override
   public String toString() {
-    return String.format("%s%s", year, getName());
+    return year + getName();
   }
 
   public SixtyCycleMonth next(int n) {
