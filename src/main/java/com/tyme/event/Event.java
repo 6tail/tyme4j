@@ -62,8 +62,18 @@ public class Event extends AbstractCulture {
     return EventManager.CHARS.indexOf(data.charAt(index));
   }
 
-  protected int getValue(int index) {
+  public int getValue(int index) {
     return getCharIndex(index) - 31;
+  }
+
+  public int[] getMonth(int year) {
+    int y = year;
+    int m = getValue(2);
+    if (m > 12) {
+      m = 1;
+      y += 1;
+    }
+    return new int[] {y, m};
   }
 
   /**
@@ -180,12 +190,9 @@ public class Event extends AbstractCulture {
   }
 
   protected SolarDay getSolarDayBySolarDay(int year) {
-    int y = year;
-    int m = getValue(2);
-    if (m > 12) {
-      m = 1;
-      y += 1;
-    }
+    int[] month = getMonth(year);
+    int y = month[0];
+    int m = month[1];
     int d = getValue(3);
     int delay = getValue(4);
     int lastDay = SolarMonth.fromYm(y, m).getDayCount();
@@ -199,12 +206,9 @@ public class Event extends AbstractCulture {
   }
 
   protected SolarDay getSolarDayByLunarDay(int year) {
-    int y = year;
-    int m = getValue(2);
-    if (m > 12) {
-      m = 1;
-      y += 1;
-    }
+    int[] month = getMonth(year);
+    int y = month[0];
+    int m = month[1];
     int d = getValue(3);
     int delay = getValue(4);
     int lastDay = LunarMonth.fromYm(y, m).getDayCount();

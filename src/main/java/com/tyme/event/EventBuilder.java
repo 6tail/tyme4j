@@ -41,9 +41,7 @@ public class EventBuilder {
 
   protected EventBuilder content(EventType type, int a, int b, int c) {
     data[1] = getChar(type.getCode());
-    setValue(2, a);
-    setValue(3, b);
-    return setValue(4, c);
+    return setValue(2, a).setValue(3, b).setValue(4, c);
   }
 
   /**

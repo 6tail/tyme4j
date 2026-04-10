@@ -3,7 +3,7 @@ package com.tyme.festival;
 import com.tyme.AbstractTyme;
 import com.tyme.enums.FestivalType;
 import com.tyme.event.Event;
-import com.tyme.solar.SolarDay;
+import com.tyme.unit.DayUnit;
 
 /**
  * 节日抽象
@@ -23,16 +23,16 @@ public abstract class AbstractFestival extends AbstractTyme {
   protected int index;
 
   /**
-   * 公历日
+   * 日
    */
-  protected SolarDay day;
+  protected DayUnit day;
 
   /**
    * 事件
    */
   protected Event event;
 
-  public AbstractFestival(FestivalType type, int index, Event event, SolarDay day) {
+  public AbstractFestival(FestivalType type, int index, Event event, DayUnit day) {
     this.type = type;
     this.index = index;
     this.event = event;
@@ -63,7 +63,7 @@ public abstract class AbstractFestival extends AbstractTyme {
    *
    * @return 公历日
    */
-  public SolarDay getSolarDay() {
+  public DayUnit getDay() {
     return day;
   }
 

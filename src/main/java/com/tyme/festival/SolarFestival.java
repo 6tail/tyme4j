@@ -31,18 +31,19 @@ public class SolarFestival extends AbstractFestival {
     }
     int start = index * 8;
     Event e = new Event(NAMES[index], "@" + DATA.substring(start, start + 8));
-    SolarDay d = e.getSolarDay(year);
-    return null == d ? null : new SolarFestival(FestivalType.DAY, index, e, d);
+    if (year < e.getStartYear()) {
+      return null;
+    }
+    return new SolarFestival(FestivalType.DAY, index, e, SolarDay.fromYmd(year, e.getValue(2), e.getValue(3)));
   }
 
   public static SolarFestival fromYmd(int year, int month, int day) {
-    for (int i = 0, j = NAMES.length; i < j; i++) {
-      SolarFestival f = fromIndex(year, i);
-      if (null != f) {
-        SolarDay d = f.getDay();
-        if (null != d && d.getYear() == year && d.getMonth() == month && d.getDay() == day) {
-          return f;
-        }
+    SolarDay d = SolarDay.fromYmd(year, month, day);
+    for (int i = 0, j = SolarFestival.NAMES.length; i < j; i++) {
+      int start = i * 8;
+      Event e = new Event(SolarFestival.NAMES[i], "@" + SolarFestival.DATA.substring(start, start + 8));
+      if (d.getYear() >= e.getStartYear() && d.getMonth() == e.getValue(2) && d.getDay() == e.getValue(3)) {
+        return new SolarFestival(FestivalType.DAY, i, e, d);
       }
     }
     return null;
@@ -69,6 +70,6 @@ public class SolarFestival extends AbstractFestival {
    * @return 公历日
    */
   public SolarDay getDay() {
-    return getSolarDay();
+    return (SolarDay) super.getDay();
   }
 }
