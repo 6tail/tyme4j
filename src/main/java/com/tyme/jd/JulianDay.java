@@ -2,8 +2,8 @@ package com.tyme.jd;
 
 import com.tyme.AbstractTyme;
 import com.tyme.culture.Week;
-import com.tyme.solar.SolarTime;
 import com.tyme.solar.SolarDay;
+import com.tyme.solar.SolarTime;
 
 /**
  * 儒略日

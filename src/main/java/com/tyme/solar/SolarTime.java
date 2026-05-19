@@ -75,12 +75,10 @@ public class SolarTime extends SecondUnit {
     if (!d0.equals(d1)) {
       return d0.isBefore(d1);
     }
-    int h = target.getHour();
-    if (hour != h) {
-      return hour < h;
+    if (hour != target.hour) {
+      return hour < target.hour;
     }
-    int m = target.getMinute();
-    return minute != m ? minute < m : second < target.getSecond();
+    return minute != target.minute ? minute < target.minute : second < target.second;
   }
 
   /**
@@ -95,12 +93,10 @@ public class SolarTime extends SecondUnit {
     if (!d0.equals(d1)) {
       return d0.isAfter(d1);
     }
-    int h = target.getHour();
-    if (hour != h) {
-      return hour > h;
+    if (hour != target.hour) {
+      return hour > target.hour;
     }
-    int m = target.getMinute();
-    return minute != m ? minute > m : second > target.getSecond();
+    return minute != target.minute ? minute > target.minute : second > target.second;
   }
 
   /**
@@ -147,7 +143,7 @@ public class SolarTime extends SecondUnit {
   public int subtract(SolarTime target) {
     int days = getSolarDay().subtract(target.getSolarDay());
     int cs = hour * 3600 + minute * 60 + second;
-    int ts = target.getHour() * 3600 + target.getMinute() * 60 + target.getSecond();
+    int ts = target.hour * 3600 + target.minute * 60 + target.second;
     int seconds = cs - ts;
     if (seconds < 0) {
       seconds += 86400;

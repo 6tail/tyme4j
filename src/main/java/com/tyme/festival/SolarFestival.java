@@ -1,6 +1,5 @@
 package com.tyme.festival;
 
-import com.tyme.enums.FestivalType;
 import com.tyme.event.Event;
 import com.tyme.event.EventManager;
 import com.tyme.solar.SolarDay;
@@ -21,8 +20,8 @@ public class SolarFestival extends AbstractFestival {
    */
   public static String DATA = "0VV__0Ux0Xc__0Ux0Xg__0_Q0ZV__0Ux0ZY__0Ux0aV__0Ux0bV__0Uo0cV__0Ug0de__0_V0eV__0Ux";
 
-  public SolarFestival(FestivalType type, int index, Event event, SolarDay day) {
-    super(type, index, event, day);
+  public SolarFestival(int index, Event event, SolarDay day) {
+    super(index, event, day);
   }
 
   public static SolarFestival fromIndex(int year, int index) {
@@ -31,19 +30,16 @@ public class SolarFestival extends AbstractFestival {
     }
     int start = index * 8;
     Event e = new Event(NAMES[index], "@" + DATA.substring(start, start + 8));
-    if (year < e.getStartYear()) {
-      return null;
-    }
-    return new SolarFestival(FestivalType.DAY, index, e, SolarDay.fromYmd(year, e.getValue(2), e.getValue(3)));
+    return year < e.getStartYear() ? null : new SolarFestival(index, e, SolarDay.fromYmd(year, e.getValue(2), e.getValue(3)));
   }
 
   public static SolarFestival fromYmd(int year, int month, int day) {
     SolarDay d = SolarDay.fromYmd(year, month, day);
-    for (int i = 0, j = SolarFestival.NAMES.length; i < j; i++) {
+    for (int i = 0, j = NAMES.length; i < j; i++) {
       int start = i * 8;
-      Event e = new Event(SolarFestival.NAMES[i], "@" + SolarFestival.DATA.substring(start, start + 8));
+      Event e = new Event(NAMES[i], "@" + DATA.substring(start, start + 8));
       if (d.getYear() >= e.getStartYear() && d.getMonth() == e.getValue(2) && d.getDay() == e.getValue(3)) {
-        return new SolarFestival(FestivalType.DAY, i, e, d);
+        return new SolarFestival(i, e, d);
       }
     }
     return null;

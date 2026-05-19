@@ -106,7 +106,7 @@ public class SolarWeek extends WeekUnit {
    * @return 公历日
    */
   public SolarDay getFirstDay() {
-    SolarDay firstDay = SolarDay.fromYmd(getYear(), getMonth(), 1);
+    SolarDay firstDay = SolarDay.fromYmd(year, month, 1);
     return firstDay.next(index * 7 - indexOf(firstDay.getWeek().getIndex() - start, 7));
   }
 

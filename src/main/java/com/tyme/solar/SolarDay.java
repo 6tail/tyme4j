@@ -16,6 +16,7 @@ import com.tyme.culture.star.nine.NineStar;
 import com.tyme.enums.HideHeavenStemType;
 import com.tyme.event.Event;
 import com.tyme.festival.SolarFestival;
+import com.tyme.hijri.HijriDay;
 import com.tyme.holiday.LegalHoliday;
 import com.tyme.jd.JulianDay;
 import com.tyme.lunar.LunarDay;
@@ -114,12 +115,10 @@ public class SolarDay extends DayUnit {
    * @return true/false
    */
   public boolean isBefore(SolarDay target) {
-    int y = target.getYear();
-    if (year != y) {
-      return year < y;
+    if (year != target.year) {
+      return year < target.year;
     }
-    int m = target.getMonth();
-    return month != m ? month < m : day < target.getDay();
+    return month != target.month ? month < target.month : day < target.day;
   }
 
   /**
@@ -129,12 +128,10 @@ public class SolarDay extends DayUnit {
    * @return true/false
    */
   public boolean isAfter(SolarDay target) {
-    int y = target.getYear();
-    if (year != y) {
-      return year > y;
+    if (year != target.year) {
+      return year > target.year;
     }
-    int m = target.getMonth();
-    return month != m ? month > m : day > target.getDay();
+    return month != target.month ? month > target.month : day > target.day;
   }
 
   /**
@@ -421,5 +418,21 @@ public class SolarDay extends DayUnit {
       return NineStar.fromIndex(subtract(w));
     }
     return NineStar.fromIndex(isBefore(n) ? n.subtract(this) - 1 : subtract(n));
+  }
+
+  /**
+   * 回历日
+   *
+   * @return 回历日
+   */
+  public HijriDay getHijriDay() {
+    int d = subtract(new SolarDay(622, 7, 16));
+    int z = Math.floorDiv(d, 10631);
+    d -= z * 10631;
+    int y = (int) Math.floor((d + 0.5) / 354.366);
+    d -= (int) Math.floor(y * 354.366 + 0.5);
+    int m = (int) Math.floor((d + 0.11) / 29.51);
+    d -= (int) Math.floor(m * 29.5 + 0.5);
+    return new HijriDay(z * 30 + y + 1, m + 1, d + 1);
   }
 }

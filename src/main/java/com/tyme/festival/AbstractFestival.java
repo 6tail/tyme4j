@@ -1,7 +1,6 @@
 package com.tyme.festival;
 
 import com.tyme.AbstractTyme;
-import com.tyme.enums.FestivalType;
 import com.tyme.event.Event;
 import com.tyme.unit.DayUnit;
 
@@ -11,12 +10,6 @@ import com.tyme.unit.DayUnit;
  * @author 6tail
  */
 public abstract class AbstractFestival extends AbstractTyme {
-  /**
-   * 类型
-   */
-  @Deprecated
-  protected FestivalType type;
-
   /**
    * 索引
    */
@@ -32,21 +25,10 @@ public abstract class AbstractFestival extends AbstractTyme {
    */
   protected Event event;
 
-  public AbstractFestival(FestivalType type, int index, Event event, DayUnit day) {
-    this.type = type;
+  public AbstractFestival(int index, Event event, DayUnit day) {
     this.index = index;
     this.event = event;
     this.day = day;
-  }
-
-  /**
-   * 类型
-   *
-   * @return 节日类型
-   */
-  @Deprecated
-  public FestivalType getType() {
-    return type;
   }
 
   /**
@@ -59,9 +41,9 @@ public abstract class AbstractFestival extends AbstractTyme {
   }
 
   /**
-   * 公历日
+   * 日
    *
-   * @return 公历日
+   * @return 日
    */
   public DayUnit getDay() {
     return day;

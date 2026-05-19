@@ -89,7 +89,7 @@ public class LunarWeek extends WeekUnit {
    * @return 农历日
    */
   public LunarDay getFirstDay() {
-    LunarDay firstDay = LunarDay.fromYmd(getYear(), getMonth(), 1);
+    LunarDay firstDay = LunarDay.fromYmd(year, month, 1);
     return firstDay.next(index * 7 - indexOf(firstDay.getWeek().getIndex() - start, 7));
   }
 
