@@ -19,4 +19,9 @@ public abstract class MonthUnit extends YearUnit {
   public int getMonth() {
     return month;
   }
+
+  @Override
+  protected long getCompareIndex() {
+    return super.getCompareIndex() + (month > 0 ? month * 2L : -month * 2L + 1) * 100;
+  }
 }

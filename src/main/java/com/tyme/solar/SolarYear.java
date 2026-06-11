@@ -14,9 +14,7 @@ import java.util.List;
 public class SolarYear extends YearUnit {
 
   public static void validate(int year) {
-      if (year < 1 || year > 9999) {
-          throw new IllegalArgumentException("illegal solar year: " + year);
-      }
+    validateRange(year, 1, 9999, "solar year");
   }
 
   public SolarYear(int year) {

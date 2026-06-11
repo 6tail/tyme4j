@@ -20,9 +20,7 @@ public class SolarMonth extends MonthUnit {
   public static final int[] DAYS = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
   public static void validate(int year, int month) {
-    if (month < 1 || month > 12) {
-      throw new IllegalArgumentException("illegal solar month: " + month);
-    }
+    validateRange(month, 1, 12, "solar month");
     SolarYear.validate(year);
   }
 

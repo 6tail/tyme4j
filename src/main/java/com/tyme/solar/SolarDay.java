@@ -37,14 +37,15 @@ public class SolarDay extends DayUnit {
   public static final String[] NAMES = {"1日", "2日", "3日", "4日", "5日", "6日", "7日", "8日", "9日", "10日", "11日", "12日", "13日", "14日", "15日", "16日", "17日", "18日", "19日", "20日", "21日", "22日", "23日", "24日", "25日", "26日", "27日", "28日", "29日", "30日", "31日"};
 
   public static void validate(int year, int month, int day) {
-    if (day < 1) {
-      throw new IllegalArgumentException(String.format("illegal solar day: %d-%d-%d", year, month, day));
-    }
-    if (1582 == year && 10 == month) {
-      if ((day > 4 && day < 15) || day > 31) {
-        throw new IllegalArgumentException(String.format("illegal solar day: %d-%d-%d", year, month, day));
+    boolean illegal = day < 1;
+    if (!illegal) {
+      if (1582 == year && 10 == month) {
+        illegal = (day > 4 && day < 15) || day > 31;
+      } else {
+        illegal = day > SolarMonth.fromYm(year, month).getDayCount();
       }
-    } else if (day > SolarMonth.fromYm(year, month).getDayCount()) {
+    }
+    if (illegal) {
       throw new IllegalArgumentException(String.format("illegal solar day: %d-%d-%d", year, month, day));
     }
   }
@@ -91,8 +92,10 @@ public class SolarDay extends DayUnit {
    * @return 星座
    */
   public Constellation getConstellation() {
-    int y = month * 100 + day;
-    return Constellation.fromIndex(y > 1221 || y < 120 ? 9 : y < 219 ? 10 : y < 321 ? 11 : y < 420 ? 0 : y < 521 ? 1 : y < 622 ? 2 : y < 723 ? 3 : y < 823 ? 4 : y < 923 ? 5 : y < 1024 ? 6 : y < 1123 ? 7 : 8);
+    int[] days = {19, 18, 20, 19, 20, 21, 22, 22, 22, 23, 22, 21};
+    int m = month - 1;
+    int offset = (day > days[m]) ? 1 : 0;
+    return new Constellation(9 + m + offset);
   }
 
   public String getName() {
@@ -115,10 +118,7 @@ public class SolarDay extends DayUnit {
    * @return true/false
    */
   public boolean isBefore(SolarDay target) {
-    if (year != target.year) {
-      return year < target.year;
-    }
-    return month != target.month ? month < target.month : day < target.day;
+    return getCompareIndex() < target.getCompareIndex();
   }
 
   /**
@@ -128,10 +128,7 @@ public class SolarDay extends DayUnit {
    * @return true/false
    */
   public boolean isAfter(SolarDay target) {
-    if (year != target.year) {
-      return year > target.year;
-    }
-    return month != target.month ? month > target.month : day > target.day;
+    return getCompareIndex() > target.getCompareIndex();
   }
 
   /**

@@ -20,9 +20,7 @@ public class SolarSeason extends YearUnit {
   protected int index;
 
   public static void validate(int year, int index) {
-    if (index < 0 || index > 3) {
-      throw new IllegalArgumentException("illegal solar season index: " + index);
-    }
+    validateRange(index, 0, 3, "solar season index");
     SolarYear.validate(year);
   }
 

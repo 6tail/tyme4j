@@ -90,14 +90,7 @@ public class LunarDay extends DayUnit {
    * @return true/false
    */
   public boolean isBefore(LunarDay target) {
-    if (year != target.year) {
-      return year < target.year;
-    }
-    if (month != target.month) {
-      int t = Math.abs(target.month);
-      return month == t || Math.abs(month) < t;
-    }
-    return day < target.day;
+    return getCompareIndex() < target.getCompareIndex();
   }
 
   /**
@@ -107,14 +100,7 @@ public class LunarDay extends DayUnit {
    * @return true/false
    */
   public boolean isAfter(LunarDay target) {
-    if (year != target.year) {
-      return year > target.year;
-    }
-    if (month != target.month) {
-      int t = Math.abs(month);
-      return t == target.month || t > Math.abs(target.month);
-    }
-    return day > target.day;
+    return getCompareIndex() > target.getCompareIndex();
   }
 
   /**

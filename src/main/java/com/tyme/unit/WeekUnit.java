@@ -40,11 +40,7 @@ public abstract class WeekUnit extends MonthUnit {
   }
 
   public static void validate(int index, int start) {
-    if (index < 0 || index > 5) {
-      throw new IllegalArgumentException("illegal week index: " + index);
-    }
-    if (start < 0 || start > 6) {
-      throw new IllegalArgumentException("illegal week start: " + start);
-    }
+    validateRange(index, 0, 5, "week index");
+    validateRange(start, 0, 6, "week start");
   }
 }

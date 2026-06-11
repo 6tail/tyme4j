@@ -14,10 +14,7 @@ public class HijriDay extends DayUnit {
   public static final String[] NAMES = {"1日", "2日", "3日", "4日", "5日", "6日", "7日", "8日", "9日", "10日", "11日", "12日", "13日", "14日", "15日", "16日", "17日", "18日", "19日", "20日", "21日", "22日", "23日", "24日", "25日", "26日", "27日", "28日", "29日", "30日"};
 
   public static void validate(int year, int month, int day) {
-    if (day < 1) {
-      throw new IllegalArgumentException(String.format("illegal hijri day: %d-%d-%d", year, month, day));
-    }
-    if (day > HijriMonth.fromYm(year, month).getDayCount()) {
+    if (day < 1 || day > HijriMonth.fromYm(year, month).getDayCount()) {
       throw new IllegalArgumentException(String.format("illegal hijri day: %d-%d-%d", year, month, day));
     }
   }
@@ -69,10 +66,7 @@ public class HijriDay extends DayUnit {
    * @return true/false
    */
   public boolean isBefore(HijriDay target) {
-    if (year != target.year) {
-      return year < target.year;
-    }
-    return month != target.month ? month < target.month : day < target.day;
+    return getCompareIndex() < target.getCompareIndex();
   }
 
   /**
@@ -82,10 +76,7 @@ public class HijriDay extends DayUnit {
    * @return true/false
    */
   public boolean isAfter(HijriDay target) {
-    if (year != target.year) {
-      return year > target.year;
-    }
-    return month != target.month ? month > target.month : day > target.day;
+    return getCompareIndex() > target.getCompareIndex();
   }
 
   /**
@@ -94,11 +85,7 @@ public class HijriDay extends DayUnit {
    * @return 索引
    */
   public int getIndexInYear() {
-    int n = 0;
-    for (int i = 1; i < this.month; i++) {
-      n += HijriMonth.fromYm(this.year, i).getDayCount();
-    }
-    return n + this.day - 1;
+    return subtract(new HijriDay(year, 1, 1));
   }
 
   /**

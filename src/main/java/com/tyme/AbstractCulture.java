@@ -28,4 +28,17 @@ public abstract class AbstractCulture implements Culture {
     return Math.floorMod(index, size);
   }
 
+  /**
+   * 校验值是否在指定范围内
+   *
+   * @param value 待校验的值
+   * @param min   最小值（含）
+   * @param max   最大值（含）
+   * @param field 字段名称，用于异常提示
+   */
+  protected static void validateRange(int value, int min, int max, String field) {
+    if (value < min || value > max) {
+      throw new IllegalArgumentException(String.format("illegal %s: %d", field, value));
+    }
+  }
 }

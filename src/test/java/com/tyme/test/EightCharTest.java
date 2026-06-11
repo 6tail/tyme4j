@@ -815,4 +815,28 @@ public class EightCharTest {
     Assert.assertEquals("戊寅 癸亥 庚申 甲申", ChildLimit.fromSolarTime(SolarTime.fromYmdHms(198, 11, 26, 15, 13, 59), Gender.MAN).getEightChar().toString());
     Assert.assertEquals("庚申 己丑 甲辰 壬申", ChildLimit.fromSolarTime(SolarTime.fromYmdHms(1981, 1, 26, 15, 13, 59), Gender.MAN).getEightChar().toString());
   }
+
+  @Test
+  public void test55() {
+    Assert.assertEquals("丙寅 壬辰 己酉 甲子", SolarTime.fromYmdHms(1986, 5, 5, 0, 0, 0).getLunarHour().getEightChar().toString());
+  }
+
+  @Test
+  public void test56() {
+    List<SolarTime> solarTimes = new EightChar("丙寅", "壬辰", "己酉", "甲子").getSolarTimes(1986, 1986);
+    List<String> actual = new ArrayList<>();
+    for (SolarTime solarTime : solarTimes) {
+      actual.add(solarTime.toString());
+    }
+
+    List<String> expected = new ArrayList<>();
+    expected.add("1986年5月4日 23:00:00");
+    Assert.assertEquals(expected, actual);
+  }
+
+  @Test
+  public void test57() {
+    EightChar eightChar = SolarTime.fromYmdHms(1997, 12, 7, 10, 4, 49).getLunarHour().getEightChar();
+    Assert.assertEquals("丁丑 辛亥 癸未 丁巳", eightChar.toString());
+  }
 }

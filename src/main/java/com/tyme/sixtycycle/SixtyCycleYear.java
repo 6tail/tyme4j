@@ -21,9 +21,7 @@ public class SixtyCycleYear extends AbstractTyme {
   protected int year;
 
   public SixtyCycleYear(int year) {
-    if (year < -1 || year > 9999) {
-      throw new IllegalArgumentException("illegal sixty cycle year: " + year);
-    }
+    validateRange(year, -1, 9999, "sixty cycle year");
     this.year = year;
   }
 

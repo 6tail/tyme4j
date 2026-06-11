@@ -16,6 +16,7 @@ public class SolarTimeTest {
     SolarTime time = SolarTime.fromYmdHms(2023, 1, 1, 13, 5, 20);
     Assert.assertEquals("13:05:20", time.getName());
     Assert.assertEquals("13:04:59", time.next(-21).getName());
+    Assert.assertEquals("13:03:59", time.next(-81).getName());
   }
 
   @Test

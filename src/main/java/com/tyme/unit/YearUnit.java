@@ -21,4 +21,13 @@ public abstract class YearUnit extends AbstractTyme {
   public int getYear() {
     return year;
   }
+
+  /**
+   * 用于比较大小的索引
+   *
+   * @return 索引
+   */
+  protected long getCompareIndex() {
+    return year * 10000L;
+  }
 }

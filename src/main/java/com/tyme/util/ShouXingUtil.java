@@ -492,37 +492,49 @@ public class ShouXingUtil {
     return t * 36525 + ONE_THIRD;
   }
 
-  public static double calcShuo(double jd) {
-    int size = SHUO_KB.length;
+  private static double qiShuo(boolean isQi, boolean isHigh, double jd, int pc) {
+    // 2451259是1999.3.21，太阳视黄经为0，春分；2451551是2000.1.7的那个朔日，黄经差为0
+    double w = isQi ? Math.floor((jd + pc - 2451259) / 365.2422 * 24) * Math.PI / 12 : Math.floor((jd + pc - 2451551) / 29.5306) * PI_2;
+    double d = isQi ? (isHigh ? qiHigh(w) : qiLow(w)) : (isHigh ? shuoHigh(w) : shuoLow(w));
+    return Math.floor(d + 0.5);
+  }
+
+  /**
+   * @param isQi  true: 气, false: 朔
+   * @param jd    儒略日
+   * @param kb    平气/平朔表
+   * @param pc    偏差修正值
+   * @param fkb   定气/定朔修正表
+   */
+  private static double calc(boolean isQi, double jd, double[] kb, int pc, String fkb) {
+    int size = kb.length;
     double d = 0;
-    int pc = 14;
-    jd += JulianDay.J2000;
-    double f1 = SHUO_KB[0] - pc, f2 = SHUO_KB[size - 1] - pc;
+    double j = jd + JulianDay.J2000;
+    double f1 = kb[0] - pc;
+    double f2 = kb[size - 1] - pc;
     // 2436935 = 1960.1.1
-    if (jd < f1 || jd >= 2436935) {
-      // 平朔表中首个之前，使用现代天文算法。1960.1.1以后，使用现代天文算法
-      // 2451551是2000.1.7的那个朔日，黄经差为0
-      d = Math.floor(shuoHigh(Math.floor((jd + pc - 2451551) / 29.5306) * PI_2) + 0.5);
-    } else if (jd >= f1 && jd < f2) {
-      // 平朔
+    if (j < f1 || j >= 2436935) {
+      // 平气表中首个之前，或1960.1.1之后，使用现代天文算法
+      d = qiShuo(isQi, true, j, pc);
+    } else if (j >= f1 && j < f2) {
+      // 平气/平朔
       int i;
       for (i = 0; i < size; i += 2) {
-        if (jd + pc < SHUO_KB[i + 2]) {
+        if (j + pc < kb[i + 2]) {
           break;
         }
       }
-      d = SHUO_KB[i] + SHUO_KB[i + 1] * Math.floor((jd + pc - SHUO_KB[i]) / SHUO_KB[i + 1]);
-      d = Math.floor(d + 0.5);
-      // 如果使用太初历计算-103年1月24日的朔日，结果得到的是23日，这里修正为24日(实历)。修正后仍不影响-103的无中置闰。如果使用秦汉历，得到的是24日。
-      if (d == 1683460) {
-        d++;
+      d = Math.floor(kb[i] + kb[i + 1] * Math.floor((j + pc - kb[i]) / kb[i + 1]) + 0.5);
+      // 平朔特殊处理，如果使用太初历计算-103年1月24日的朔日，结果得到的是23日，这里修正为24日(实历)。修正后仍不影响-103的无中置闰。如果使用秦汉历，得到的是24日。
+      if (!isQi && d == 1683460) {
+        d += 1;
       }
       d -= JulianDay.J2000;
-    } else if (jd >= f2) {
-      // 定朔
-      d = Math.floor(shuoLow(Math.floor((jd + pc - 2451551) / 29.5306) * PI_2) + 0.5);
+    } else if (j >= f2) {
+      // 定气/定朔
+      d = qiShuo(isQi, false, j, pc);
+      char n = fkb.charAt((int) (isQi ? (j - f2) / 365.2422 * 24 : (j - f2) / 29.5306));
       // 修正
-      char n = SB.charAt((int) ((jd - f2) / 29.5306));
       if ('1' == n) {
         d += 1;
       } else if ('2' == n) {
@@ -532,40 +544,12 @@ public class ShouXingUtil {
     return d;
   }
 
+  public static double calcShuo(double jd) {
+    return calc(false, jd, SHUO_KB, 14, SB);
+  }
+
   public static double calcQi(double jd) {
-    int size = QI_KB.length;
-    double d = 0;
-    int pc = 7;
-    jd += JulianDay.J2000;
-    double f1 = QI_KB[0] - pc, f2 = QI_KB[size - 1] - pc;
-    // 2436935 = 1960.1.1
-    if (jd < f1 || jd >= 2436935) {
-      // 平气表中首个之前，使用现代天文算法。1960.1.1以后，使用现代天文算法
-      // 2451259是1999.3.21，太阳视黄经为0，春分
-      d = Math.floor(qiHigh(Math.floor((jd + pc - 2451259) / 365.2422 * 24) * Math.PI / 12) + 0.5);
-    } else if (jd >= f1 && jd < f2) {
-      // 平气
-      int i;
-      for (i = 0; i < size; i += 2) {
-        if (jd + pc < QI_KB[i + 2]) {
-          break;
-        }
-      }
-      d = QI_KB[i] + QI_KB[i + 1] * Math.floor((jd + pc - QI_KB[i]) / QI_KB[i + 1]);
-      d = Math.floor(d + 0.5);
-      d -= JulianDay.J2000;
-    } else if (jd >= f2) {
-      // 定气
-      d = Math.floor(qiLow(Math.floor((jd + pc - 2451259) / 365.2422 * 24) * Math.PI / 12) + 0.5);
-      // 修正
-      char n = QB.charAt((int) ((jd - f2) / 365.2422 * 24));
-      if ('1' == n) {
-        d += 1;
-      } else if ('2' == n) {
-        d -= 1;
-      }
-    }
-    return d;
+    return calc(true, jd, QI_KB, 7, QB);
   }
 
   public static double qiAccurate(double w) {

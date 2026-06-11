@@ -31,9 +31,7 @@ public class RabByungYear extends AbstractTyme {
   protected int zodiacIndex;
 
   public static void validate(int year) {
-    if (year < 1027 || year > 9999) {
-      throw new IllegalArgumentException("illegal rab-byung year: " + year);
-    }
+    validateRange(year, 1027, 9999, "rab-byung year");
   }
 
   public RabByungYear(int rabByungIndex, int elementIndex, int zodiacIndex) {

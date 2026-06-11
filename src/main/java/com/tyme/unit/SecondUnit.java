@@ -22,15 +22,9 @@ public abstract class SecondUnit extends DayUnit {
   protected int second;
 
   public static void validate(int hour, int minute, int second) {
-    if (hour < 0 || hour > 23) {
-      throw new IllegalArgumentException("illegal hour: " + hour);
-    }
-    if (minute < 0 || minute > 59) {
-      throw new IllegalArgumentException("illegal minute: " + minute);
-    }
-    if (second < 0 || second > 59) {
-      throw new IllegalArgumentException("illegal second: " + second);
-    }
+    validateRange(hour, 0, 23, "hour");
+    validateRange(minute, 0, 59, "minute");
+    validateRange(second, 0, 59, "second");
   }
 
   /**
@@ -58,5 +52,19 @@ public abstract class SecondUnit extends DayUnit {
    */
   public int getSecond() {
     return second;
+  }
+
+  /**
+   * 当天秒数
+   *
+   * @return 当天秒数
+   */
+  public int getSecondsInDay() {
+    return hour * 3600 + minute * 60 + second;
+  }
+
+  @Override
+  protected long getCompareIndex() {
+    return super.getCompareIndex() * 86400L + getSecondsInDay();
   }
 }

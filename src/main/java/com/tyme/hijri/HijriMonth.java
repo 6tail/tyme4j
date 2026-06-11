@@ -15,9 +15,7 @@ public class HijriMonth extends MonthUnit {
   public static final String[] NAMES = {"穆哈兰姆月", "色法尔月", "赖比尔·敖外鲁月", "赖比尔·阿色尼月", "主马达·敖外鲁月", "主马达·阿色尼月", "赖哲卜月", "舍尔邦月", "赖买丹月", "闪瓦鲁月", "都尔喀尔德月", "都尔黑哲月"};
 
   public static void validate(int year, int month) {
-    if (month < 1 || month > 12) {
-      throw new IllegalArgumentException("illegal hijri month: " + month);
-    }
+    validateRange(month, 1, 12, "hijri month");
     HijriYear.validate(year);
   }
 
