@@ -7,7 +7,8 @@ import com.tyme.culture.star.nine.NineStar;
 import com.tyme.jd.JulianDay;
 import com.tyme.sixtycycle.SixtyCycle;
 import com.tyme.solar.SolarTerm;
-import com.tyme.unit.MonthUnit;
+import com.tyme.unit.AbstractYear;
+import com.tyme.unit.AbstractLeapMonth;
 import com.tyme.util.ShouXingUtil;
 
 import java.util.ArrayList;
@@ -18,20 +19,15 @@ import java.util.List;
  *
  * @author 6tail
  */
-public class LunarMonth extends MonthUnit {
+public class LunarMonth extends AbstractLeapMonth {
   public static final String[] NAMES = {"正月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"};
-
-  /**
-   * 是否闰月
-   */
-  protected boolean leap;
 
   public static void validate(int year, int month) {
     if (month == 0 || month > 12 || month < -12) {
       throw new IllegalArgumentException("illegal lunar month: " + month);
     }
     // 闰月检查
-    if (month < 0 && -month != LunarYear.fromYear(year).getLeapMonth()) {
+    if (month < 0 && -month != new LunarYear(year).getLeapMonth()) {
       throw new IllegalArgumentException(String.format("illegal leap month %d in lunar year %d", -month, year));
     }
   }
@@ -43,10 +39,8 @@ public class LunarMonth extends MonthUnit {
    * @param month 农历月，闰月为负
    */
   public LunarMonth(int year, int month) {
+    super(year, month);
     validate(year, month);
-    this.year = year;
-    this.month = Math.abs(month);
-    this.leap = month < 0;
   }
 
   /**
@@ -66,16 +60,12 @@ public class LunarMonth extends MonthUnit {
    * @return 农历年
    */
   public LunarYear getLunarYear() {
-    return LunarYear.fromYear(year);
+    return new LunarYear(year);
   }
 
-  /**
-   * 月
-   *
-   * @return 月，当月为闰月时，返回负数
-   */
-  public int getMonthWithLeap() {
-    return leap ? -month : month;
+  @Override
+  public AbstractYear getAbstractYear() {
+    return getLunarYear();
   }
 
   protected double getNewMoon() {
@@ -92,7 +82,7 @@ public class LunarMonth extends MonthUnit {
     int offset = 2;
     if (year > 8 && year < 24) {
       offset = 1;
-    } else if (LunarYear.fromYear(year - 1).getLeapMonth() > 10 && year != 239 && year != 240) {
+    } else if (new LunarYear(year - 1).getLeapMonth() > 10 && year != 239 && year != 240) {
       offset = 3;
     }
 
@@ -100,33 +90,11 @@ public class LunarMonth extends MonthUnit {
     return w + 29.5306 * (offset + getIndexInYear());
   }
 
-  /**
-   * 天数(大月30天，小月29天)
-   *
-   * @return 天数
-   */
   public int getDayCount() {
+    // 大月30天，小月29天
     double w = getNewMoon();
     // 本月天数 = 下月初一 - 本月初一
     return (int) (ShouXingUtil.calcShuo(w + 29.5306) - ShouXingUtil.calcShuo(w));
-  }
-
-  /**
-   * 位于当年的索引(0-12)
-   *
-   * @return 索引
-   */
-  public int getIndexInYear() {
-    int index = month - 1;
-    if (leap) {
-      index += 1;
-    } else {
-      int leapMonth = getLunarYear().getLeapMonth();
-      if (leapMonth > 0 && month > leapMonth) {
-        index += 1;
-      }
-    }
-    return index;
   }
 
   /**
@@ -148,25 +116,6 @@ public class LunarMonth extends MonthUnit {
   }
 
   /**
-   * 是否闰月
-   *
-   * @return true/false
-   */
-  public boolean isLeap() {
-    return leap;
-  }
-
-  /**
-   * 周数
-   *
-   * @param start 起始星期，1234560分别代表星期一至星期天
-   * @return 周数
-   */
-  public int getWeekCount(int start) {
-    return (int) Math.ceil((indexOf(getFirstJulianDay().getWeek().getIndex() - start, 7) + getDayCount()) / 7D);
-  }
-
-  /**
    * 依据国家标准《农历的编算和颁行》GB/T 33661-2017中农历月的命名方法。
    *
    * @return 名称
@@ -175,41 +124,9 @@ public class LunarMonth extends MonthUnit {
     return (leap ? "闰" : "") + NAMES[month - 1];
   }
 
-  @Override
-  public String toString() {
-    return getLunarYear() + getName();
-  }
-
   public LunarMonth next(int n) {
-    if (n == 0) {
-      return fromYm(year, getMonthWithLeap());
-    }
-    int m = getIndexInYear() + 1 + n;
-    LunarYear y = getLunarYear();
-    if (n > 0) {
-      int monthCount = y.getMonthCount();
-      while (m > monthCount) {
-        m -= monthCount;
-        y = y.next(1);
-        monthCount = y.getMonthCount();
-      }
-    } else {
-      while (m <= 0) {
-        y = y.next(-1);
-        m += y.getMonthCount();
-      }
-    }
-    boolean leap = false;
-    int leapMonth = y.getLeapMonth();
-    if (leapMonth > 0) {
-      if (m == leapMonth + 1) {
-        leap = true;
-      }
-      if (m > leapMonth) {
-        m--;
-      }
-    }
-    return fromYm(y.getYear(), leap ? -m : m);
+    AbstractLeapMonth m = super.next(n);
+    return fromYm(m.getYear(), m.getMonthValue());
   }
 
   /**
@@ -219,10 +136,10 @@ public class LunarMonth extends MonthUnit {
    */
   public List<LunarDay> getDays() {
     int size = getDayCount();
-    int m = getMonthWithLeap();
+    int m = getMonthValue();
     List<LunarDay> l = new ArrayList<>(size);
     for (int i = 1; i <= size; i++) {
-      l.add(LunarDay.fromYmd(year, m, i));
+      l.add(new LunarDay(year, m, i));
     }
     return l;
   }
@@ -233,7 +150,7 @@ public class LunarMonth extends MonthUnit {
    * @return 农历日
    */
   public LunarDay getFirstDay() {
-    return LunarDay.fromYmd(year, getMonthWithLeap(), 1);
+    return new LunarDay(year, getMonthValue(), 1);
   }
 
   /**
@@ -244,10 +161,10 @@ public class LunarMonth extends MonthUnit {
    */
   public List<LunarWeek> getWeeks(int start) {
     int size = getWeekCount(start);
-    int m = getMonthWithLeap();
+    int m = getMonthValue();
     List<LunarWeek> l = new ArrayList<>(size);
     for (int i = 0; i < size; i++) {
-      l.add(LunarWeek.fromYm(year, m, i, start));
+      l.add(new LunarWeek(year, m, i, start));
     }
     return l;
   }

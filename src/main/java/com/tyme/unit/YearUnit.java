@@ -13,6 +13,10 @@ public abstract class YearUnit extends AbstractTyme {
    */
   protected int year;
 
+  public YearUnit(int year) {
+    this.year = year;
+  }
+
   /**
    * 年
    *

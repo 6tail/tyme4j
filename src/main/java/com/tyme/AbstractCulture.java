@@ -8,6 +8,11 @@ package com.tyme;
 public abstract class AbstractCulture implements Culture {
 
   @Override
+  public String getName() {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
   public String toString() {
     return getName();
   }

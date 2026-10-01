@@ -21,6 +21,13 @@ public abstract class SecondUnit extends DayUnit {
    */
   protected int second;
 
+  public SecondUnit(int year, int month, int day, int hour, int minute, int second) {
+    super(year, month, day);
+    this.hour = hour;
+    this.minute = minute;
+    this.second = second;
+  }
+
   public static void validate(int hour, int minute, int second) {
     validateRange(hour, 0, 23, "hour");
     validateRange(minute, 0, 59, "minute");

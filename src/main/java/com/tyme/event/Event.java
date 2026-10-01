@@ -7,6 +7,7 @@ import com.tyme.lunar.LunarMonth;
 import com.tyme.solar.SolarDay;
 import com.tyme.solar.SolarMonth;
 import com.tyme.solar.SolarTerm;
+import com.tyme.unit.MonthUnit;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,14 +67,14 @@ public class Event extends AbstractCulture {
     return getCharIndex(index) - 31;
   }
 
-  public int[] getMonth(int year) {
+  public MonthUnit getMonth(int year) {
     int y = year;
     int m = getValue(2);
     if (m > 12) {
       m = 1;
       y += 1;
     }
-    return new int[] {y, m};
+    return new MonthUnit(y, m){};
   }
 
   /**
@@ -189,36 +190,30 @@ public class Event extends AbstractCulture {
     return 0 == offset ? d : d.next(offset);
   }
 
-  protected SolarDay getSolarDayBySolarDay(int year) {
-    int[] month = getMonth(year);
-    int y = month[0];
-    int m = month[1];
+  private SolarDay getSolarDayByDay(int year, boolean isLunar) {
+    MonthUnit month = getMonth(year);
+    int y = month.getYear();
+    int m = month.getMonth();
     int d = getValue(3);
     int delay = getValue(4);
-    int lastDay = SolarMonth.fromYm(y, m).getDayCount();
+    int lastDay = isLunar ? new LunarMonth(y, m).getDayCount() : new SolarMonth(y, m).getDayCount();
     if (d > lastDay) {
       if (0 == delay) {
         return null;
+      } else if (delay < 0) {
+        return isLunar ? new LunarDay(y, m, d + delay).getSolarDay() : new SolarDay(y, m, d + delay);
       }
-      return delay < 0 ? SolarDay.fromYmd(y, m, d + delay) : SolarDay.fromYmd(y, m, lastDay).next(delay);
+      return isLunar ? new LunarDay(y, m, lastDay).getSolarDay().next(delay) : new SolarDay(y, m, lastDay).next(delay);
     }
-    return SolarDay.fromYmd(y, m, d);
+    return isLunar ? LunarDay.fromYmd(y, m, d).getSolarDay() : SolarDay.fromYmd(y, m, d);
+  }
+
+  protected SolarDay getSolarDayBySolarDay(int year) {
+    return getSolarDayByDay(year, false);
   }
 
   protected SolarDay getSolarDayByLunarDay(int year) {
-    int[] month = getMonth(year);
-    int y = month[0];
-    int m = month[1];
-    int d = getValue(3);
-    int delay = getValue(4);
-    int lastDay = LunarMonth.fromYm(y, m).getDayCount();
-    if (d > lastDay) {
-      if (0 == delay) {
-        return null;
-      }
-      return delay < 0 ? LunarDay.fromYmd(y, m, d + delay).getSolarDay() : LunarDay.fromYmd(y, m, lastDay).getSolarDay().next(delay);
-    }
-    return LunarDay.fromYmd(y, m, d).getSolarDay();
+    return getSolarDayByDay(year, true);
   }
 
   protected SolarDay getSolarDayByWeek(int year) {

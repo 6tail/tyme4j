@@ -57,4 +57,12 @@ public abstract class AbstractFestival extends AbstractTyme {
   public String toString() {
     return String.format("%s %s", day, getName());
   }
+
+  protected static Event buildEvent(String[] names, String data, int index) {
+    if (index < 0 || index >= names.length) {
+      return null;
+    }
+    int start = index * 8;
+    return new Event(names[index], "@" + data.substring(start, start + 8));
+  }
 }

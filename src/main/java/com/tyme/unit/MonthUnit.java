@@ -11,6 +11,11 @@ public abstract class MonthUnit extends YearUnit {
    */
   protected int month;
 
+  public MonthUnit(int year, int month) {
+    super(year);
+    this.month = month;
+  }
+
   /**
    * 月
    *

@@ -1,16 +1,16 @@
 package com.tyme.rabbyung;
 
+import com.tyme.culture.Week;
+import com.tyme.lunar.LunarDay;
 import com.tyme.solar.SolarDay;
-import com.tyme.unit.DayUnit;
+import com.tyme.unit.AbstractDay;
 
 /**
  * 藏历日，仅支持藏历1950年十二月初一（公历1951年1月8日）至藏历2050年十二月三十（公历2051年2月11日）
  *
  * @author 6tail
  */
-public class RabByungDay extends DayUnit {
-
-  public static final String[] NAMES = {"初一", "初二", "初三", "初四", "初五", "初六", "初七", "初八", "初九", "初十", "十一", "十二", "十三", "十四", "十五", "十六", "十七", "十八", "十九", "二十", "廿一", "廿二", "廿三", "廿四", "廿五", "廿六", "廿七", "廿八", "廿九", "三十"};
+public class RabByungDay extends AbstractDay {
 
   /**
    * 是否闰日
@@ -40,11 +40,14 @@ public class RabByungDay extends DayUnit {
    * @param day   藏历日，闰日为负
    */
   public RabByungDay(int year, int month, int day) {
+    super(year, month, Math.abs(day));
     validate(year, month, day);
-    this.year = year;
-    this.month = month;
-    this.day = Math.abs(day);
     this.leap = day < 0;
+  }
+
+  @Override
+  public Week getWeek() {
+    return getSolarDay().getWeek();
   }
 
   /**
@@ -82,7 +85,7 @@ public class RabByungDay extends DayUnit {
         }
       }
     }
-    return new RabByungDay(m.getYear(), m.getMonthWithLeap(), day);
+    return new RabByungDay(m.getYear(), m.getMonthValue(), day);
   }
 
   /**
@@ -91,7 +94,7 @@ public class RabByungDay extends DayUnit {
    * @return 藏历月
    */
   public RabByungMonth getRabByungMonth() {
-    return RabByungMonth.fromYm(year, month);
+    return new RabByungMonth(year, month);
   }
 
   /**
@@ -113,7 +116,7 @@ public class RabByungDay extends DayUnit {
   }
 
   public String getName() {
-    return (leap ? "闰" : "") + NAMES[day - 1];
+    return (leap ? "闰" : "") + LunarDay.NAMES[day - 1];
   }
 
   @Override

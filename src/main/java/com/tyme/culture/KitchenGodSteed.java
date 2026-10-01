@@ -19,7 +19,7 @@ public class KitchenGodSteed extends AbstractCulture {
   protected SixtyCycle firstDaySixtyCycle;
 
   public KitchenGodSteed(int lunarYear) {
-    firstDaySixtyCycle = LunarDay.fromYmd(lunarYear, 1, 1).getSixtyCycle();
+    firstDaySixtyCycle = new LunarDay(lunarYear, 1, 1).getSixtyCycle();
   }
 
   public static KitchenGodSteed fromLunarYear(int lunarYear) {

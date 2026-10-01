@@ -169,3 +169,9 @@
 
 ## [1.5.1] - 2026-06-11
 1. 优化：代码和算法。
+
+## [1.5.2] - 2026-10-01
+1. 优化：更多抽象和重构，减少重复代码。
+2. 优化：藏历日RabByungDay使用农历日LunarDay的名称。
+3. 废弃：getMonthWithLeap()。
+4. 新增：getMonthValue()用于替代getMonthWithLeap()，当月为闰月时返回负数。

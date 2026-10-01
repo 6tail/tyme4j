@@ -1,20 +1,21 @@
 package com.tyme.hijri;
 
+import com.tyme.culture.Week;
 import com.tyme.jd.JulianDay;
 import com.tyme.solar.SolarDay;
-import com.tyme.unit.DayUnit;
+import com.tyme.unit.AbstractDay;
 
 /**
  * 回历日（公元622年7月16日为伊斯兰历元年元旦）
  *
  * @author 6tail
  */
-public class HijriDay extends DayUnit {
+public class HijriDay extends AbstractDay {
 
   public static final String[] NAMES = {"1日", "2日", "3日", "4日", "5日", "6日", "7日", "8日", "9日", "10日", "11日", "12日", "13日", "14日", "15日", "16日", "17日", "18日", "19日", "20日", "21日", "22日", "23日", "24日", "25日", "26日", "27日", "28日", "29日", "30日"};
 
   public static void validate(int year, int month, int day) {
-    if (day < 1 || day > HijriMonth.fromYm(year, month).getDayCount()) {
+    if (day < 1 || day > new HijriMonth(year, month).getDayCount()) {
       throw new IllegalArgumentException(String.format("illegal hijri day: %d-%d-%d", year, month, day));
     }
   }
@@ -27,10 +28,13 @@ public class HijriDay extends DayUnit {
    * @param day   日
    */
   public HijriDay(int year, int month, int day) {
+    super(year, month, day);
     validate(year, month, day);
-    this.year = year;
-    this.month = month;
-    this.day = day;
+  }
+
+  @Override
+  public Week getWeek() {
+    return getJulianDay().getWeek();
   }
 
   public static HijriDay fromYmd(int year, int month, int day) {

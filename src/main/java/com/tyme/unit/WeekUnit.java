@@ -21,6 +21,12 @@ public abstract class WeekUnit extends MonthUnit {
    */
   protected int start;
 
+  public WeekUnit(int year, int month, int index, int start) {
+    super(year, month);
+    this.index = index;
+    this.start = start;
+  }
+
   /**
    * 索引
    *

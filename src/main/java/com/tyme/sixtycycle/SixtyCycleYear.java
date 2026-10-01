@@ -1,9 +1,6 @@
 package com.tyme.sixtycycle;
 
-import com.tyme.AbstractTyme;
-import com.tyme.culture.Direction;
-import com.tyme.culture.Twenty;
-import com.tyme.culture.star.nine.NineStar;
+import com.tyme.unit.AbstractTraditionalYear;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,16 +10,15 @@ import java.util.List;
  *
  * @author 6tail
  */
-public class SixtyCycleYear extends AbstractTyme {
+public class SixtyCycleYear extends AbstractTraditionalYear {
 
-  /**
-   * 年
-   */
-  protected int year;
+  public static void validate(int year) {
+    validateRange(year, -1, 9999, "sixty cycle year");
+  }
 
   public SixtyCycleYear(int year) {
-    validateRange(year, -1, 9999, "sixty cycle year");
-    this.year = year;
+    super(year);
+    validate(year);
   }
 
   /**
@@ -35,53 +31,8 @@ public class SixtyCycleYear extends AbstractTyme {
     return new SixtyCycleYear(year);
   }
 
-  /**
-   * 年
-   *
-   * @return 年
-   */
-  public int getYear() {
-    return year;
-  }
-
-  /**
-   * 干支
-   *
-   * @return 干支
-   */
-  public SixtyCycle getSixtyCycle() {
-    return SixtyCycle.fromIndex(year - 4);
-  }
-
   public String getName() {
     return getSixtyCycle() + "年";
-  }
-
-  /**
-   * 运
-   *
-   * @return 运
-   */
-  public Twenty getTwenty() {
-    return Twenty.fromIndex((int) Math.floor((year - 1864) / 20D));
-  }
-
-  /**
-   * 九星
-   *
-   * @return 九星
-   */
-  public NineStar getNineStar() {
-    return NineStar.fromIndex(63 + getTwenty().getSixty().getIndex() * 3 - getSixtyCycle().getIndex());
-  }
-
-  /**
-   * 太岁方位
-   *
-   * @return 方位
-   */
-  public Direction getJupiterDirection() {
-    return Direction.fromIndex(new int[]{0, 7, 7, 2, 3, 3, 8, 1, 1, 6, 0, 0}[getSixtyCycle().getEarthBranch().getIndex()]);
   }
 
   /**

@@ -5,6 +5,7 @@ import com.tyme.event.EventManager;
 import com.tyme.lunar.LunarDay;
 import com.tyme.solar.SolarTerm;
 import com.tyme.solar.SolarTermDay;
+import com.tyme.unit.MonthUnit;
 
 /**
  * 农历传统节日（依据国家标准《农历的编算和颁行》GB/T 33661-2017）
@@ -27,22 +28,20 @@ public class LunarFestival extends AbstractFestival {
   }
 
   public static LunarFestival fromIndex(int year, int index) {
-    if (index < 0 || index >= NAMES.length) {
-      return null;
+    Event e = buildEvent(NAMES, DATA, index);
+    if (null != e) {
+      switch (e.getType()) {
+        case LUNAR_DAY:
+          MonthUnit m = e.getMonth(year);
+          LunarDay d = LunarDay.fromYmd(m.getYear(), m.getMonth(), e.getValue(3));
+          int offset = e.getValue(5);
+          return new LunarFestival(index, e, 0 == offset ? d : d.next(offset));
+        case TERM_DAY:
+          return new LunarFestival(index, e, SolarTerm.fromIndex(year, e.getValue(2)).getSolarDay().getLunarDay());
+        default:
+      }
     }
-    int start = index * 8;
-    Event e = new Event(NAMES[index], "@" + DATA.substring(start, start + 8));
-    switch (e.getType()) {
-      case LUNAR_DAY:
-        int[] m = e.getMonth(year);
-        LunarDay d = LunarDay.fromYmd(m[0], m[1], e.getValue(3));
-        int offset = e.getValue(5);
-        return new LunarFestival(index, e, 0 == offset ? d : d.next(offset));
-      case TERM_DAY:
-        return new LunarFestival(index, e, SolarTerm.fromIndex(year, e.getValue(2)).getSolarDay().getLunarDay());
-      default:
-        return null;
-    }
+    return null;
   }
 
   public static LunarFestival fromYmd(int year, int month, int day) {
@@ -58,9 +57,9 @@ public class LunarFestival extends AbstractFestival {
               return new LunarFestival(i, e, d);
             }
           } else {
-            int[] m = e.getMonth(d.getYear());
+            MonthUnit m = e.getMonth(d.getYear());
             LunarDay next = d.next(-offset);
-            if (next.getYear() == m[0] && next.getMonth() == m[1] && next.getDay() == e.getValue(3)) {
+            if (next.getYear() == m.getYear() && next.getMonth() == m.getMonth() && next.getDay() == e.getValue(3)) {
               return new LunarFestival(i, e, d);
             }
           }

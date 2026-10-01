@@ -1,6 +1,7 @@
 package com.tyme.solar;
 
-import com.tyme.unit.MonthUnit;
+import com.tyme.unit.AbstractMonth;
+import com.tyme.unit.AbstractYear;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
  *
  * @author 6tail
  */
-public class SolarMonth extends MonthUnit {
+public class SolarMonth extends AbstractMonth {
 
   public static final String[] NAMES = {"1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"};
 
@@ -31,9 +32,8 @@ public class SolarMonth extends MonthUnit {
    * @param month 月
    */
   public SolarMonth(int year, int month) {
+    super(year, month);
     validate(year, month);
-    this.year = year;
-    this.month = month;
   }
 
   public static SolarMonth fromYm(int year, int month) {
@@ -46,15 +46,17 @@ public class SolarMonth extends MonthUnit {
    * @return 公历年
    */
   public SolarYear getSolarYear() {
-    return SolarYear.fromYear(year);
+    return new SolarYear(year);
   }
 
-  /**
-   * 天数（1582年10月只有21天)
-   *
-   * @return 天数
-   */
+  @Override
+  public AbstractYear getAbstractYear() {
+    return getSolarYear();
+  }
+
+  @Override
   public int getDayCount() {
+    // 1582年10月只有21天
     if (1582 == year && 10 == month) {
       return 21;
     }
@@ -84,23 +86,8 @@ public class SolarMonth extends MonthUnit {
     return SolarSeason.fromIndex(year, getIndexInYear() / 3);
   }
 
-  /**
-   * 周数
-   *
-   * @param start 起始星期，1234560分别代表星期一至星期天
-   * @return 周数
-   */
-  public int getWeekCount(int start) {
-    return (int) Math.ceil((indexOf(SolarDay.fromYmd(year, month, 1).getWeek().getIndex() - start, 7) + getDayCount()) / 7D);
-  }
-
   public String getName() {
     return NAMES[getIndexInYear()];
-  }
-
-  @Override
-  public String toString() {
-    return getSolarYear() + getName();
   }
 
   public SolarMonth next(int n) {
@@ -118,7 +105,7 @@ public class SolarMonth extends MonthUnit {
     int size = getWeekCount(start);
     List<SolarWeek> l = new ArrayList<>(size);
     for (int i = 0; i < size; i++) {
-      l.add(SolarWeek.fromYm(year, month, i, start));
+      l.add(new SolarWeek(year, month, i, start));
     }
     return l;
   }
@@ -132,7 +119,7 @@ public class SolarMonth extends MonthUnit {
     int size = getDayCount();
     List<SolarDay> l = new ArrayList<>(size);
     for (int i = 1; i <= size; i++) {
-      l.add(SolarDay.fromYmd(year, month, i));
+      l.add(new SolarDay(year, month, i));
     }
     return l;
   }
@@ -143,6 +130,6 @@ public class SolarMonth extends MonthUnit {
    * @return 公历日
    */
   public SolarDay getFirstDay() {
-    return SolarDay.fromYmd(year, month, 1);
+    return new SolarDay(year, month, 1);
   }
 }

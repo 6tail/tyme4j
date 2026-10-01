@@ -1,7 +1,7 @@
 package com.tyme.solar;
 
 import com.tyme.rabbyung.RabByungYear;
-import com.tyme.unit.YearUnit;
+import com.tyme.unit.AbstractYear;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,15 +11,15 @@ import java.util.List;
  *
  * @author 6tail
  */
-public class SolarYear extends YearUnit {
+public class SolarYear extends AbstractYear {
 
   public static void validate(int year) {
     validateRange(year, 1, 9999, "solar year");
   }
 
   public SolarYear(int year) {
+    super(year);
     validate(year);
-    this.year = year;
   }
 
   /**
@@ -56,10 +56,6 @@ public class SolarYear extends YearUnit {
     return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
   }
 
-  public String getName() {
-    return year + "年";
-  }
-
   public SolarYear next(int n) {
     return fromYear(year + n);
   }
@@ -72,7 +68,7 @@ public class SolarYear extends YearUnit {
   public List<SolarMonth> getMonths() {
     List<SolarMonth> l = new ArrayList<>(12);
     for (int i = 1; i < 13; i++) {
-      l.add(SolarMonth.fromYm(year, i));
+      l.add(new SolarMonth(year, i));
     }
     return l;
   }
@@ -85,7 +81,7 @@ public class SolarYear extends YearUnit {
   public List<SolarSeason> getSeasons() {
     List<SolarSeason> l = new ArrayList<>(4);
     for (int i = 0; i < 4; i++) {
-      l.add(SolarSeason.fromIndex(year, i));
+      l.add(new SolarSeason(year, i));
     }
     return l;
   }
@@ -98,7 +94,7 @@ public class SolarYear extends YearUnit {
   public List<SolarHalfYear> getHalfYears() {
     List<SolarHalfYear> l = new ArrayList<>(2);
     for (int i = 0; i < 2; i++) {
-      l.add(SolarHalfYear.fromIndex(year, i));
+      l.add(new SolarHalfYear(year, i));
     }
     return l;
   }
@@ -109,6 +105,6 @@ public class SolarYear extends YearUnit {
    * @return 藏历年
    */
   public RabByungYear getRabByungYear() {
-    return RabByungYear.fromYear(year);
+    return new RabByungYear(year);
   }
 }

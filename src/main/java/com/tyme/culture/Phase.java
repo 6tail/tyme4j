@@ -29,9 +29,9 @@ public class Phase extends LoopTyme {
 
   public Phase(int lunarYear, int lunarMonth, int index) {
     super(NAMES, index);
-    LunarMonth m = LunarMonth.fromYm(lunarYear, lunarMonth).next(index / getSize());
+    LunarMonth m = new LunarMonth(lunarYear, lunarMonth).next(index / getSize());
     this.lunarYear = m.getYear();
-    this.lunarMonth = m.getMonthWithLeap();
+    this.lunarMonth = m.getMonthValue();
   }
 
   public Phase(int lunarYear, int lunarMonth, String name) {
@@ -55,18 +55,18 @@ public class Phase extends LoopTyme {
       i -= size;
     }
     i /= size;
-    LunarMonth m = LunarMonth.fromYm(lunarYear, lunarMonth);
+    LunarMonth m = new LunarMonth(lunarYear, lunarMonth);
     if (i != 0) {
       m = m.next(i);
     }
-    return fromIndex(m.getYear(), m.getMonthWithLeap(), nextIndex(n));
+    return fromIndex(m.getYear(), m.getMonthValue(), nextIndex(n));
   }
 
   protected SolarTime getStartSolarTime() {
     int n = (int) Math.floor((lunarYear - 2000) * 365.2422 / 29.53058886);
     int i = 0;
     double jd = JulianDay.J2000 + ShouXingUtil.ONE_THIRD;
-    SolarDay d = LunarDay.fromYmd(lunarYear, lunarMonth, 1).getSolarDay();
+    SolarDay d = new LunarDay(lunarYear, lunarMonth, 1).getSolarDay();
     while (true) {
       double t = ShouXingUtil.msaLonT((n + i) * ShouXingUtil.PI_2) * 36525;
       if (!JulianDay.fromJulianDay(jd + t - ShouXingUtil.dtT(t)).getSolarDay().isBefore(d)) {

@@ -1,5 +1,7 @@
 package com.tyme.lunar;
 
+import com.tyme.unit.AbstractMonth;
+import com.tyme.unit.AbstractWeek;
 import com.tyme.unit.WeekUnit;
 
 import java.util.ArrayList;
@@ -10,11 +12,11 @@ import java.util.List;
  *
  * @author 6tail
  */
-public class LunarWeek extends WeekUnit {
+public class LunarWeek extends AbstractWeek {
 
   public static void validate(int year, int month, int index, int start) {
     WeekUnit.validate(index, start);
-    LunarMonth m = LunarMonth.fromYm(year, month);
+    LunarMonth m = new LunarMonth(year, month);
     if (index >= m.getWeekCount(start)) {
       throw new IllegalArgumentException(String.format("illegal lunar week index: %d in month: %s", index, m));
     }
@@ -29,11 +31,8 @@ public class LunarWeek extends WeekUnit {
    * @param start 起始星期，1234560分别代表星期一至星期天
    */
   public LunarWeek(int year, int month, int index, int start) {
+    super(year, month, index, start);
     validate(year, month, index, start);
-    this.year = year;
-    this.month = month;
-    this.index = index;
-    this.start = start;
   }
 
   public static LunarWeek fromYm(int year, int month, int index, int start) {
@@ -46,41 +45,21 @@ public class LunarWeek extends WeekUnit {
    * @return 农历月
    */
   public LunarMonth getLunarMonth() {
-    return LunarMonth.fromYm(year, month);
+    return new LunarMonth(year, month);
+  }
+
+  @Override
+  public AbstractMonth getAbstractMonth() {
+    return getLunarMonth();
   }
 
   public String getName() {
     return NAMES[index];
   }
 
-  @Override
-  public String toString() {
-    return getLunarMonth() + getName();
-  }
-
   public LunarWeek next(int n) {
-    int d = index + n;
-    LunarMonth m = getLunarMonth();
-    if (n > 0) {
-      int weekCount = m.getWeekCount(start);
-      while (d >= weekCount) {
-        d -= weekCount;
-        m = m.next(1);
-        if (m.getFirstDay().getWeek().getIndex() != start) {
-          d += 1;
-        }
-        weekCount = m.getWeekCount(start);
-      }
-    } else {
-      while (d < 0) {
-        if (m.getFirstDay().getWeek().getIndex() != start) {
-          d -= 1;
-        }
-        m = m.next(-1);
-        d += m.getWeekCount(start);
-      }
-    }
-    return fromYm(m.getYear(), m.getMonthWithLeap(), d, start);
+    AbstractWeek w = super.next(n);
+    return fromYm(w.getYear(), w.getMonth(), w.getIndex(), start);
   }
 
   /**
@@ -89,7 +68,7 @@ public class LunarWeek extends WeekUnit {
    * @return 农历日
    */
   public LunarDay getFirstDay() {
-    LunarDay firstDay = LunarDay.fromYmd(year, month, 1);
+    LunarDay firstDay = new LunarDay(year, month, 1);
     return firstDay.next(index * 7 - indexOf(firstDay.getWeek().getIndex() - start, 7));
   }
 

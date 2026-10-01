@@ -12,7 +12,7 @@ import com.tyme.sixtycycle.SixtyCycle;
 import com.tyme.sixtycycle.SixtyCycleDay;
 import com.tyme.sixtycycle.ThreePillars;
 import com.tyme.solar.SolarDay;
-import com.tyme.unit.DayUnit;
+import com.tyme.unit.AbstractDay;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ import java.util.List;
  *
  * @author 6tail
  */
-public class LunarDay extends DayUnit {
+public class LunarDay extends AbstractDay {
 
   public static final String[] NAMES = {"初一", "初二", "初三", "初四", "初五", "初六", "初七", "初八", "初九", "初十", "十一", "十二", "十三", "十四", "十五", "十六", "十七", "十八", "十九", "二十", "廿一", "廿二", "廿三", "廿四", "廿五", "廿六", "廿七", "廿八", "廿九", "三十"};
 
@@ -30,7 +30,7 @@ public class LunarDay extends DayUnit {
     if (day < 1) {
       throw new IllegalArgumentException("illegal lunar day: " + day);
     }
-    LunarMonth m = LunarMonth.fromYm(year, month);
+    LunarMonth m = new LunarMonth(year, month);
     if (day > m.getDayCount()) {
       throw new IllegalArgumentException(String.format("illegal day %d in %s", day, m));
     }
@@ -44,10 +44,8 @@ public class LunarDay extends DayUnit {
    * @param day   农历日
    */
   public LunarDay(int year, int month, int day) {
+    super(year, month, day);
     validate(year, month, day);
-    this.year = year;
-    this.month = month;
-    this.day = day;
   }
 
   /**
@@ -67,7 +65,7 @@ public class LunarDay extends DayUnit {
    * @return 农历月
    */
   public LunarMonth getLunarMonth() {
-    return LunarMonth.fromYm(year, month);
+    return new LunarMonth(year, month);
   }
 
   public String getName() {
@@ -179,7 +177,7 @@ public class LunarDay extends DayUnit {
    */
   public Direction getJupiterDirection() {
     int index = getSixtyCycle().getIndex();
-    return index % 12 < 6 ? Element.fromIndex(index / 12).getDirection() : LunarYear.fromYear(year).getJupiterDirection();
+    return index % 12 < 6 ? Element.fromIndex(index / 12).getDirection() : new LunarYear(year).getJupiterDirection();
   }
 
   /**
@@ -199,7 +197,7 @@ public class LunarDay extends DayUnit {
   public PhaseDay getPhaseDay() {
     SolarDay today = getSolarDay();
     LunarMonth m = getLunarMonth().next(1);
-    Phase p = Phase.fromIndex(m.getYear(), m.getMonthWithLeap(), 0);
+    Phase p = Phase.fromIndex(m.getYear(), m.getMonthValue(), 0);
     SolarDay d = p.getSolarDay();
     while (d.isAfter(today)) {
       p = p.next(-1);

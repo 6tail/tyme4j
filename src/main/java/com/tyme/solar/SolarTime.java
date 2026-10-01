@@ -32,13 +32,8 @@ public class SolarTime extends SecondUnit {
    * @param second 秒
    */
   public SolarTime(int year, int month, int day, int hour, int minute, int second) {
+    super(year, month, day, hour, minute, second);
     validate(year, month, day, hour, minute, second);
-    this.year = year;
-    this.month = month;
-    this.day = day;
-    this.hour = hour;
-    this.minute = minute;
-    this.second = second;
   }
 
   public static SolarTime fromYmdHms(int year, int month, int day, int hour, int minute, int second) {
@@ -51,7 +46,7 @@ public class SolarTime extends SecondUnit {
    * @return 公历日
    */
   public SolarDay getSolarDay() {
-    return SolarDay.fromYmd(year, month, day);
+    return new SolarDay(year, month, day);
   }
 
   public String getName() {
@@ -140,12 +135,12 @@ public class SolarTime extends SecondUnit {
    */
   public SolarTime next(int n) {
     if (n == 0) {
-      return SolarTime.fromYmdHms(year, month, day, hour, minute, second);
+      return fromYmdHms(year, month, day, hour, minute, second);
     }
-    long t = hour * 3600L + minute * 60L + second + n;
+    long t = getSecondsInDay() + n;
     int s = (int)Math.floorMod(t, 86400);
     SolarDay d = getSolarDay().next((int)Math.floorDiv(t, 86400));
-    return SolarTime.fromYmdHms(d.getYear(), d.getMonth(), d.getDay(), s / 3600, (s % 3600) / 60, s % 60);
+    return fromYmdHms(d.getYear(), d.getMonth(), d.getDay(), s / 3600, s % 3600 / 60, s % 60);
   }
 
   /**
@@ -155,7 +150,7 @@ public class SolarTime extends SecondUnit {
    */
   public LunarHour getLunarHour() {
     LunarDay d = getSolarDay().getLunarDay();
-    return LunarHour.fromYmdHms(d.getYear(), d.getMonth(), d.getDay(), hour, minute, second);
+    return new LunarHour(d.getYear(), d.getMonth(), d.getDay(), hour, minute, second);
   }
 
   /**
@@ -174,7 +169,7 @@ public class SolarTime extends SecondUnit {
    */
   public Phase getPhase() {
     LunarMonth month = getLunarHour().getLunarDay().getLunarMonth().next(1);
-    Phase p = Phase.fromIndex(month.getYear(), month.getMonthWithLeap(), 0);
+    Phase p = Phase.fromIndex(month.getYear(), month.getMonthValue(), 0);
     while (p.getSolarTime().isAfter(this)) {
       p = p.next(-1);
     }

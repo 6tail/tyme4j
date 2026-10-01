@@ -1,7 +1,8 @@
 package com.tyme.rabbyung;
 
 import com.tyme.lunar.LunarMonth;
-import com.tyme.unit.MonthUnit;
+import com.tyme.unit.AbstractYear;
+import com.tyme.unit.AbstractLeapMonth;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,13 +14,8 @@ import java.util.Map;
  *
  * @author 6tail
  */
-public class RabByungMonth extends MonthUnit {
+public class RabByungMonth extends AbstractLeapMonth {
   public static final String[] ALIAS = {"神变月", "苦行月", "具香月", "萨嘎月", "作净月", "明净月", "具醉月", "具贤月", "天降月", "持众月", "庄严月", "满意月"};
-
-  /**
-   * 是否闰月
-   */
-  protected boolean leap;
 
   protected static final Map<Integer, int[]> DAYS = new HashMap<>();
 
@@ -67,10 +63,8 @@ public class RabByungMonth extends MonthUnit {
    * @param month 藏历月，闰月为负
    */
   public RabByungMonth(int year, int month) {
+    super(year, month);
     validate(year, month);
-    this.year = year;
-    this.month = Math.abs(month);
-    this.leap = month < 0;
   }
 
   /**
@@ -93,13 +87,9 @@ public class RabByungMonth extends MonthUnit {
     return RabByungYear.fromYear(year);
   }
 
-  /**
-   * 月
-   *
-   * @return 月，当月为闰月时，返回负数
-   */
-  public int getMonthWithLeap() {
-    return leap ? -month : month;
+  @Override
+  public AbstractYear getAbstractYear() {
+    return getRabByungYear();
   }
 
   /**
@@ -121,15 +111,6 @@ public class RabByungMonth extends MonthUnit {
   }
 
   /**
-   * 是否闰月
-   *
-   * @return true/false
-   */
-  public boolean isLeap() {
-    return leap;
-  }
-
-  /**
    * 名称
    *
    * @return 名称
@@ -147,41 +128,9 @@ public class RabByungMonth extends MonthUnit {
     return (leap ? "闰" : "") + ALIAS[month - 1];
   }
 
-  @Override
-  public String toString() {
-    return getRabByungYear() + getName();
-  }
-
   public RabByungMonth next(int n) {
-    if (n == 0) {
-      return fromYm(getYear(), getMonthWithLeap());
-    }
-    int m = getIndexInYear() + 1 + n;
-    RabByungYear y = getRabByungYear();
-    if (n > 0) {
-      int monthCount = y.getMonthCount();
-      while (m > monthCount) {
-        m -= monthCount;
-        y = y.next(1);
-        monthCount = y.getMonthCount();
-      }
-    } else {
-      while (m <= 0) {
-        y = y.next(-1);
-        m += y.getMonthCount();
-      }
-    }
-    boolean leap = false;
-    int leapMonth = y.getLeapMonth();
-    if (leapMonth > 0) {
-      if (m == leapMonth + 1) {
-        leap = true;
-      }
-      if (m > leapMonth) {
-        m--;
-      }
-    }
-    return fromYm(y.getYear(), leap ? -m : m);
+    AbstractLeapMonth m = super.next(n);
+    return fromYm(m.getYear(), m.getMonthValue());
   }
 
   /**
@@ -190,7 +139,7 @@ public class RabByungMonth extends MonthUnit {
    * @return 藏历日
    */
   public RabByungDay getFirstDay() {
-    return new RabByungDay(year, getMonthWithLeap(), 1);
+    return new RabByungDay(year, getMonthValue(), 1);
   }
 
   /**
@@ -202,7 +151,7 @@ public class RabByungMonth extends MonthUnit {
     List<RabByungDay> l = new ArrayList<>();
     List<Integer> missDays = getMissDays();
     List<Integer> leapDays = getLeapDays();
-    int m = getMonthWithLeap();
+    int m = getMonthValue();
     for (int i = 1; i < 31; i++) {
       if (missDays.contains(i)) {
         continue;
@@ -215,11 +164,6 @@ public class RabByungMonth extends MonthUnit {
     return l;
   }
 
-  /**
-   * 当月天数
-   *
-   * @return 数量
-   */
   public int getDayCount() {
     return 30 + getLeapDays().size() - getMissDays().size();
   }

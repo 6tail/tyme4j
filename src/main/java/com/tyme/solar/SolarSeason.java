@@ -31,8 +31,8 @@ public class SolarSeason extends YearUnit {
    * @param index 索引，0-3
    */
   public SolarSeason(int year, int index) {
+    super(year);
     validate(year, index);
-    this.year = year;
     this.index = index;
   }
 
@@ -46,7 +46,7 @@ public class SolarSeason extends YearUnit {
    * @return 公历年
    */
   public SolarYear getSolarYear() {
-    return SolarYear.fromYear(year);
+    return new SolarYear(year);
   }
 
   /**
@@ -80,7 +80,7 @@ public class SolarSeason extends YearUnit {
   public List<SolarMonth> getMonths() {
     List<SolarMonth> l = new ArrayList<>(3);
     for (int i = 1; i < 4; i++) {
-      l.add(SolarMonth.fromYm(year, index * 3 + i));
+      l.add(new SolarMonth(year, index * 3 + i));
     }
     return l;
   }

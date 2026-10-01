@@ -1,6 +1,6 @@
 package com.tyme.hijri;
 
-import com.tyme.unit.YearUnit;
+import com.tyme.unit.AbstractYear;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,11 +10,11 @@ import java.util.List;
  *
  * @author 6tail
  */
-public class HijriYear extends YearUnit {
+public class HijriYear extends AbstractYear {
 
   public HijriYear(int year) {
+    super(year);
     validate(year);
-    this.year = year;
   }
 
   public static void validate(int year) {
@@ -48,10 +48,6 @@ public class HijriYear extends YearUnit {
   public boolean isLeap() {
     int i = Math.floorMod(year - 1, 30);
     return i == 1 || i == 4 || i == 6 || i == 9 || i == 12 || i == 15 || i == 17 || i == 20 || i == 23 || i == 25 || i == 28;
-  }
-
-  public String getName() {
-    return year + "年";
   }
 
   public HijriYear next(int n) {

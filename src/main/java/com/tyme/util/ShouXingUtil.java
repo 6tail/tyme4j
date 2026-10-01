@@ -444,24 +444,28 @@ public class ShouXingUtil {
     return t + (w - (mLon(t, 20) - (4.8950632 + 628.3319653318 * t + 0.000005297 * t2 + 0.0334166 * Math.cos(4.669257 + 628.307585 * t) + 0.0002061 * Math.cos(2.67823 + 628.307585 * t) * t + 0.000349 * Math.cos(4.6261 + 1256.61517 * t) - 20.5 / SECOND_PER_RAD))) / (7771.38 - 914 * Math.sin(0.7848 + 8328.691425 * t + 0.0001523 * t2) - 179 * Math.sin(2.543 + 15542.7543 * t) - 160 * Math.sin(0.1874 + 7214.0629 * t));
   }
 
-  public static double qiHigh(double w) {
-    double t = saLonT2(w) * 36525;
+  public static double qiShuoHigh(boolean isQi, double w) {
+    double t = (isQi ? saLonT2(w) : msaLonT2(w)) * 36525;
     t = t - dtT(t) + ONE_THIRD;
     double v = ((t + 0.5) % 1) * SECOND_PER_DAY;
-    if (v < 1200 || v > SECOND_PER_DAY - 1200) {
-      t = saLonT(w) * 36525 - dtT(t) + ONE_THIRD;
+    int n = isQi ? 1200 : 1800;
+    if (v < n || v > SECOND_PER_DAY - n) {
+      t = (isQi ? saLonT(w) : msaLonT(w)) * 36525 - dtT(t) + ONE_THIRD;
     }
     return t;
   }
 
+  public static double qiHigh(double w) {
+    return qiShuoHigh(true, w);
+  }
+
   public static double shuoHigh(double w) {
-    double t = msaLonT2(w) * 36525;
-    t = t - dtT(t) + ONE_THIRD;
-    double v = ((t + 0.5) % 1) * SECOND_PER_DAY;
-    if (v < 1800 || v > SECOND_PER_DAY - 1800) {
-      t = msaLonT(w) * 36525 - dtT(t) + ONE_THIRD;
-    }
-    return t;
+    return qiShuoHigh(false, w);
+  }
+
+  private static double low(double t) {
+    double n = t + 1.8;
+    return (32 * n * n - 20) / SECOND_PER_DAY / 36525;
   }
 
   /**
@@ -478,7 +482,7 @@ public class ShouXingUtil {
       + 3489 * Math.cos(4.6261 + 1256.61517 * t) // 地球椭圆轨道级数展开
       + 2060.6 * Math.cos(2.67823 + 628.307585 * t) * t // 一次泊松项
       - 994 - 834 * Math.sin(2.1824 - 33.75705 * t); // 光行差与章动修正
-    t -= (n / 10000000 - w) / 628.332 + (32 * (t + 1.8) * (t + 1.8) - 20) / SECOND_PER_DAY / 36525;
+    t -= (n / 10000000 - w) / 628.332 + low(t);
     return t * 36525 + ONE_THIRD;
   }
 
@@ -488,14 +492,14 @@ public class ShouXingUtil {
   public static double shuoLow(double w) {
     double v = 7771.37714500204;
     double t = (w + 1.08472) / v;
-    t -= (-0.0000331 * t * t + 0.10976 * Math.cos(0.785 + 8328.6914 * t) + 0.02224 * Math.cos(0.187 + 7214.0629 * t) - 0.03342 * Math.cos(4.669 + 628.3076 * t)) / v + (32 * (t + 1.8) * (t + 1.8) - 20) / SECOND_PER_DAY / 36525;
+    t -= (-0.0000331 * t * t + 0.10976 * Math.cos(0.785 + 8328.6914 * t) + 0.02224 * Math.cos(0.187 + 7214.0629 * t) - 0.03342 * Math.cos(4.669 + 628.3076 * t)) / v + low(t);
     return t * 36525 + ONE_THIRD;
   }
 
   private static double qiShuo(boolean isQi, boolean isHigh, double jd, int pc) {
     // 2451259是1999.3.21，太阳视黄经为0，春分；2451551是2000.1.7的那个朔日，黄经差为0
     double w = isQi ? Math.floor((jd + pc - 2451259) / 365.2422 * 24) * Math.PI / 12 : Math.floor((jd + pc - 2451551) / 29.5306) * PI_2;
-    double d = isQi ? (isHigh ? qiHigh(w) : qiLow(w)) : (isHigh ? shuoHigh(w) : shuoLow(w));
+    double d = isQi ? (isHigh ? qiHigh(w) : qiLow(w)) : isHigh ? shuoHigh(w) : shuoLow(w);
     return Math.floor(d + 0.5);
   }
 

@@ -25,14 +25,14 @@ import com.tyme.rabbyung.RabByungDay;
 import com.tyme.sixtycycle.HideHeavenStem;
 import com.tyme.sixtycycle.HideHeavenStemDay;
 import com.tyme.sixtycycle.SixtyCycleDay;
-import com.tyme.unit.DayUnit;
+import com.tyme.unit.AbstractDay;
 
 /**
  * 公历日
  *
  * @author 6tail
  */
-public class SolarDay extends DayUnit {
+public class SolarDay extends AbstractDay {
 
   public static final String[] NAMES = {"1日", "2日", "3日", "4日", "5日", "6日", "7日", "8日", "9日", "10日", "11日", "12日", "13日", "14日", "15日", "16日", "17日", "18日", "19日", "20日", "21日", "22日", "23日", "24日", "25日", "26日", "27日", "28日", "29日", "30日", "31日"};
 
@@ -42,7 +42,7 @@ public class SolarDay extends DayUnit {
       if (1582 == year && 10 == month) {
         illegal = (day > 4 && day < 15) || day > 31;
       } else {
-        illegal = day > SolarMonth.fromYm(year, month).getDayCount();
+        illegal = day > new SolarMonth(year, month).getDayCount();
       }
     }
     if (illegal) {
@@ -58,10 +58,8 @@ public class SolarDay extends DayUnit {
    * @param day   日
    */
   public SolarDay(int year, int month, int day) {
+    super(year, month, day);
     validate(year, month, day);
-    this.year = year;
-    this.month = month;
-    this.day = day;
   }
 
   public static SolarDay fromYmd(int year, int month, int day) {
@@ -74,7 +72,7 @@ public class SolarDay extends DayUnit {
    * @return 公历月
    */
   public SolarMonth getSolarMonth() {
-    return SolarMonth.fromYm(year, month);
+    return new SolarMonth(year, month);
   }
 
   /**
@@ -94,7 +92,7 @@ public class SolarDay extends DayUnit {
   public Constellation getConstellation() {
     int[] days = {19, 18, 20, 19, 20, 21, 22, 22, 22, 23, 22, 21};
     int m = month - 1;
-    int offset = (day > days[m]) ? 1 : 0;
+    int offset = day > days[m] ? 1 : 0;
     return new Constellation(9 + m + offset);
   }
 
@@ -168,7 +166,7 @@ public class SolarDay extends DayUnit {
    * @return 公历周
    */
   public SolarWeek getSolarWeek(int start) {
-    return SolarWeek.fromYm(year, month, (int) Math.ceil((day + fromYmd(year, month, 1).getWeek().next(-start).getIndex()) / 7D) - 1, start);
+    return new SolarWeek(year, month, (int) Math.ceil((day + fromYmd(year, month, 1).getWeek().next(-start).getIndex()) / 7D) - 1, start);
   }
 
   /**
@@ -326,7 +324,7 @@ public class SolarDay extends DayUnit {
       m = m.next(-1);
       days += m.getDayCount();
     }
-    return LunarDay.fromYmd(m.getYear(), m.getMonthWithLeap(), days + 1);
+    return LunarDay.fromYmd(m.getYear(), m.getMonthValue(), days + 1);
   }
 
   /**
@@ -372,7 +370,7 @@ public class SolarDay extends DayUnit {
    */
   public PhaseDay getPhaseDay() {
     LunarMonth month = getLunarDay().getLunarMonth().next(1);
-    Phase p = Phase.fromIndex(month.getYear(), month.getMonthWithLeap(), 0);
+    Phase p = Phase.fromIndex(month.getYear(), month.getMonthValue(), 0);
     SolarDay d = p.getSolarDay();
     while (d.isAfter(this)) {
       p = p.next(-1);

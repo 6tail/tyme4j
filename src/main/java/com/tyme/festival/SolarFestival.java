@@ -25,12 +25,8 @@ public class SolarFestival extends AbstractFestival {
   }
 
   public static SolarFestival fromIndex(int year, int index) {
-    if (index < 0 || index >= NAMES.length) {
-      return null;
-    }
-    int start = index * 8;
-    Event e = new Event(NAMES[index], "@" + DATA.substring(start, start + 8));
-    return year < e.getStartYear() ? null : new SolarFestival(index, e, SolarDay.fromYmd(year, e.getValue(2), e.getValue(3)));
+    Event e = buildEvent(NAMES, DATA, index);
+    return null == e ? null : (year < e.getStartYear() ? null : new SolarFestival(index, e, SolarDay.fromYmd(year, e.getValue(2), e.getValue(3))));
   }
 
   public static SolarFestival fromYmd(int year, int month, int day) {

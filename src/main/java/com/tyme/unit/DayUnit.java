@@ -11,6 +11,11 @@ public abstract class DayUnit extends MonthUnit {
    */
   protected int day;
 
+  public DayUnit(int year, int month, int day) {
+    super(year, month);
+    this.day = day;
+  }
+
   /**
    * 日
    *

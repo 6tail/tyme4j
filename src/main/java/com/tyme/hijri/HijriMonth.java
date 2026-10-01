@@ -1,6 +1,7 @@
 package com.tyme.hijri;
 
-import com.tyme.unit.MonthUnit;
+import com.tyme.unit.AbstractMonth;
+import com.tyme.unit.AbstractYear;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
  *
  * @author 6tail
  */
-public class HijriMonth extends MonthUnit {
+public class HijriMonth extends AbstractMonth {
 
   public static final String[] NAMES = {"穆哈兰姆月", "色法尔月", "赖比尔·敖外鲁月", "赖比尔·阿色尼月", "主马达·敖外鲁月", "主马达·阿色尼月", "赖哲卜月", "舍尔邦月", "赖买丹月", "闪瓦鲁月", "都尔喀尔德月", "都尔黑哲月"};
 
@@ -26,9 +27,8 @@ public class HijriMonth extends MonthUnit {
    * @param month 月
    */
   public HijriMonth(int year, int month) {
+    super(year, month);
     validate(year, month);
-    this.year = year;
-    this.month = month;
   }
 
   public static HijriMonth fromYm(int year, int month) {
@@ -42,6 +42,11 @@ public class HijriMonth extends MonthUnit {
    */
   public HijriYear getHijriYear() {
     return new HijriYear(year);
+  }
+
+  @Override
+  public AbstractYear getAbstractYear() {
+    return getHijriYear();
   }
 
   /**
@@ -69,11 +74,6 @@ public class HijriMonth extends MonthUnit {
 
   public String getName() {
     return NAMES[getIndexInYear()];
-  }
-
-  @Override
-  public String toString() {
-    return getHijriYear() + getName();
   }
 
   public HijriMonth next(int n) {
