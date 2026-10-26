@@ -4,6 +4,7 @@ import com.tyme.AbstractTyme;
 import com.tyme.culture.Week;
 import com.tyme.solar.SolarDay;
 import com.tyme.solar.SolarTime;
+import com.tyme.unit.SecondUnit;
 
 /**
  * 儒略日
@@ -68,7 +69,8 @@ public class JulianDay extends AbstractTyme {
    * @return 公历日
    */
   public SolarDay getSolarDay() {
-    return getSolarTime().getSolarDay();
+    SecondUnit u = getSecondUnit(false);
+    return new SolarDay(u.getYear(), u.getMonth(), u.getDay());
   }
 
   /**
@@ -77,6 +79,17 @@ public class JulianDay extends AbstractTyme {
    * @return 公历时刻
    */
   public SolarTime getSolarTime() {
+    SecondUnit u = getSecondUnit(true);
+    int y = u.getYear();
+    int m = u.getMonth();
+    int d = u.getDay();
+    int hour = u.getHour();
+    int minute = u.getMinute();
+    int second = u.getSecond();
+    return second < 60 ? new SolarTime(y, m, d, hour, minute, second) : new SolarTime(y, m, d, hour, minute, second - 60).next(60);
+  }
+
+  protected SecondUnit getSecondUnit(boolean withTime) {
     int d = (int) (day + 0.5);
     double f = day + 0.5 - d;
 
@@ -96,17 +109,22 @@ public class JulianDay extends AbstractTyme {
     }
     m -= 1;
     y -= 4715;
-    f *= 24;
-    int hour = (int) f;
+    int hour = 0;
+    int minute = 0;
+    int second = 0;
+    if (withTime) {
+      f *= 24;
+      hour = (int) f;
 
-    f -= hour;
-    f *= 60;
-    int minute = (int) f;
+      f -= hour;
+      f *= 60;
+      minute = (int) f;
 
-    f -= minute;
-    f *= 60;
-    int second = (int) Math.round(f);
-    return second < 60 ? new SolarTime(y, m, d, hour, minute, second) : new SolarTime(y, m, d, hour, minute, second - 60).next(60);
+      f -= minute;
+      f *= 60;
+      second = (int) Math.round(f);
+    }
+    return new SecondUnit(y, m, d, hour, minute, second){};
   }
 
   /**

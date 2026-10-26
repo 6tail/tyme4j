@@ -2,6 +2,9 @@ package com.tyme.util;
 
 import com.tyme.jd.JulianDay;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 /**
  * 寿星天文历工具
  *
@@ -269,8 +272,6 @@ public class ShouXingUtil {
    * @return Date分点黄经
    */
   public static double mLon(double t, int n) {
-    int obl0 = 2652;
-    int[] obl = {obl0, 893, 204, 12};
     double tn = 1;
     double v = 0;
     int j;
@@ -291,12 +292,12 @@ public class ShouXingUtil {
 
     n *= 6;
     if (n < 0) {
-      n = obl0;
+      n = 2652;
     }
     for (int i = 0; i < 4; i++, tn *= t) {
       double[] f = XL1[i];
-      int l = obl[i];
-      int m = (int) (n * l * 1.0 / obl0 + 0.5);
+      int l = f.length;
+      int m = (int) (n * l / 2652.0 + 0.5);
       if (i > 0) {
         m += 6;
       }
@@ -548,12 +549,52 @@ public class ShouXingUtil {
     return d;
   }
 
+  /**
+   * 气缓存
+   */
+  private static final Map<Double, Double> QI_CACHE = new LinkedHashMap<Double, Double>(18, 0.75f, true) {
+    @Override
+    protected boolean removeEldestEntry(Map.Entry<Double, Double> eldest) {
+      return size() > 13;
+    }
+  };
+
+  /**
+   * 朔缓存
+   */
+  private static final Map<Double, Double> SHUO_CACHE = new LinkedHashMap<Double, Double>(18, 0.75f, true) {
+    @Override
+    protected boolean removeEldestEntry(Map.Entry<Double, Double> eldest) {
+      return size() > 13;
+    }
+  };
+
   public static double calcShuo(double jd) {
-    return calc(false, jd, SHUO_KB, 14, SB);
+    synchronized (SHUO_CACHE) {
+      Double v = SHUO_CACHE.get(jd);
+      if (null != v) {
+        return v;
+      }
+    }
+    double v = calc(false, jd, SHUO_KB, 14, SB);
+    synchronized (SHUO_CACHE) {
+      SHUO_CACHE.put(jd, v);
+    }
+    return v;
   }
 
   public static double calcQi(double jd) {
-    return calc(true, jd, QI_KB, 7, QB);
+    synchronized (QI_CACHE) {
+      Double v = QI_CACHE.get(jd);
+      if (null != v) {
+        return v;
+      }
+    }
+    double v = calc(true, jd, QI_KB, 7, QB);
+    synchronized (QI_CACHE) {
+      Double d = QI_CACHE.putIfAbsent(jd, v);
+      return null != d ? d : v;
+    }
   }
 
   public static double qiAccurate(double w) {

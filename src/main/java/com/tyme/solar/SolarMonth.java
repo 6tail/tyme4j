@@ -54,18 +54,29 @@ public class SolarMonth extends AbstractMonth {
     return getSolarYear();
   }
 
-  @Override
-  public int getDayCount() {
+  /**
+   * 天数
+   *
+   * @param year  年
+   * @param month 月
+   * @return 天数
+   */
+  public static int getDayCount(int year, int month) {
     // 1582年10月只有21天
     if (1582 == year && 10 == month) {
       return 21;
     }
-    int d = DAYS[getIndexInYear()];
+    int d = DAYS[month - 1];
     //公历闰年2月多一天
-    if (2 == month && getSolarYear().isLeap()) {
+    if (2 == month && SolarYear.isLeap(year)) {
       d++;
     }
     return d;
+  }
+
+  @Override
+  public int getDayCount() {
+    return getDayCount(year, month);
   }
 
   /**

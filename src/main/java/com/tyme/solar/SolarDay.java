@@ -42,7 +42,7 @@ public class SolarDay extends AbstractDay {
       if (1582 == year && 10 == month) {
         illegal = (day > 4 && day < 15) || day > 31;
       } else {
-        illegal = day > new SolarMonth(year, month).getDayCount();
+        illegal = day > SolarMonth.getDayCount(year, month);
       }
     }
     if (illegal) {
@@ -318,13 +318,13 @@ public class SolarDay extends AbstractDay {
    * @return 农历日
    */
   public LunarDay getLunarDay() {
-    LunarMonth m = LunarMonth.fromYm(year, month);
+    LunarMonth m = new LunarMonth(year, month);
     int days = subtract(m.getFirstJulianDay().getSolarDay());
     while (days < 0) {
       m = m.next(-1);
       days += m.getDayCount();
     }
-    return LunarDay.fromYmd(m.getYear(), m.getMonthValue(), days + 1);
+    return new LunarDay(m.getYear(), m.getMonthValue(), days + 1);
   }
 
   /**

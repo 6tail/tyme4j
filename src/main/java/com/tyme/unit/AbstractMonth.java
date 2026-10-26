@@ -11,6 +11,15 @@ public abstract class AbstractMonth extends MonthUnit {
   }
 
   /**
+   * 月
+   *
+   * @return 月，当月为闰月时，返回负数，如-2代表闰二月
+   */
+  public int getMonthValue() {
+    return month;
+  }
+
+  /**
    * 周数
    *
    * @param start 起始星期，1234560分别代表星期一至星期天
@@ -27,22 +36,17 @@ public abstract class AbstractMonth extends MonthUnit {
    *
    * @return 天数
    */
-  public abstract int getDayCount();
+  public int getDayCount() {
+    throw new UnsupportedOperationException();
+  }
 
   /**
    * 本月第1天
    *
    * @return 抽象日
    */
-  public abstract AbstractDay getFirstDay();
-
-  /**
-   * 月
-   *
-   * @return 月，当月为闰月时，返回负数，如-2代表闰二月
-   */
-  public int getMonthValue() {
-    return month;
+  public AbstractDay getFirstDay() {
+    throw new UnsupportedOperationException();
   }
 
   /**
@@ -50,7 +54,9 @@ public abstract class AbstractMonth extends MonthUnit {
    *
    * @return 抽象年
    */
-  public abstract AbstractYear getAbstractYear();
+  public AbstractYear getAbstractYear() {
+    throw new UnsupportedOperationException();
+  }
 
   @Override
   public String toString() {

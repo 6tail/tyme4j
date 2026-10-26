@@ -35,13 +35,36 @@ public class SolarYear extends AbstractYear {
   /**
    * 天数（1582年355天，平年365天，闰年366天）
    *
+   * @param year 公历年
    * @return 天数
    */
-  public int getDayCount() {
+  public static int getDayCount(int year) {
     if (1582 == year) {
       return 355;
     }
-    return isLeap() ? 366 : 365;
+    return isLeap(year) ? 366 : 365;
+  }
+
+  /**
+   * 天数（1582年355天，平年365天，闰年366天）
+   *
+   * @return 天数
+   */
+  public int getDayCount() {
+    return getDayCount(year);
+  }
+
+  /**
+   * 是否闰年(1582年以前，使用儒略历，能被4整除即为闰年。以后采用格里历，四年一闰，百年不闰，四百年再闰。)
+   *
+   * @param year 公历年
+   * @return true/false
+   */
+  public static boolean isLeap(int year) {
+    if (year < 1600) {
+      return year % 4 == 0;
+    }
+    return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
   }
 
   /**
@@ -50,10 +73,7 @@ public class SolarYear extends AbstractYear {
    * @return true/false
    */
   public boolean isLeap() {
-    if (year < 1600) {
-      return year % 4 == 0;
-    }
-    return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
+    return isLeap(year);
   }
 
   public SolarYear next(int n) {

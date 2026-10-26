@@ -16,7 +16,9 @@ public abstract class AbstractWeek extends WeekUnit {
    *
    * @return 抽象月
    */
-  public abstract AbstractMonth getAbstractMonth();
+  public AbstractMonth getAbstractMonth() {
+    throw new UnsupportedOperationException();
+  }
 
   public AbstractWeek next(int n) {
     int d = index + n;
@@ -40,12 +42,7 @@ public abstract class AbstractWeek extends WeekUnit {
         d += m.getWeekCount(start);
       }
     }
-    return new AbstractWeek(m.getYear(), m.getMonthValue(), d, start) {
-      @Override
-      public AbstractMonth getAbstractMonth() {
-        return null;
-      }
-    };
+    return new AbstractWeek(m.getYear(), m.getMonthValue(), d, start) {};
   }
 
   @Override

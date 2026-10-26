@@ -12,6 +12,7 @@ import com.tyme.unit.AbstractLeapMonth;
 import com.tyme.util.ShouXingUtil;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -21,6 +22,7 @@ import java.util.List;
  */
 public class LunarMonth extends AbstractLeapMonth {
   public static final String[] NAMES = {"正月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"};
+  protected static final double[][] NEW_MOON_CACHE = new double[10000][];
 
   public static void validate(int year, int month) {
     if (month == 0 || month > 12 || month < -12) {
@@ -69,25 +71,37 @@ public class LunarMonth extends AbstractLeapMonth {
   }
 
   protected double getNewMoon() {
-    // 冬至
-    double dongZhiJd = SolarTerm.fromIndex(year, 0).getCursoryJulianDay();
-
-    // 冬至前的初一，今年首朔的日月黄经差
-    double w = ShouXingUtil.calcShuo(dongZhiJd);
-    if (w > dongZhiJd) {
-      w -= 29.53;
+    int m = getIndexInYear();
+    double[] months = NEW_MOON_CACHE[year];
+    if (null == months) {
+      months = new double[13];
+      Arrays.fill(months, Double.NaN);
+      NEW_MOON_CACHE[year] = months;
     }
+    double v = months[m];
+    if (Double.isNaN(v)) {
+      // 冬至
+      double dongZhiJd = new SolarTerm(year, 0).getCursoryJulianDay();
 
-    // 正常情况正月初一为第3个朔日，但有些特殊的
-    int offset = 2;
-    if (year > 8 && year < 24) {
-      offset = 1;
-    } else if (new LunarYear(year - 1).getLeapMonth() > 10 && year != 239 && year != 240) {
-      offset = 3;
+      // 冬至前的初一，今年首朔的日月黄经差
+      double w = ShouXingUtil.calcShuo(dongZhiJd);
+      if (w > dongZhiJd) {
+        w -= 29.53;
+      }
+
+      // 正常情况正月初一为第3个朔日，但有些特殊的
+      int offset = 2;
+      if (year > 8 && year < 24) {
+        offset = 1;
+      } else if (new LunarYear(year - 1).getLeapMonth() > 10 && year != 239 && year != 240) {
+        offset = 3;
+      }
+
+      // 本月初一
+      v = w + 29.5306 * (offset + m);
+      months[m] = v;
     }
-
-    // 本月初一
-    return w + 29.5306 * (offset + getIndexInYear());
+    return v;
   }
 
   public int getDayCount() {

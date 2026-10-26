@@ -196,7 +196,7 @@ public class Event extends AbstractCulture {
     int m = month.getMonth();
     int d = getValue(3);
     int delay = getValue(4);
-    int lastDay = isLunar ? new LunarMonth(y, m).getDayCount() : new SolarMonth(y, m).getDayCount();
+    int lastDay = isLunar ? new LunarMonth(y, m).getDayCount() : SolarMonth.getDayCount(y, m);
     if (d > lastDay) {
       if (0 == delay) {
         return null;
