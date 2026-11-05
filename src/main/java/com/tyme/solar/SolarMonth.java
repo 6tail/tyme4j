@@ -3,7 +3,6 @@ package com.tyme.solar;
 import com.tyme.unit.AbstractMonth;
 import com.tyme.unit.AbstractYear;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -113,12 +112,7 @@ public class SolarMonth extends AbstractMonth {
    * @return 公历周列表
    */
   public List<SolarWeek> getWeeks(int start) {
-    int size = getWeekCount(start);
-    List<SolarWeek> l = new ArrayList<>(size);
-    for (int i = 0; i < size; i++) {
-      l.add(new SolarWeek(year, month, i, start));
-    }
-    return l;
+    return buildList(getWeekCount(start), i -> new SolarWeek(year, month, i, start));
   }
 
   /**
@@ -127,12 +121,7 @@ public class SolarMonth extends AbstractMonth {
    * @return 公历日列表
    */
   public List<SolarDay> getDays() {
-    int size = getDayCount();
-    List<SolarDay> l = new ArrayList<>(size);
-    for (int i = 1; i <= size; i++) {
-      l.add(new SolarDay(year, month, i));
-    }
-    return l;
+    return buildDays(i -> new SolarDay(year, month, i));
   }
 
   /**

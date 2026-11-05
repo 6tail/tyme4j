@@ -101,11 +101,7 @@ public class SixtyCycleMonth extends AbstractTyme {
    * @return 九星
    */
   public NineStar getNineStar() {
-    int index = month.getEarthBranch().getIndex();
-    if (index < 2) {
-      index += 3;
-    }
-    return NineStar.fromIndex(27 - getYear().getEarthBranch().getIndex() % 3 * 3 - index);
+    return NineStar.fromYm(year, month);
   }
 
   /**

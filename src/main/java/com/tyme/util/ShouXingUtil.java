@@ -312,8 +312,14 @@ public class ShouXingUtil {
     return v / SECOND_PER_RAD;
   }
 
+  /**
+   * 太阳光行差
+   *
+   * @param t 世纪数
+   */
   public static double gxcSunLon(double t) {
     double t2 = t * t;
+    // 平近点角
     double v = -0.043126 + 628.301955 * t - 0.000002732 * t2;
     double e = 0.016708634 - 0.000042037 * t - 0.0000001267 * t2;
     return -20.49552 * (1 + e * Math.cos(v)) / SECOND_PER_RAD;
@@ -513,7 +519,7 @@ public class ShouXingUtil {
    */
   private static double calc(boolean isQi, double jd, double[] kb, int pc, String fkb) {
     int size = kb.length;
-    double d = 0;
+    double d;
     double j = jd + JulianDay.J2000;
     double f1 = kb[0] - pc;
     double f2 = kb[size - 1] - pc;
@@ -521,7 +527,7 @@ public class ShouXingUtil {
     if (j < f1 || j >= 2436935) {
       // 平气表中首个之前，或1960.1.1之后，使用现代天文算法
       d = qiShuo(isQi, true, j, pc);
-    } else if (j >= f1 && j < f2) {
+    } else if (j < f2) {
       // 平气/平朔
       int i;
       for (i = 0; i < size; i += 2) {
@@ -535,7 +541,7 @@ public class ShouXingUtil {
         d += 1;
       }
       d -= JulianDay.J2000;
-    } else if (j >= f2) {
+    } else {
       // 定气/定朔
       d = qiShuo(isQi, false, j, pc);
       char n = fkb.charAt((int) (isQi ? (j - f2) / 365.2422 * 24 : (j - f2) / 29.5306));
@@ -592,9 +598,9 @@ public class ShouXingUtil {
     }
     double v = calc(true, jd, QI_KB, 7, QB);
     synchronized (QI_CACHE) {
-      Double d = QI_CACHE.putIfAbsent(jd, v);
-      return null != d ? d : v;
+      QI_CACHE.put(jd, v);
     }
+    return v;
   }
 
   public static double qiAccurate(double w) {

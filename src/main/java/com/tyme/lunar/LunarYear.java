@@ -3,7 +3,6 @@ package com.tyme.lunar;
 import com.tyme.culture.KitchenGodSteed;
 import com.tyme.unit.AbstractTraditionalYear;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -129,15 +128,7 @@ public class LunarYear extends AbstractTraditionalYear {
    * @return 月份列表，一般有12个月，当年有闰月时，有13个月。
    */
   public List<LunarMonth> getMonths() {
-    List<LunarMonth> l = new ArrayList<>(13);
-    int leapMonth = getLeapMonth();
-    for (int i = 1; i < 13; i++) {
-      l.add(new LunarMonth(year, i));
-      if (i == leapMonth) {
-        l.add(new LunarMonth(year, -i));
-      }
-    }
-    return l;
+    return buildMonths(i -> new LunarMonth(year, i));
   }
 
   /**

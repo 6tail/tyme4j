@@ -47,8 +47,10 @@ public class LunarFestival extends AbstractFestival {
   public static LunarFestival fromYmd(int year, int month, int day) {
     LunarDay d = LunarDay.fromYmd(year, month, day);
     for (int i = 0, j = NAMES.length; i < j; i++) {
-      int start = i * 8;
-      Event e = new Event(NAMES[i], '@' + DATA.substring(start, start + 8));
+      Event e = buildEvent(NAMES, DATA, i);
+      if (null == e) {
+        continue;
+      }
       switch (e.getType()) {
         case LUNAR_DAY:
           int offset = e.getValue(5);

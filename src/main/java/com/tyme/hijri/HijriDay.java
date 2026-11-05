@@ -70,7 +70,7 @@ public class HijriDay extends AbstractDay {
    * @return true/false
    */
   public boolean isBefore(HijriDay target) {
-    return getCompareIndex() < target.getCompareIndex();
+    return super.isBefore(target);
   }
 
   /**
@@ -80,7 +80,7 @@ public class HijriDay extends AbstractDay {
    * @return true/false
    */
   public boolean isAfter(HijriDay target) {
-    return getCompareIndex() > target.getCompareIndex();
+    return super.isAfter(target);
   }
 
   /**

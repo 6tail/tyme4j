@@ -5,7 +5,6 @@ import com.tyme.sixtycycle.SixtyCycle;
 import com.tyme.solar.SolarYear;
 import com.tyme.unit.AbstractTraditionalYear;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -122,14 +121,6 @@ public class RabByungYear extends AbstractTraditionalYear {
    * @return 藏历月列表，一般有12个月，当年有闰月时，有13个月。
    */
   public List<RabByungMonth> getMonths() {
-    List<RabByungMonth> l = new ArrayList<>(13);
-    int leapMonth = getLeapMonth();
-    for (int i = 1; i < 13; i++) {
-      l.add(new RabByungMonth(year, i));
-      if (i == leapMonth) {
-        l.add(new RabByungMonth(year, -i));
-      }
-    }
-    return l;
+    return buildMonths(i -> new RabByungMonth(year, i));
   }
 }

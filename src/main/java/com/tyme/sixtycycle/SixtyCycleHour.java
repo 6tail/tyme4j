@@ -9,7 +9,6 @@ import com.tyme.lunar.LunarDay;
 import com.tyme.lunar.LunarHour;
 import com.tyme.lunar.LunarMonth;
 import com.tyme.lunar.LunarYear;
-import com.tyme.solar.SolarDay;
 import com.tyme.solar.SolarTerm;
 import com.tyme.solar.SolarTime;
 
@@ -152,16 +151,7 @@ public class SixtyCycleHour extends AbstractTyme {
    * @return 九星
    */
   public NineStar getNineStar() {
-    SolarDay solar = solarTime.getSolarDay();
-    SolarTerm dongZhi = SolarTerm.fromIndex(solar.getYear(), 0);
-    int earthBranchIndex = getIndexInDay() % 12;
-    int index = 8 - 3 * (getDay().getEarthBranch().getIndex() % 3);
-    if (!solar.isBefore(dongZhi.getJulianDay().getSolarDay()) && solar.isBefore(dongZhi.next(12).getJulianDay().getSolarDay())) {
-      index = 8 + earthBranchIndex - index;
-    } else {
-      index -= earthBranchIndex;
-    }
-    return NineStar.fromIndex(index);
+    return NineStar.fromHour(solarTime.getSolarDay(), getDay(), getIndexInDay());
   }
 
   /**

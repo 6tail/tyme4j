@@ -4,7 +4,6 @@ import com.tyme.unit.AbstractMonth;
 import com.tyme.unit.AbstractWeek;
 import com.tyme.unit.WeekUnit;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -78,13 +77,8 @@ public class LunarWeek extends AbstractWeek {
    * @return 农历日列表
    */
   public List<LunarDay> getDays() {
-    List<LunarDay> l = new ArrayList<>(7);
     LunarDay d = getFirstDay();
-    l.add(d);
-    for (int i = 1; i < 7; i++) {
-      l.add(d.next(i));
-    }
-    return l;
+    return buildList(7, d::next);
   }
 
   @Override

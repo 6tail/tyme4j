@@ -35,9 +35,8 @@ public class SolarFestival extends AbstractFestival {
   public static SolarFestival fromYmd(int year, int month, int day) {
     SolarDay d = SolarDay.fromYmd(year, month, day);
     for (int i = 0, j = NAMES.length; i < j; i++) {
-      int start = i * 8;
-      Event e = new Event(NAMES[i], "@" + DATA.substring(start, start + 8));
-      if (d.getYear() >= e.getStartYear() && d.getMonth() == e.getValue(2) && d.getDay() == e.getValue(3)) {
+      Event e = buildEvent(NAMES, DATA, i);
+      if (null != e && d.getYear() >= e.getStartYear() && d.getMonth() == e.getValue(2) && d.getDay() == e.getValue(3)) {
         return new SolarFestival(i, e, d);
       }
     }

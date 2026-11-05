@@ -2,7 +2,6 @@ package com.tyme.hijri;
 
 import com.tyme.unit.AbstractYear;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -60,11 +59,7 @@ public class HijriYear extends AbstractYear {
    * @return 回历月列表
    */
   public List<HijriMonth> getMonths() {
-    List<HijriMonth> l = new ArrayList<>(12);
-    for (int i = 1; i < 13; i++) {
-      l.add(new HijriMonth(year, i));
-    }
-    return l;
+    return buildMonths(i -> new HijriMonth(year, i));
   }
 
   /**

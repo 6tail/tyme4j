@@ -5,7 +5,7 @@ package com.tyme.enums;
  *
  * @author 6tail
  */
-public enum HideHeavenStemType {
+public enum HideHeavenStemType implements TymeEnum {
   RESIDUAL(0, "余气"),
   MIDDLE(1, "中气"),
   MAIN(2, "本气");
@@ -26,27 +26,11 @@ public enum HideHeavenStemType {
   }
 
   public static HideHeavenStemType fromCode(Integer code) {
-    if (null == code) {
-      return null;
-    }
-    for (HideHeavenStemType item : values()) {
-      if (item.getCode() == code) {
-        return item;
-      }
-    }
-    return null;
+    return TymeEnum.fromCode(HideHeavenStemType.class, code);
   }
 
   public static HideHeavenStemType fromName(String name) {
-    if (null == name) {
-      return null;
-    }
-    for (HideHeavenStemType item : values()) {
-      if (item.getName().equals(name)) {
-        return item;
-      }
-    }
-    return null;
+    return TymeEnum.fromName(HideHeavenStemType.class, name);
   }
 
   public int getCode() {

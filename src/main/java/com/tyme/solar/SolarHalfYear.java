@@ -2,7 +2,6 @@ package com.tyme.solar;
 
 import com.tyme.unit.YearUnit;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -78,11 +77,7 @@ public class SolarHalfYear extends YearUnit {
    * @return 月份列表，半年有6个月。
    */
   public List<SolarMonth> getMonths() {
-    List<SolarMonth> l = new ArrayList<>(6);
-    for (int i = 1; i < 7; i++) {
-      l.add(new SolarMonth(year, index * 6 + i));
-    }
-    return l;
+    return buildList(6, i -> new SolarMonth(year, index * 6 + i + 1));
   }
 
   /**
@@ -91,10 +86,6 @@ public class SolarHalfYear extends YearUnit {
    * @return 季度列表，半年有2个季度。
    */
   public List<SolarSeason> getSeasons() {
-    List<SolarSeason> l = new ArrayList<>(2);
-    for (int i = 0; i < 2; i++) {
-      l.add(new SolarSeason(year, index * 2 + i));
-    }
-    return l;
+    return buildList(2, i -> new SolarSeason(year, index * 2 + i));
   }
 }

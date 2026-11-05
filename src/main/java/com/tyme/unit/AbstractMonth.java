@@ -1,5 +1,8 @@
 package com.tyme.unit;
 
+import java.util.List;
+import java.util.function.IntFunction;
+
 /**
  * 抽象月
  *
@@ -27,6 +30,17 @@ public abstract class AbstractMonth extends MonthUnit {
    */
   public int getWeekCount(int start) {
     return (int) Math.ceil((indexOf(getFirstDay().getWeek().getIndex() - start, 7) + getDayCount()) / 7D);
+  }
+
+  /**
+   * 本月的日列表
+   *
+   * @param factory 工厂
+   * @param <T>     日类型
+   * @return 日的列表
+   */
+  protected <T> List<T> buildDays(IntFunction<T> factory) {
+    return buildList(getDayCount(), i -> factory.apply(i + 1));
   }
 
   public abstract AbstractMonth next(int n);

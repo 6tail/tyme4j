@@ -1,5 +1,9 @@
 package com.tyme.unit;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.IntFunction;
+
 /**
  * 抽象年
  *
@@ -26,6 +30,24 @@ public abstract class AbstractYear extends YearUnit {
    */
   public int getLeapMonth() {
     return 0;
+  }
+
+  /**
+   * 月份列表
+   *
+   * @param factory 工厂
+   * @return 月份列表
+   */
+  protected <T> List<T> buildMonths(IntFunction<T> factory) {
+    List<T> l = new ArrayList<>(13);
+    int leapMonth = getLeapMonth();
+    for (int i = 1; i < 13; i++) {
+      l.add(factory.apply(i));
+      if (i == leapMonth) {
+        l.add(factory.apply(-i));
+      }
+    }
+    return l;
   }
 
   @Override

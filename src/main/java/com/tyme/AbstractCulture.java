@@ -1,5 +1,9 @@
 package com.tyme;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.IntFunction;
+
 /**
  * 传统文化抽象
  *
@@ -31,6 +35,22 @@ public abstract class AbstractCulture implements Culture {
    */
   protected int indexOf(int index, int size) {
     return Math.floorMod(index, size);
+  }
+
+  /**
+   * 构建列表
+   *
+   * @param size   大小
+   * @param factory 工厂
+   * @param <T>    类型
+   * @return 列表
+   */
+  protected static <T> List<T> buildList(int size, IntFunction<T> factory) {
+    List<T> l = new ArrayList<>(size);
+    for (int i = 0; i < size; i++) {
+      l.add(factory.apply(i));
+    }
+    return l;
   }
 
   /**

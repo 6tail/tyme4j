@@ -14,7 +14,6 @@ import com.tyme.sixtycycle.ThreePillars;
 import com.tyme.solar.SolarDay;
 import com.tyme.unit.AbstractDay;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -88,7 +87,7 @@ public class LunarDay extends AbstractDay {
    * @return true/false
    */
   public boolean isBefore(LunarDay target) {
-    return getCompareIndex() < target.getCompareIndex();
+    return super.isBefore(target);
   }
 
   /**
@@ -98,7 +97,7 @@ public class LunarDay extends AbstractDay {
    * @return true/false
    */
   public boolean isAfter(LunarDay target) {
-    return getCompareIndex() > target.getCompareIndex();
+    return super.isAfter(target);
   }
 
   /**
@@ -195,15 +194,7 @@ public class LunarDay extends AbstractDay {
    * @return 月相第几天
    */
   public PhaseDay getPhaseDay() {
-    SolarDay today = getSolarDay();
-    LunarMonth m = getLunarMonth().next(1);
-    Phase p = Phase.fromIndex(m.getYear(), m.getMonthValue(), 0);
-    SolarDay d = p.getSolarDay();
-    while (d.isAfter(today)) {
-      p = p.next(-1);
-      d = p.getSolarDay();
-    }
-    return new PhaseDay(p, today.subtract(d));
+    return getSolarDay().getPhaseDay();
   }
 
   /**
@@ -266,12 +257,7 @@ public class LunarDay extends AbstractDay {
    * @return 农历时辰列表
    */
   public List<LunarHour> getHours() {
-    List<LunarHour> l = new ArrayList<>();
-    l.add(LunarHour.fromYmdHms(year, month, day, 0, 0, 0));
-    for (int i = 0; i < 24; i += 2) {
-      l.add(LunarHour.fromYmdHms(year, month, day, i + 1, 0, 0));
-    }
-    return l;
+    return buildList(13, i -> LunarHour.fromYmdHms(year, month, day, 0 == i ? 0 : i * 2 - 1, 0, 0));
   }
 
   /**

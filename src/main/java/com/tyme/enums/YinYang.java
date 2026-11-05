@@ -5,7 +5,7 @@ package com.tyme.enums;
  *
  * @author 6tail
  */
-public enum YinYang {
+public enum YinYang implements TymeEnum {
   YIN(0, "阴"),
   YANG(1, "阳");
 
@@ -25,27 +25,11 @@ public enum YinYang {
   }
 
   public static YinYang fromCode(Integer code) {
-    if (null == code) {
-      return null;
-    }
-    for (YinYang item : values()) {
-      if (item.getCode() == code) {
-        return item;
-      }
-    }
-    return null;
+    return TymeEnum.fromCode(YinYang.class, code);
   }
 
   public static YinYang fromName(String name) {
-    if (null == name) {
-      return null;
-    }
-    for (YinYang item : values()) {
-      if (item.getName().equals(name)) {
-        return item;
-      }
-    }
-    return null;
+    return TymeEnum.fromName(YinYang.class, name);
   }
 
   public int getCode() {

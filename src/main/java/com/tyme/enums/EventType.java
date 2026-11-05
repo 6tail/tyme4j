@@ -5,7 +5,7 @@ package com.tyme.enums;
  *
  * @author 6tail
  */
-public enum EventType {
+public enum EventType implements TymeEnum {
   SOLAR_DAY(0, "公历日期"),
   SOLAR_WEEK(1, "几月第几个星期几"),
   LUNAR_DAY(2, "农历日期"),
@@ -29,27 +29,11 @@ public enum EventType {
   }
 
   public static EventType fromCode(Integer code) {
-    if (null == code) {
-      return null;
-    }
-    for (EventType item : values()) {
-      if (item.getCode() == code) {
-        return item;
-      }
-    }
-    return null;
+    return TymeEnum.fromCode(EventType.class, code);
   }
 
   public static EventType fromName(String name) {
-    if (null == name) {
-      return null;
-    }
-    for (EventType item : values()) {
-      if (item.getName().equals(name)) {
-        return item;
-      }
-    }
-    return null;
+    return TymeEnum.fromName(EventType.class, name);
   }
 
   public int getCode() {

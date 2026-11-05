@@ -34,4 +34,24 @@ public abstract class YearUnit extends AbstractTyme {
   protected long getCompareIndex() {
     return year * 10000L;
   }
+
+  /**
+   * 是否在之前
+   *
+   * @param target 年
+   * @return true/false
+   */
+  protected boolean isBefore(YearUnit target) {
+    return getCompareIndex() < target.getCompareIndex();
+  }
+
+  /**
+   * 是否在之后
+   *
+   * @param target 年
+   * @return true/false
+   */
+  protected boolean isAfter(YearUnit target) {
+    return getCompareIndex() > target.getCompareIndex();
+  }
 }

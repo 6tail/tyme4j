@@ -65,7 +65,7 @@ public class SolarTime extends SecondUnit {
    * @return true/false
    */
   public boolean isBefore(SolarTime target) {
-    return getCompareIndex() < target.getCompareIndex();
+    return super.isBefore(target);
   }
 
   /**
@@ -75,7 +75,7 @@ public class SolarTime extends SecondUnit {
    * @return true/false
    */
   public boolean isAfter(SolarTime target) {
-    return getCompareIndex() > target.getCompareIndex();
+    return super.isAfter(target);
   }
 
   /**

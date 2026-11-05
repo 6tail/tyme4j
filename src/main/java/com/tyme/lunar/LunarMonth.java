@@ -7,11 +7,10 @@ import com.tyme.culture.star.nine.NineStar;
 import com.tyme.jd.JulianDay;
 import com.tyme.sixtycycle.SixtyCycle;
 import com.tyme.solar.SolarTerm;
-import com.tyme.unit.AbstractYear;
 import com.tyme.unit.AbstractLeapMonth;
+import com.tyme.unit.AbstractYear;
 import com.tyme.util.ShouXingUtil;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -149,13 +148,7 @@ public class LunarMonth extends AbstractLeapMonth {
    * @return 农历日列表
    */
   public List<LunarDay> getDays() {
-    int size = getDayCount();
-    int m = getMonthValue();
-    List<LunarDay> l = new ArrayList<>(size);
-    for (int i = 1; i <= size; i++) {
-      l.add(new LunarDay(year, m, i));
-    }
-    return l;
+    return buildDays(i -> new LunarDay(year, getMonthValue(), i));
   }
 
   /**
@@ -174,13 +167,7 @@ public class LunarMonth extends AbstractLeapMonth {
    * @return 周列表
    */
   public List<LunarWeek> getWeeks(int start) {
-    int size = getWeekCount(start);
-    int m = getMonthValue();
-    List<LunarWeek> l = new ArrayList<>(size);
-    for (int i = 0; i < size; i++) {
-      l.add(new LunarWeek(year, m, i, start));
-    }
-    return l;
+    return buildList(getWeekCount(start), i -> new LunarWeek(year, getMonthValue(), i, start));
   }
 
   /**
@@ -198,11 +185,7 @@ public class LunarMonth extends AbstractLeapMonth {
    * @return 九星
    */
   public NineStar getNineStar() {
-    int index = getSixtyCycle().getEarthBranch().getIndex();
-    if (index < 2) {
-      index += 3;
-    }
-    return NineStar.fromIndex(27 - getLunarYear().getSixtyCycle().getEarthBranch().getIndex() % 3 * 3 - index);
+    return NineStar.fromYm(getLunarYear(), getSixtyCycle());
   }
 
   /**
@@ -213,7 +196,7 @@ public class LunarMonth extends AbstractLeapMonth {
   public Direction getJupiterDirection() {
     SixtyCycle sixtyCycle = getSixtyCycle();
     int n = new int[]{7, -1, 1, 3}[sixtyCycle.getEarthBranch().next(-2).getIndex() % 4];
-    return n != -1 ? Direction.fromIndex(n) : sixtyCycle.getHeavenStem().getDirection();
+    return n == -1 ? sixtyCycle.getHeavenStem().getDirection() : Direction.fromIndex(n);
   }
 
   /**

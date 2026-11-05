@@ -1,8 +1,8 @@
 package com.tyme.rabbyung;
 
 import com.tyme.lunar.LunarMonth;
-import com.tyme.unit.AbstractYear;
 import com.tyme.unit.AbstractLeapMonth;
+import com.tyme.unit.AbstractYear;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -93,24 +93,6 @@ public class RabByungMonth extends AbstractLeapMonth {
   }
 
   /**
-   * 位于当年的索引
-   *
-   * @return 索引(0-12)
-   */
-  public int getIndexInYear() {
-    int index = month - 1;
-    if (leap) {
-      index += 1;
-    } else {
-      int leapMonth = getRabByungYear().getLeapMonth();
-      if (leapMonth > 0 && month > leapMonth) {
-        index += 1;
-      }
-    }
-    return index;
-  }
-
-  /**
    * 名称
    *
    * @return 名称
@@ -176,11 +158,10 @@ public class RabByungMonth extends AbstractLeapMonth {
   public List<Integer> getSpecialDays() {
     List<Integer> l = new ArrayList<>();
     int[] days = DAYS.get(getYear() * 13 + getIndexInYear());
-    if (null == days) {
-      return l;
-    }
-    for (int d : days) {
-      l.add(d);
+    if (null != days) {
+      for (int d : days) {
+        l.add(d);
+      }
     }
     return l;
   }
@@ -192,8 +173,7 @@ public class RabByungMonth extends AbstractLeapMonth {
    */
   public List<Integer> getLeapDays() {
     List<Integer> l = new ArrayList<>();
-    List<Integer> days = getSpecialDays();
-    for (int d : days) {
+    for (int d : getSpecialDays()) {
       if (d > 0) {
         l.add(d);
       }
@@ -208,8 +188,7 @@ public class RabByungMonth extends AbstractLeapMonth {
    */
   public List<Integer> getMissDays() {
     List<Integer> l = new ArrayList<>();
-    List<Integer> days = getSpecialDays();
-    for (int d : days) {
+    for (int d : getSpecialDays()) {
       if (d < 0) {
         l.add(-d);
       }

@@ -3,7 +3,6 @@ package com.tyme.solar;
 import com.tyme.rabbyung.RabByungYear;
 import com.tyme.unit.AbstractYear;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -86,11 +85,7 @@ public class SolarYear extends AbstractYear {
    * @return 月份列表
    */
   public List<SolarMonth> getMonths() {
-    List<SolarMonth> l = new ArrayList<>(12);
-    for (int i = 1; i < 13; i++) {
-      l.add(new SolarMonth(year, i));
-    }
-    return l;
+    return buildMonths(i -> new SolarMonth(year, i));
   }
 
   /**
@@ -99,11 +94,7 @@ public class SolarYear extends AbstractYear {
    * @return 季度列表
    */
   public List<SolarSeason> getSeasons() {
-    List<SolarSeason> l = new ArrayList<>(4);
-    for (int i = 0; i < 4; i++) {
-      l.add(new SolarSeason(year, i));
-    }
-    return l;
+    return buildList(4, i -> new SolarSeason(year, i));
   }
 
   /**
@@ -112,11 +103,7 @@ public class SolarYear extends AbstractYear {
    * @return 半年列表
    */
   public List<SolarHalfYear> getHalfYears() {
-    List<SolarHalfYear> l = new ArrayList<>(2);
-    for (int i = 0; i < 2; i++) {
-      l.add(new SolarHalfYear(year, i));
-    }
-    return l;
+    return buildList(2, i -> new SolarHalfYear(year, i));
   }
 
   /**

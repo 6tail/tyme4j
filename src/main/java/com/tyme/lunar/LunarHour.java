@@ -12,7 +12,6 @@ import com.tyme.sixtycycle.HeavenStem;
 import com.tyme.sixtycycle.SixtyCycle;
 import com.tyme.sixtycycle.SixtyCycleHour;
 import com.tyme.solar.SolarDay;
-import com.tyme.solar.SolarTerm;
 import com.tyme.solar.SolarTime;
 import com.tyme.unit.SecondUnit;
 
@@ -107,7 +106,7 @@ public class LunarHour extends SecondUnit {
    * @return true/false
    */
   public boolean isBefore(LunarHour target) {
-    return getCompareIndex() < target.getCompareIndex();
+    return super.isBefore(target);
   }
 
   /**
@@ -117,7 +116,7 @@ public class LunarHour extends SecondUnit {
    * @return true/false
    */
   public boolean isAfter(LunarHour target) {
-    return getCompareIndex() > target.getCompareIndex();
+    return super.isAfter(target);
   }
 
   /**
@@ -184,16 +183,7 @@ public class LunarHour extends SecondUnit {
    */
   public NineStar getNineStar() {
     LunarDay d = getLunarDay();
-    SolarDay solar = d.getSolarDay();
-    SolarTerm dongZhi = SolarTerm.fromIndex(solar.getYear(), 0);
-    int earthBranchIndex = getIndexInDay() % 12;
-    int index = 8 - 3 * (d.getSixtyCycle().getEarthBranch().getIndex() % 3);
-    if (!solar.isBefore(dongZhi.getJulianDay().getSolarDay()) && solar.isBefore(dongZhi.next(12).getJulianDay().getSolarDay())) {
-      index = 8 + earthBranchIndex - index;
-    } else {
-      index -= earthBranchIndex;
-    }
-    return NineStar.fromIndex(index);
+    return NineStar.fromHour(d.getSolarDay(), d.getSixtyCycle(), getIndexInDay());
   }
 
   /**

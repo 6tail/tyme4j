@@ -2,7 +2,6 @@ package com.tyme.sixtycycle;
 
 import com.tyme.unit.AbstractTraditionalYear;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -60,13 +59,8 @@ public class SixtyCycleYear extends AbstractTraditionalYear {
    * @return 干支月列表
    */
   public List<SixtyCycleMonth> getMonths() {
-    List<SixtyCycleMonth> l = new ArrayList<>();
     SixtyCycleMonth m = getFirstMonth();
-    l.add(m);
-    for (int i = 1; i < 12; i++) {
-      l.add(m.next(i));
-    }
-    return l;
+    return buildList(12, m::next);
   }
 
 }

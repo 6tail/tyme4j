@@ -4,7 +4,6 @@ import com.tyme.unit.AbstractMonth;
 import com.tyme.unit.AbstractWeek;
 import com.tyme.unit.WeekUnit;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -95,13 +94,8 @@ public class SolarWeek extends AbstractWeek {
    * @return 公历日列表
    */
   public List<SolarDay> getDays() {
-    List<SolarDay> l = new ArrayList<>(7);
     SolarDay d = getFirstDay();
-    l.add(d);
-    for (int i = 1; i < 7; i++) {
-      l.add(d.next(i));
-    }
-    return l;
+    return buildList(7, d::next);
   }
 
   @Override

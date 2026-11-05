@@ -5,7 +5,7 @@ package com.tyme.enums;
  *
  * @author 6tail
  */
-public enum Side {
+public enum Side implements TymeEnum {
   IN(0, "内"),
   OUT(1, "外");
 
@@ -25,27 +25,11 @@ public enum Side {
   }
 
   public static Side fromCode(Integer code) {
-    if (null == code) {
-      return null;
-    }
-    for (Side item : values()) {
-      if (item.getCode() == code) {
-        return item;
-      }
-    }
-    return null;
+    return TymeEnum.fromCode(Side.class, code);
   }
 
   public static Side fromName(String name) {
-    if (null == name) {
-      return null;
-    }
-    for (Side item : values()) {
-      if (item.getName().equals(name)) {
-        return item;
-      }
-    }
-    return null;
+    return TymeEnum.fromName(Side.class, name);
   }
 
   public int getCode() {
